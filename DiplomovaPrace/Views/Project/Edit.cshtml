@@ -1,0 +1,93 @@
+﻿@model DiplomovaPrace.Models.Project
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+@if (ViewBag.Error != null)
+{
+    <p></p>
+<div class="alert alert-danger">
+    @ViewBag.Error
+</div>
+}
+
+
+@using (Html.BeginForm("Edit", "Project", FormMethod.Post,new { @autocomplete="off"}))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="form-group">
+        @Html.Label("Název projektu")
+
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Stručný popis projektu")
+        @Html.TextAreaFor(model => model.Description, 4, 3, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Vyberte nové členy do týmu")
+        @Html.DropDownList("Contacts", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+
+        <input type="submit" value="Uložit změny" class="btn btn-success btn-block" />
+
+    </div>
+</div>
+}
+
+<h3>Tým</h3>
+<p></p>
+<table class="table table-filter">
+    @{ 
+        var team = (IEnumerable<DiplomovaPrace.Models.User>)ViewBag.Team;
+
+        foreach(var item in team)
+        {
+        <tr>
+            <td>
+                <div class="form-group col-md-2">
+                    <div class="media">
+                        <div class="pull-left">
+                            <img src="@item.Avatar" alt="Profilový obrázek" class="media-photo"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-10">
+                    <div class="media-body">
+                        <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.ID})">
+                            <div class="float-left">
+                                @Html.DisplayFor(modelItem => item.Name)
+                                @Html.DisplayFor(modelItem => item.Surname)
+                            </div>
+                        </a>
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-sm btn-outline-danger" title="Odebrat z projektu" onclick="location.href='@Url.Action("RemoveFromProject","Project",new { projectID=Model.ID,userID=item.ID})'"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        }
+    }
+</table>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

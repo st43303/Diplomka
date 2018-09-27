@@ -1,0 +1,98 @@
+﻿@model IEnumerable<DiplomovaPrace.Models.Requirement>
+
+@{
+    ViewBag.Title = "Funkční požadavky";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Funkční požadavky</h2>
+
+<p>
+</p>
+<button class="btn btn-block btn-success" onclick="location.href='@Url.Action("Create","Requirements")'">Přidat nový požadavek</button>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("ID požadavku")
+                </th>
+                <th>
+                    @Html.DisplayName("Text požadavku")
+                </th>
+                <th>
+                    @Html.DisplayName("Kategorie požadavku")
+                </th>
+                <th>
+                    @Html.DisplayName("Priorita požadavku")
+                </th>
+                <th>
+                    @Html.DisplayName("Zdroj požadavku")
+                </th>
+                <th>
+                    @Html.DisplayName("Status")
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+     
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_Requirement)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.CategoryRequirement.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.PriorityRequirement.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Source)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.StatusRequirement.Status)
+                </td>
+
+                <td>
+                    <div class="btn-group pull-right">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-outline-dark" title="Upravit požadavek" onclick="location.href='@Url.Action("Edit","Requirements",new { id=item.ID})'"><i class="fa fa-edit"></i></button>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-outline-danger" title="Odstranit požadavek" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                            </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
+            </tbody>
+    </table>
+</div>
+
+
+@section Scripts{
+    <script>
+        function Delete(id) {
+            jQuery.ajax({
+                url: '@Url.Action("Delete","Requirements")',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function (error) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,1664 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SDTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActorType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CategoryRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Project" Type="int" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Path" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="ID_File_Type" Type="int" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="Date_Uploaded" Type="datetime" Nullable="false" />
+          <Property Name="ID_User" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Length" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Extension" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Friendship">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_UserA" Type="int" Nullable="false" />
+          <Property Name="ID_UserB" Type="int" Nullable="false" />
+          <Property Name="Checked" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_User" Type="int" Nullable="false" />
+          <Property Name="Message" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="50" />
+          <Property Name="Avatar" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PriorityRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Priority" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PriorityDescription" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="ID_Author" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProjectUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_User" Type="int" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReqType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Requirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Requirement" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Text" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_ReqType" Type="int" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="ID_Category" Type="int" />
+          <Property Name="ID_Priority" Type="int" />
+          <Property Name="ID_Status" Type="int" />
+          <Property Name="Source" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Scenario">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Scenario" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="InCondition" Type="varchar" MaxLength="100" />
+          <Property Name="OutCondition" Type="varchar" MaxLength="100" />
+          <Property Name="ID_UseCase" Type="int" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="Scenario" Type="varchar" MaxLength="300" />
+          <Property Name="Done" Type="bit" Nullable="false" />
+          <Property Name="ID_MainScenario" Type="int" />
+        </EntityType>
+        <EntityType Name="ScenarioActor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Actor" Type="int" Nullable="false" />
+          <Property Name="ID_Scenario" Type="int" Nullable="false" />
+          <Property Name="ID_ActorType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatusDescription" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UseCase">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="150" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UseCaseActor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Actor" Type="int" Nullable="false" />
+          <Property Name="ID_UseCase" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UseCaseRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_UseCase" Type="int" Nullable="false" />
+          <Property Name="ID_Requirement" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Avatar" Type="varchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
+          <Property Name="LastActive" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Actor_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Actor" Type="Self.Actor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actor">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoryRequirement_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="CategoryRequirement" Type="Self.CategoryRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CategoryRequirement">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_FileType">
+          <End Role="FileType" Type="Self.FileType" Multiplicity="1" />
+          <End Role="File" Type="Self.File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_File_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="File" Type="Self.File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="File" Type="Self.File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friendship_UserA">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Friendship" Type="Self.Friendship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friendship">
+              <PropertyRef Name="ID_UserA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friendship_UserB">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Friendship" Type="Self.Friendship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friendship">
+              <PropertyRef Name="ID_UserB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project1" Type="Self.Project" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="ID_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectUser_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectUser">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectUser_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectUser">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_CategoryRequirement">
+          <End Role="CategoryRequirement" Type="Self.CategoryRequirement" Multiplicity="0..1" />
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_PriorityRequirement">
+          <End Role="PriorityRequirement" Type="Self.PriorityRequirement" Multiplicity="0..1" />
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriorityRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_ReqType">
+          <End Role="ReqType" Type="Self.ReqType" Multiplicity="1" />
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReqType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_ReqType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_StatusRequirement">
+          <End Role="StatusRequirement" Type="Self.StatusRequirement" Multiplicity="0..1" />
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Scenario" Type="Self.Scenario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_Scenario">
+          <End Role="Scenario" Type="Self.Scenario" Multiplicity="0..1" />
+          <End Role="Scenario1" Type="Self.Scenario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scenario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario1">
+              <PropertyRef Name="ID_MainScenario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_UseCase">
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="Scenario" Type="Self.Scenario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_Actor">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="ScenarioActor" Type="Self.ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_Actor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_ActorType">
+          <End Role="ActorType" Type="Self.ActorType" Multiplicity="1" />
+          <End Role="ScenarioActor" Type="Self.ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_ActorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_Scenario">
+          <End Role="Scenario" Type="Self.Scenario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ScenarioActor" Type="Self.ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scenario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_Scenario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCase_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCase">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseActor_Actor">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="UseCaseActor" Type="Self.UseCaseActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseActor">
+              <PropertyRef Name="ID_Actor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseActor_UseCase">
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UseCaseActor" Type="Self.UseCaseActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseActor">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseRequirement_Requirement">
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
+          <End Role="UseCaseRequirement" Type="Self.UseCaseRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseRequirement">
+              <PropertyRef Name="ID_Requirement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseRequirement_UseCase">
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="UseCaseRequirement" Type="Self.UseCaseRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseRequirement">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User1" Type="Self.User" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SDTModelStoreContainer">
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorType" EntityType="Self.ActorType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CategoryRequirement" EntityType="Self.CategoryRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="File" EntityType="Self.File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileType" EntityType="Self.FileType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Friendship" EntityType="Self.Friendship" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriorityRequirement" EntityType="Self.PriorityRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectUser" EntityType="Self.ProjectUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReqType" EntityType="Self.ReqType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requirement" EntityType="Self.Requirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Scenario" EntityType="Self.Scenario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScenarioActor" EntityType="Self.ScenarioActor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusRequirement" EntityType="Self.StatusRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UseCase" EntityType="Self.UseCase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Actor_Project" Association="Self.FK_Actor_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Actor" EntitySet="Actor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoryRequirement_Project" Association="Self.FK_CategoryRequirement_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="CategoryRequirement" EntitySet="CategoryRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_FileType" Association="Self.FK_File_FileType">
+            <End Role="FileType" EntitySet="FileType" />
+            <End Role="File" EntitySet="File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_Project" Association="Self.FK_File_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="File" EntitySet="File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_User" Association="Self.FK_File_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="File" EntitySet="File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friendship_UserA" Association="Self.FK_Friendship_UserA">
+            <End Role="User" EntitySet="User" />
+            <End Role="Friendship" EntitySet="Friendship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friendship_UserB" Association="Self.FK_Friendship_UserB">
+            <End Role="User" EntitySet="User" />
+            <End Role="Friendship" EntitySet="Friendship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_User" Association="Self.FK_Notification_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Project" Association="Self.FK_Project_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Project1" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_User" Association="Self.FK_Project_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectUser_Project" Association="Self.FK_ProjectUser_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectUser" EntitySet="ProjectUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectUser_User" Association="Self.FK_ProjectUser_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProjectUser" EntitySet="ProjectUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_CategoryRequirement" Association="Self.FK_Requirement_CategoryRequirement">
+            <End Role="CategoryRequirement" EntitySet="CategoryRequirement" />
+            <End Role="Requirement" EntitySet="Requirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_PriorityRequirement" Association="Self.FK_Requirement_PriorityRequirement">
+            <End Role="PriorityRequirement" EntitySet="PriorityRequirement" />
+            <End Role="Requirement" EntitySet="Requirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_Project" Association="Self.FK_Requirement_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Requirement" EntitySet="Requirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_ReqType" Association="Self.FK_Requirement_ReqType">
+            <End Role="ReqType" EntitySet="ReqType" />
+            <End Role="Requirement" EntitySet="Requirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_StatusRequirement" Association="Self.FK_Requirement_StatusRequirement">
+            <End Role="StatusRequirement" EntitySet="StatusRequirement" />
+            <End Role="Requirement" EntitySet="Requirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_Project" Association="Self.FK_Scenario_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Scenario" EntitySet="Scenario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_Scenario" Association="Self.FK_Scenario_Scenario">
+            <End Role="Scenario" EntitySet="Scenario" />
+            <End Role="Scenario1" EntitySet="Scenario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_UseCase" Association="Self.FK_Scenario_UseCase">
+            <End Role="UseCase" EntitySet="UseCase" />
+            <End Role="Scenario" EntitySet="Scenario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_Actor" Association="Self.FK_ScenarioActor_Actor">
+            <End Role="Actor" EntitySet="Actor" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_ActorType" Association="Self.FK_ScenarioActor_ActorType">
+            <End Role="ActorType" EntitySet="ActorType" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_Scenario" Association="Self.FK_ScenarioActor_Scenario">
+            <End Role="Scenario" EntitySet="Scenario" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCase_Project" Association="Self.FK_UseCase_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UseCase" EntitySet="UseCase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseActor_Actor" Association="Self.FK_UseCaseActor_Actor">
+            <End Role="Actor" EntitySet="Actor" />
+            <End Role="UseCaseActor" EntitySet="UseCaseActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseActor_UseCase" Association="Self.FK_UseCaseActor_UseCase">
+            <End Role="UseCase" EntitySet="UseCase" />
+            <End Role="UseCaseActor" EntitySet="UseCaseActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseRequirement_Requirement" Association="Self.FK_UseCaseRequirement_Requirement">
+            <End Role="Requirement" EntitySet="Requirement" />
+            <End Role="UseCaseRequirement" EntitySet="UseCaseRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseRequirement_UseCase" Association="Self.FK_UseCaseRequirement_UseCase">
+            <End Role="UseCase" EntitySet="UseCase" />
+            <End Role="UseCaseRequirement" EntitySet="UseCaseRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="User1" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SDTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SDTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actors" EntityType="SDTModel.Actor" />
+          <EntitySet Name="ActorTypes" EntityType="SDTModel.ActorType" />
+          <EntitySet Name="Friendships" EntityType="SDTModel.Friendship" />
+          <EntitySet Name="Notifications" EntityType="SDTModel.Notification" />
+          <EntitySet Name="Projects" EntityType="SDTModel.Project" />
+          <EntitySet Name="ProjectUsers" EntityType="SDTModel.ProjectUser" />
+          <EntitySet Name="ReqTypes" EntityType="SDTModel.ReqType" />
+          <EntitySet Name="Requirements" EntityType="SDTModel.Requirement" />
+          <EntitySet Name="Scenarios" EntityType="SDTModel.Scenario" />
+          <EntitySet Name="ScenarioActors" EntityType="SDTModel.ScenarioActor" />
+          <EntitySet Name="UseCases" EntityType="SDTModel.UseCase" />
+          <EntitySet Name="UseCaseActors" EntityType="SDTModel.UseCaseActor" />
+          <EntitySet Name="Users" EntityType="SDTModel.User" />
+          <AssociationSet Name="FK_Actor_Project" Association="SDTModel.FK_Actor_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Actor" EntitySet="Actors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_Actor" Association="SDTModel.FK_ScenarioActor_Actor">
+            <End Role="Actor" EntitySet="Actors" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseActor_Actor" Association="SDTModel.FK_UseCaseActor_Actor">
+            <End Role="Actor" EntitySet="Actors" />
+            <End Role="UseCaseActor" EntitySet="UseCaseActors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_ActorType" Association="SDTModel.FK_ScenarioActor_ActorType">
+            <End Role="ActorType" EntitySet="ActorTypes" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friendship_UserA" Association="SDTModel.FK_Friendship_UserA">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friendship" EntitySet="Friendships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friendship_UserB" Association="SDTModel.FK_Friendship_UserB">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friendship" EntitySet="Friendships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_User" Association="SDTModel.FK_Notification_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Project" Association="SDTModel.FK_Project_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Project1" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_User" Association="SDTModel.FK_Project_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectUser_Project" Association="SDTModel.FK_ProjectUser_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectUser" EntitySet="ProjectUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_Project" Association="SDTModel.FK_Requirement_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_Project" Association="SDTModel.FK_Scenario_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Scenario" EntitySet="Scenarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCase_Project" Association="SDTModel.FK_UseCase_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UseCase" EntitySet="UseCases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectUser_User" Association="SDTModel.FK_ProjectUser_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProjectUser" EntitySet="ProjectUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_ReqType" Association="SDTModel.FK_Requirement_ReqType">
+            <End Role="ReqType" EntitySet="ReqTypes" />
+            <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_UseCase" Association="SDTModel.FK_Scenario_UseCase">
+            <End Role="UseCase" EntitySet="UseCases" />
+            <End Role="Scenario" EntitySet="Scenarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScenarioActor_Scenario" Association="SDTModel.FK_ScenarioActor_Scenario">
+            <End Role="Scenario" EntitySet="Scenarios" />
+            <End Role="ScenarioActor" EntitySet="ScenarioActors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseActor_UseCase" Association="SDTModel.FK_UseCaseActor_UseCase">
+            <End Role="UseCase" EntitySet="UseCases" />
+            <End Role="UseCaseActor" EntitySet="UseCaseActors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_User" Association="SDTModel.FK_User_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="User1" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scenario_Scenario" Association="SDTModel.FK_Scenario_Scenario">
+            <End Role="Scenario" EntitySet="Scenarios" />
+            <End Role="Scenario1" EntitySet="Scenarios" />
+          </AssociationSet>
+          <EntitySet Name="Files" EntityType="SDTModel.File" />
+          <EntitySet Name="FileTypes" EntityType="SDTModel.FileType" />
+          <AssociationSet Name="FK_File_FileType" Association="SDTModel.FK_File_FileType">
+            <End Role="FileType" EntitySet="FileTypes" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_Project" Association="SDTModel.FK_File_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_User" Association="SDTModel.FK_File_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <EntitySet Name="UseCaseRequirements" EntityType="SDTModel.UseCaseRequirement" />
+          <AssociationSet Name="FK_UseCaseRequirement_Requirement" Association="SDTModel.FK_UseCaseRequirement_Requirement">
+            <End Role="Requirement" EntitySet="Requirements" />
+            <End Role="UseCaseRequirement" EntitySet="UseCaseRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCaseRequirement_UseCase" Association="SDTModel.FK_UseCaseRequirement_UseCase">
+            <End Role="UseCase" EntitySet="UseCases" />
+            <End Role="UseCaseRequirement" EntitySet="UseCaseRequirements" />
+          </AssociationSet>
+          <EntitySet Name="CategoryRequirements" EntityType="SDTModel.CategoryRequirement" />
+          <EntitySet Name="PriorityRequirements" EntityType="SDTModel.PriorityRequirement" />
+          <EntitySet Name="StatusRequirements" EntityType="SDTModel.StatusRequirement" />
+          <AssociationSet Name="FK_CategoryRequirement_Project" Association="SDTModel.FK_CategoryRequirement_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="CategoryRequirement" EntitySet="CategoryRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_CategoryRequirement" Association="SDTModel.FK_Requirement_CategoryRequirement">
+            <End Role="CategoryRequirement" EntitySet="CategoryRequirements" />
+            <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_PriorityRequirement" Association="SDTModel.FK_Requirement_PriorityRequirement">
+            <End Role="PriorityRequirement" EntitySet="PriorityRequirements" />
+            <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requirement_StatusRequirement" Association="SDTModel.FK_Requirement_StatusRequirement">
+            <End Role="StatusRequirement" EntitySet="StatusRequirements" />
+            <End Role="Requirement" EntitySet="Requirements" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_Actor_Project" FromRole="Actor" ToRole="Project" />
+          <NavigationProperty Name="ScenarioActors" Relationship="SDTModel.FK_ScenarioActor_Actor" FromRole="Actor" ToRole="ScenarioActor" />
+          <NavigationProperty Name="UseCaseActors" Relationship="SDTModel.FK_UseCaseActor_Actor" FromRole="Actor" ToRole="UseCaseActor" />
+        </EntityType>
+        <EntityType Name="ActorType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ScenarioActors" Relationship="SDTModel.FK_ScenarioActor_ActorType" FromRole="ActorType" ToRole="ScenarioActor" />
+        </EntityType>
+        <EntityType Name="Friendship">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_UserA" Type="Int32" Nullable="false" />
+          <Property Name="ID_UserB" Type="Int32" Nullable="false" />
+          <Property Name="Checked" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_Friendship_UserA" FromRole="Friendship" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="SDTModel.FK_Friendship_UserB" FromRole="Friendship" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_User" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_Notification_User" FromRole="Notification" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Author" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Actors" Relationship="SDTModel.FK_Actor_Project" FromRole="Project" ToRole="Actor" />
+          <NavigationProperty Name="Project1" Relationship="SDTModel.FK_Project_Project" FromRole="Project" ToRole="Project1" />
+          <NavigationProperty Name="Project2" Relationship="SDTModel.FK_Project_Project" FromRole="Project1" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_Project_User" FromRole="Project" ToRole="User" />
+          <NavigationProperty Name="ProjectUsers" Relationship="SDTModel.FK_ProjectUser_Project" FromRole="Project" ToRole="ProjectUser" />
+          <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_Project" FromRole="Project" ToRole="Requirement" />
+          <NavigationProperty Name="Scenarios" Relationship="SDTModel.FK_Scenario_Project" FromRole="Project" ToRole="Scenario" />
+          <NavigationProperty Name="UseCases" Relationship="SDTModel.FK_UseCase_Project" FromRole="Project" ToRole="UseCase" />
+          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_Project" FromRole="Project" ToRole="File" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
+        </EntityType>
+        <EntityType Name="ProjectUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_User" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_ProjectUser_Project" FromRole="ProjectUser" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_ProjectUser_User" FromRole="ProjectUser" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ReqType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_ReqType" FromRole="ReqType" ToRole="Requirement" />
+        </EntityType>
+        <EntityType Name="Requirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Requirement" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_ReqType" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_Requirement_Project" FromRole="Requirement" ToRole="Project" />
+          <NavigationProperty Name="ReqType" Relationship="SDTModel.FK_Requirement_ReqType" FromRole="Requirement" ToRole="ReqType" />
+          <NavigationProperty Name="UseCaseRequirements" Relationship="SDTModel.FK_UseCaseRequirement_Requirement" FromRole="Requirement" ToRole="UseCaseRequirement" />
+          <Property Name="ID_Category" Type="Int32" />
+          <Property Name="ID_Priority" Type="Int32" />
+          <Property Name="ID_Status" Type="Int32" />
+          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CategoryRequirement" Relationship="SDTModel.FK_Requirement_CategoryRequirement" FromRole="Requirement" ToRole="CategoryRequirement" />
+          <NavigationProperty Name="PriorityRequirement" Relationship="SDTModel.FK_Requirement_PriorityRequirement" FromRole="Requirement" ToRole="PriorityRequirement" />
+          <NavigationProperty Name="StatusRequirement" Relationship="SDTModel.FK_Requirement_StatusRequirement" FromRole="Requirement" ToRole="StatusRequirement" />
+        </EntityType>
+        <EntityType Name="Scenario">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Scenario" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OutCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ID_UseCase" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="Scenario1" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_Scenario_Project" FromRole="Scenario" ToRole="Project" />
+          <NavigationProperty Name="UseCase" Relationship="SDTModel.FK_Scenario_UseCase" FromRole="Scenario" ToRole="UseCase" />
+          <NavigationProperty Name="ScenarioActors" Relationship="SDTModel.FK_ScenarioActor_Scenario" FromRole="Scenario" ToRole="ScenarioActor" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
+          <Property Name="ID_MainScenario" Type="Int32" />
+          <NavigationProperty Name="Scenario11" Relationship="SDTModel.FK_Scenario_Scenario" FromRole="Scenario" ToRole="Scenario1" />
+          <NavigationProperty Name="Scenario2" Relationship="SDTModel.FK_Scenario_Scenario" FromRole="Scenario1" ToRole="Scenario" />
+        </EntityType>
+        <EntityType Name="ScenarioActor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Actor" Type="Int32" Nullable="false" />
+          <Property Name="ID_Scenario" Type="Int32" Nullable="false" />
+          <Property Name="ID_ActorType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Actor" Relationship="SDTModel.FK_ScenarioActor_Actor" FromRole="ScenarioActor" ToRole="Actor" />
+          <NavigationProperty Name="ActorType" Relationship="SDTModel.FK_ScenarioActor_ActorType" FromRole="ScenarioActor" ToRole="ActorType" />
+          <NavigationProperty Name="Scenario" Relationship="SDTModel.FK_ScenarioActor_Scenario" FromRole="ScenarioActor" ToRole="Scenario" />
+        </EntityType>
+        <EntityType Name="UseCase">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_UseCase_Project" FromRole="UseCase" ToRole="Project" />
+          <NavigationProperty Name="Scenarios" Relationship="SDTModel.FK_Scenario_UseCase" FromRole="UseCase" ToRole="Scenario" />
+          <NavigationProperty Name="UseCaseActors" Relationship="SDTModel.FK_UseCaseActor_UseCase" FromRole="UseCase" ToRole="UseCaseActor" />
+          <NavigationProperty Name="UseCaseRequirements" Relationship="SDTModel.FK_UseCaseRequirement_UseCase" FromRole="UseCase" ToRole="UseCaseRequirement" />
+        </EntityType>
+        <EntityType Name="UseCaseActor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Actor" Type="Int32" Nullable="false" />
+          <Property Name="ID_UseCase" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Actor" Relationship="SDTModel.FK_UseCaseActor_Actor" FromRole="UseCaseActor" ToRole="Actor" />
+          <NavigationProperty Name="UseCase" Relationship="SDTModel.FK_UseCaseActor_UseCase" FromRole="UseCaseActor" ToRole="UseCase" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastActive" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Friendships" Relationship="SDTModel.FK_Friendship_UserA" FromRole="User" ToRole="Friendship" />
+          <NavigationProperty Name="Friendships1" Relationship="SDTModel.FK_Friendship_UserB" FromRole="User" ToRole="Friendship" />
+          <NavigationProperty Name="Notifications" Relationship="SDTModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
+          <NavigationProperty Name="Projects" Relationship="SDTModel.FK_Project_User" FromRole="User" ToRole="Project" />
+          <NavigationProperty Name="ProjectUsers" Relationship="SDTModel.FK_ProjectUser_User" FromRole="User" ToRole="ProjectUser" />
+          <NavigationProperty Name="User1" Relationship="SDTModel.FK_User_User" FromRole="User" ToRole="User1" />
+          <NavigationProperty Name="User2" Relationship="SDTModel.FK_User_User" FromRole="User1" ToRole="User" />
+          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_User" FromRole="User" ToRole="File" />
+        </EntityType>
+        <Association Name="FK_Actor_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.Actor" Role="Actor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Actor">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_Actor">
+          <End Type="SDTModel.Actor" Role="Actor" Multiplicity="1" />
+          <End Type="SDTModel.ScenarioActor" Role="ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_Actor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseActor_Actor">
+          <End Type="SDTModel.Actor" Role="Actor" Multiplicity="1" />
+          <End Type="SDTModel.UseCaseActor" Role="UseCaseActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseActor">
+              <PropertyRef Name="ID_Actor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_ActorType">
+          <End Type="SDTModel.ActorType" Role="ActorType" Multiplicity="1" />
+          <End Type="SDTModel.ScenarioActor" Role="ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActorType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_ActorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friendship_UserA">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.Friendship" Role="Friendship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friendship">
+              <PropertyRef Name="ID_UserA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friendship_UserB">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.Friendship" Role="Friendship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friendship">
+              <PropertyRef Name="ID_UserB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="ID_Author" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectUser_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.ProjectUser" Role="ProjectUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectUser">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCase_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCase">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectUser_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.ProjectUser" Role="ProjectUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectUser">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_ReqType">
+          <End Type="SDTModel.ReqType" Role="ReqType" Multiplicity="1" />
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReqType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_ReqType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_UseCase">
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScenarioActor_Scenario">
+          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="1" />
+          <End Type="SDTModel.ScenarioActor" Role="ScenarioActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scenario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScenarioActor">
+              <PropertyRef Name="ID_Scenario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseActor_UseCase">
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.UseCaseActor" Role="UseCaseActor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseActor">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.User" Role="User1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scenario_Scenario">
+          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="0..1" />
+          <End Type="SDTModel.Scenario" Role="Scenario1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Scenario">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Scenario1">
+              <PropertyRef Name="ID_MainScenario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_File_Type" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="Date_Uploaded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_User" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FileType" Relationship="SDTModel.FK_File_FileType" FromRole="File" ToRole="FileType" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_File_Project" FromRole="File" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_File_User" FromRole="File" ToRole="User" />
+          <Property Name="Length" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Extension" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_FileType" FromRole="FileType" ToRole="File" />
+        </EntityType>
+        <Association Name="FK_File_FileType">
+          <End Type="SDTModel.FileType" Role="FileType" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_File_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UseCaseRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_UseCase" Type="Int32" Nullable="false" />
+          <Property Name="ID_Requirement" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Requirement" Relationship="SDTModel.FK_UseCaseRequirement_Requirement" FromRole="UseCaseRequirement" ToRole="Requirement" />
+          <NavigationProperty Name="UseCase" Relationship="SDTModel.FK_UseCaseRequirement_UseCase" FromRole="UseCaseRequirement" ToRole="UseCase" />
+        </EntityType>
+        <Association Name="FK_UseCaseRequirement_Requirement">
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="1" />
+          <End Type="SDTModel.UseCaseRequirement" Role="UseCaseRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseRequirement">
+              <PropertyRef Name="ID_Requirement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCaseRequirement_UseCase">
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.UseCaseRequirement" Role="UseCaseRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCaseRequirement">
+              <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CategoryRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Project" Type="Int32" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="CategoryRequirement" ToRole="Project" />
+          <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_CategoryRequirement" FromRole="CategoryRequirement" ToRole="Requirement" />
+        </EntityType>
+        <EntityType Name="PriorityRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Priority" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PriorityDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_PriorityRequirement" FromRole="PriorityRequirement" ToRole="Requirement" />
+        </EntityType>
+        <EntityType Name="StatusRequirement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_StatusRequirement" FromRole="StatusRequirement" ToRole="Requirement" />
+        </EntityType>
+        <Association Name="FK_CategoryRequirement_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="SDTModel.CategoryRequirement" Role="CategoryRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CategoryRequirement">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_CategoryRequirement">
+          <End Type="SDTModel.CategoryRequirement" Role="CategoryRequirement" Multiplicity="0..1" />
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_PriorityRequirement">
+          <End Type="SDTModel.PriorityRequirement" Role="PriorityRequirement" Multiplicity="0..1" />
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriorityRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requirement_StatusRequirement">
+          <End Type="SDTModel.StatusRequirement" Role="StatusRequirement" Multiplicity="0..1" />
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusRequirement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requirement">
+              <PropertyRef Name="ID_Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SDTModelStoreContainer" CdmEntityContainer="SDTEntities">
+          <EntitySetMapping Name="Actors">
+            <EntityTypeMapping TypeName="SDTModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActorTypes">
+            <EntityTypeMapping TypeName="SDTModel.ActorType">
+              <MappingFragment StoreEntitySet="ActorType">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friendships">
+            <EntityTypeMapping TypeName="SDTModel.Friendship">
+              <MappingFragment StoreEntitySet="Friendship">
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
+                <ScalarProperty Name="ID_UserB" ColumnName="ID_UserB" />
+                <ScalarProperty Name="ID_UserA" ColumnName="ID_UserA" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="SDTModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="SDTModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectUsers">
+            <EntityTypeMapping TypeName="SDTModel.ProjectUser">
+              <MappingFragment StoreEntitySet="ProjectUser">
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReqTypes">
+            <EntityTypeMapping TypeName="SDTModel.ReqType">
+              <MappingFragment StoreEntitySet="ReqType">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requirements">
+            <EntityTypeMapping TypeName="SDTModel.Requirement">
+              <MappingFragment StoreEntitySet="Requirement">
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="ID_Status" ColumnName="ID_Status" />
+                <ScalarProperty Name="ID_Priority" ColumnName="ID_Priority" />
+                <ScalarProperty Name="ID_Category" ColumnName="ID_Category" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_ReqType" ColumnName="ID_ReqType" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ID_Requirement" ColumnName="ID_Requirement" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Scenarios">
+            <EntityTypeMapping TypeName="SDTModel.Scenario">
+              <MappingFragment StoreEntitySet="Scenario">
+                <ScalarProperty Name="ID_MainScenario" ColumnName="ID_MainScenario" />
+                <ScalarProperty Name="Done" ColumnName="Done" />
+                <ScalarProperty Name="Scenario1" ColumnName="Scenario" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_UseCase" ColumnName="ID_UseCase" />
+                <ScalarProperty Name="OutCondition" ColumnName="OutCondition" />
+                <ScalarProperty Name="InCondition" ColumnName="InCondition" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID_Scenario" ColumnName="ID_Scenario" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScenarioActors">
+            <EntityTypeMapping TypeName="SDTModel.ScenarioActor">
+              <MappingFragment StoreEntitySet="ScenarioActor">
+                <ScalarProperty Name="ID_ActorType" ColumnName="ID_ActorType" />
+                <ScalarProperty Name="ID_Scenario" ColumnName="ID_Scenario" />
+                <ScalarProperty Name="ID_Actor" ColumnName="ID_Actor" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UseCases">
+            <EntityTypeMapping TypeName="SDTModel.UseCase">
+              <MappingFragment StoreEntitySet="UseCase">
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UseCaseActors">
+            <EntityTypeMapping TypeName="SDTModel.UseCaseActor">
+              <MappingFragment StoreEntitySet="UseCaseActor">
+                <ScalarProperty Name="ID_UseCase" ColumnName="ID_UseCase" />
+                <ScalarProperty Name="ID_Actor" ColumnName="ID_Actor" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SDTModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LastActive" ColumnName="LastActive" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="SDTModel.File">
+              <MappingFragment StoreEntitySet="File">
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="Date_Uploaded" ColumnName="Date_Uploaded" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_File_Type" ColumnName="ID_File_Type" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileTypes">
+            <EntityTypeMapping TypeName="SDTModel.FileType">
+              <MappingFragment StoreEntitySet="FileType">
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UseCaseRequirements">
+            <EntityTypeMapping TypeName="SDTModel.UseCaseRequirement">
+              <MappingFragment StoreEntitySet="UseCaseRequirement">
+                <ScalarProperty Name="ID_Requirement" ColumnName="ID_Requirement" />
+                <ScalarProperty Name="ID_UseCase" ColumnName="ID_UseCase" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CategoryRequirements">
+            <EntityTypeMapping TypeName="SDTModel.CategoryRequirement">
+              <MappingFragment StoreEntitySet="CategoryRequirement">
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriorityRequirements">
+            <EntityTypeMapping TypeName="SDTModel.PriorityRequirement">
+              <MappingFragment StoreEntitySet="PriorityRequirement">
+                <ScalarProperty Name="PriorityDescription" ColumnName="PriorityDescription" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusRequirements">
+            <EntityTypeMapping TypeName="SDTModel.StatusRequirement">
+              <MappingFragment StoreEntitySet="StatusRequirement">
+                <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

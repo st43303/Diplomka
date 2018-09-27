@@ -1,0 +1,57 @@
+﻿@model DiplomovaPrace.Models.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/login.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-container">
+            <h2 class="text-center">Přihlásit se</h2>
+            <img id="profile-img" class="profile-img-card" src="~/images/admin.jpg"/>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-signin", role = "form", @autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>@ViewBag.ErrorMessage</strong>
+                    </div>
+                }
+
+                <div class="form-row">
+                    <div class="form-group-lg col-md-12">
+                        @Html.TextBoxFor(model => model.Username, new { placeholder = "Uživatelské jméno", @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group-lg col-md-12">
+                        @Html.PasswordFor(model => model.Password, new { placeholder = "Heslo", @class = "form-control", @required = "required" })
+                    </div>
+               
+                </div>
+
+                <button class="btn btn-success btn-block" type="submit">Přihlásit se</button>
+                <p>Nemáte účet? Zaregistrujte se <a href="@Url.Action("Register")">zde</a>.</p>
+
+            }
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

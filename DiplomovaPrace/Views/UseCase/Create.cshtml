@@ -1,0 +1,49 @@
+﻿@model DiplomovaPrace.Models.UseCase
+
+@{
+    ViewBag.Title = "Nový případ užití";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Nový případ užití</h2>
+
+
+@using (Html.BeginForm("Create","UseCase",FormMethod.Post,new { @autocomplete="off"}))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.Label("Název")
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Stručný popis")
+        @Html.TextAreaFor(model => model.Description, 4, 3, new { @class = "form-control", @required = "required" })
+    </div>
+    <div class="form-group">
+        @Html.Label("Vyberte požadavky, které realizuje tento případ užití")
+        @Html.ListBox("requirements", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Vyberte aktéry, kteří obsluhují tento případ užití")
+        @Html.ListBox("actors", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Vytvořit případ užití" class="btn btn-success btn-block" />
+    </div>
+</div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
