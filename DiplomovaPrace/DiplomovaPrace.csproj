@@ -254,8 +254,11 @@
     <Content Include="Content\bootstrap-select.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\buttons.bootstrap.min.css" />
+    <Content Include="Content\buttons.dataTables.min.css" />
     <Content Include="Content\carousel.css" />
     <Content Include="Content\cs-skin-elastic.css" />
+    <Content Include="Content\dataTables.bootstrap.min.css" />
     <Content Include="Content\flag-icon.min.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
@@ -1121,6 +1124,20 @@
     <Content Include="Scripts\chosen\chosen.proto.js" />
     <Content Include="Scripts\chosen\chosen.proto.min.js" />
     <Content Include="Scripts\dashboard.js" />
+    <Content Include="Scripts\data-table\buttons.bootstrap.min.js" />
+    <Content Include="Scripts\data-table\buttons.colVis.min.js" />
+    <Content Include="Scripts\data-table\buttons.flash.min.js" />
+    <Content Include="Scripts\data-table\buttons.html5.min.js" />
+    <Content Include="Scripts\data-table\buttons.print.min.js" />
+    <Content Include="Scripts\data-table\datatables-init.js" />
+    <Content Include="Scripts\data-table\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\data-table\dataTables.buttons.min.js" />
+    <Content Include="Scripts\data-table\datatables.min.js" />
+    <Content Include="Scripts\data-table\jquery-1.12.4.js" />
+    <Content Include="Scripts\data-table\jquery.dataTables.min.js" />
+    <Content Include="Scripts\data-table\jszip.min.js" />
+    <Content Include="Scripts\data-table\pdfmake.min.js" />
+    <Content Include="Scripts\data-table\vfs_fonts.js" />
     <Content Include="Scripts\datepicker-cs.js" />
     <Content Include="Scripts\initTinyMCE.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1444,11 +1461,11 @@
     <Content Include="Views\Scenario\Edit.cshtml" />
     <Content Include="Views\Storage\Index.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="files\" />
-    <Folder Include="Views\Category\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

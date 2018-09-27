@@ -1,6 +1,7 @@
 ﻿using DiplomovaPrace.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,17 @@ namespace DiplomovaPrace.Controllers
         // GET: Category
         public ActionResult Index()
         {
-            return View();
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["projectID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int projectID = (int)Session["projectID"];
+            var categories = db.CategoryRequirements.Where(c => c.ID_Project == projectID);
+            return View(categories);
         }
 
         [HttpPost]
@@ -44,6 +55,37 @@ namespace DiplomovaPrace.Controllers
 
             return RedirectToAction("Index");
 
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var category = db.CategoryRequirements.Find(id);
+            try
+            {
+                db.CategoryRequirements.Remove(category);
+                db.SaveChanges();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, string editCategory)
+        {
+            var category = db.CategoryRequirements.Find(id);
+            category.Name = editCategory;
+            try
+            {
+                db.Entry(category).State = EntityState.Modified;
+                db.SaveChanges();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

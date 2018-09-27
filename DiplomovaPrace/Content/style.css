@@ -47,6 +47,11 @@ body {
     background-color: #fff;
 }
 
+.tableContainer {
+    background-color: white;
+    padding-top: 15px
+}
+
 .avatar-border {
     width: 26vh;
     height: 26vh;

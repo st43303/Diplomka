@@ -56,68 +56,73 @@
     </form>
 \
 </div>
-<div class="table-responsive">
-    <table class="table dataTable" style="background-color: #fff">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayName("Jméno aktéra")
-                </th>
-                <th>
-                    @Html.DisplayName("Případy užití")
-                </th>
-                <th>
-                    @Html.DisplayName("Scénáře")
-                </th>
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="container tableContainer">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @foreach (var u in item.UseCaseActors)
-                        {
-                            <p>@u.UseCase.Name</p>
-                        }
-                    </td>
-                    <td>
-                        @foreach(var s in item.ScenarioActors)
-                        {
-                            <a class="btn-link" href="@Url.Action("Details","Scenario",new { id=s.ID})">@s.Scenario.ID_Scenario</a>
-                        }
-                    </td>
+                    <th>
+                        @Html.DisplayName("Jméno aktéra")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Případy užití")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Scénáře")
+                    </th>
 
-                    <td>
-                        <div class="btn-group float-right">
-
-                            <div class="form-group">
-                                <button class="btn btn-sm btn-outline-dark" type="button" title="Upravit aktéra" data-toggle="modal" data-target="#modalEdit" onclick="location.href='javascript:Edit(@item.ID,@Json.Encode(item.Name.ToString()));'"><i class="fa fa-edit"></i></button>
-
-                            </div>
-                            <div class="form-group">
-                                @if (item.ScenarioActors.Any()||item.UseCaseActors.Any())
-                                {
-                                    <button class="btn btn-sm btn-outline-danger" title="Tento aktér odstranit nelze" disabled><i class="fa fa-trash"></i></button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-sm btn-outline-danger" title="Odstranit aktéra" type="button" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
-                                }
-                            </div>
-                        </div>
-                    </td>
+                    <th>
+                        @Html.DisplayName("Akce")
+                    </th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @foreach (var u in item.UseCaseActors)
+                            {
+                                <p>@u.UseCase.Name</p>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var s in item.ScenarioActors)
+                            {
+                                <a class="btn-link" href="@Url.Action("Details","Scenario",new { id=s.ID})">@s.Scenario.ID_Scenario</a>
+                            }
+                        </td>
 
-    </table>
+                        <td>
+                            <div class="btn-group float-right">
+
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-dark" type="button" title="Upravit aktéra" data-toggle="modal" data-target="#modalEdit" onclick="location.href='javascript:Edit(@item.ID,@Json.Encode(item.Name.ToString()));'"><i class="fa fa-edit"></i></button>
+
+                                </div>
+                                <div class="form-group">
+                                    @if (item.ScenarioActors.Any() || item.UseCaseActors.Any())
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" title="Tento aktér odstranit nelze" disabled><i class="fa fa-trash"></i></button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" title="Odstranit aktéra" type="button" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
 </div>
+
 
 
 @section Scripts{

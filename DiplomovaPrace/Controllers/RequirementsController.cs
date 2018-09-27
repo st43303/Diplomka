@@ -27,6 +27,60 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
 
             var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1).OrderByDescending(r => r.ID_Requirement);
+
+            LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
+            categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+            ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+            LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+            priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+            ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+            LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+            statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+            ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
+
+            return View(requirements);
+        }
+
+        [HttpPost]
+        public ActionResult Functional(int ID_Category, int ID_Priority, int ID_Status, int Count)
+        {
+            int projectID = (int)Session["projectID"];
+            var requirements = db.Requirements.Where(r => r.ID_Project == projectID);
+            if (ID_Category != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Category == ID_Category);
+            }
+
+            if (ID_Priority != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Priority == ID_Priority);
+            }
+
+            if (ID_Status != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Status == ID_Status);
+            }
+            if (Count != 0)
+            {
+                requirements = requirements.Take(Count);
+            }
+
+
+            LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
+            categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+            ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+            LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+            priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+            ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+            LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+            statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+            ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
             return View(requirements);
         }
 
@@ -65,8 +119,62 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
 
             var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 2).OrderByDescending(r => r.ID_Requirement);
+
+
+            LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
+            categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+            ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+            LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+            priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+            ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+            LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+            statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+            ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
             return View(requirements);
         }
+
+        [HttpPost]
+        public ActionResult Nonfunctional(int ID_Category, int ID_Priority, int ID_Status, int Count)
+        {
+            int projectID = (int)Session["projectID"];
+            var requirements = db.Requirements.Where(r => r.ID_Project == projectID);
+            if (ID_Category != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Category == ID_Category);
+            }
+
+            if (ID_Priority != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Priority == ID_Priority);
+            }
+
+            if (ID_Status != 0)
+            {
+                requirements = requirements.Where(r => r.ID_Status == ID_Status);
+            }
+            if (Count != 0)
+            {
+                requirements = requirements.Take(Count);
+            }
+
+
+            LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
+            categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+            ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+            LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+            priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+            ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+            LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+            statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+            ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
+            return View(requirements);
+        }
+
 
         [HttpPost]
         public ActionResult Create(Requirement requirement )
@@ -78,6 +186,19 @@ namespace DiplomovaPrace.Controllers
             {
                 db.Requirements.Add(requirement);
                 db.SaveChanges();
+
+                LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
+                categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+                ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+                LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+                priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+                ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+                LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+                statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+                ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
                 if (requirement.ID_ReqType == 1)
                 {
                     NotificationSystem.SendNotification(EnumNotification.CREATE_REQUIREMENT, "/Requirements/Functional");
@@ -164,6 +285,19 @@ namespace DiplomovaPrace.Controllers
                 {
                     db.Entry(old).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == old.ID_Project).ToList());
+                    categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
+                    ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
+
+                    LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
+                    priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
+                    ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
+
+                    LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
+                    statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
+                    ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
                     if (requirement.ID_ReqType == 1)
                     {
                         NotificationSystem.SendNotification(EnumNotification.EDIT_REQUIREMENT, "/Requirements/Functional");

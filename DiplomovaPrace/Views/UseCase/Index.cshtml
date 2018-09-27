@@ -10,73 +10,78 @@
 <p>
 </p>
 <button class="btn btn-success btn-block" onclick="location.href='@Url.Action("Create","UseCase")'">Nový případ užití</button>
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayName("Název")
-                </th>
-                <th>
-                    @Html.DisplayName("Popis")
-                </th>
-                <th>
-                    @Html.DisplayName("Aktéři")
-                </th>
-                <th>
-                    @Html.DisplayName("Scénář")
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-      <tbody>
+<div class="container tableContainer">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Název")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Popis")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Aktéři")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Scénář")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Akce")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @foreach (var actor in item.UseCaseActors)
-                    {
-                        <p>@actor.Actor.Name</p>
-                    }
-                </td>
-                <td>
-                    @{
-                        var scenario = item.Scenarios.Where(s => s.ID_MainScenario != null && s.Done).FirstOrDefault();
-                        if (scenario != null)
-                        {
-                            <a class="btn-link" href="@Url.Action("Details","Scenario",new { id=scenario.ID})">@scenario.ID_Scenario</a>
-                        }
-                        else
-                        {
-                            <button class="btn btn-sm btn-outline-primary" title="Vytvořit scénář" type="button" onclick="location.href='@Url.Action("Create", "Scenario", new { idUseCase = item.ID })'"><i class="fa fa-plus"></i></button>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @foreach (var actor in item.UseCaseActors)
+                            {
+                                <p>@actor.Actor.Name</p>
+                            }
+                        </td>
+                        <td>
+                            @{
+                                var scenario = item.Scenarios.Where(s => s.ID_MainScenario != null && s.Done).FirstOrDefault();
+                                if (scenario != null)
+                                {
+                                    <a class="btn-link" href="@Url.Action("Details","Scenario",new { id=scenario.ID})">@scenario.ID_Scenario</a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-primary" title="Vytvořit scénář" type="button" onclick="location.href='@Url.Action("Create", "Scenario", new { idUseCase = item.ID })'"><i class="fa fa-plus"></i></button>
 
-                        }
-                    }
-                </td>
+                                }
+                            }
+                        </td>
 
-                <td>
-                    <div class="btn-group pull-right">
-                            <div class="form-group">
-                                <button class="btn btn-sm btn-outline-dark" title="Upravit případ užití" type="button" onclick="location.href='@Url.Action("Edit","UseCase",new { id=item.ID})'"><i class="fa fa-edit"></i></button>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-dark" title="Upravit případ užití" type="button" onclick="location.href='@Url.Action("Edit","UseCase",new { id=item.ID})'"><i class="fa fa-edit"></i></button>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-danger" title="Odstranit případ užití" type="button" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                </div>
+
                             </div>
-                            <div class="form-group">
-                                <button class="btn btn-sm btn-outline-danger" title="Odstranit případ užití" type="button" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
-                            </div>
-                     
-                    </div>
-                </td>
-            </tr>
-        }
-          </tbody>
-    </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
 
 
 @section Scripts{
