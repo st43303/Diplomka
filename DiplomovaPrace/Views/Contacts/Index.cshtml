@@ -24,73 +24,76 @@
     <b>Nemáte zatím žádné kontakty. Najděte nové kontakty pomocí lupy v horní liště.</b>
 
 }
-    <div class="table-responsive">
-        <table class="table table-filter">
+    <div class="container tableContainer">
+        <div class="table-responsive">
+            <table class="table table-striped">
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    @if (item.ID_UserA != ((int)Session["userID"]))
-                    {
-                        <td>
-                            <div class="form-group col-md-2">
-                                <div class="media">
-                                    <div class="pull-left">
-                                        <img src="@item.User.Avatar" alt="Profilový obrázek" class="media-photo" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-10">
-                                <div class="media-body">
-                                    <a href="@Url.Action("Details","Profile",new { id=item.User.ID})">
-                                        <div class="float-left">
-                                            @Html.DisplayFor(modelItem => item.User.Name)
-
-                                            @Html.DisplayFor(modelItem => item.User.Surname)
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (item.ID_UserA != ((int)Session["userID"]))
+                        {
+                            <td>
+                                <div class="form-group col-md-2">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img src="@item.User.Avatar" alt="Profilový obrázek" class="media-photo" />
                                         </div>
-                                    </a>
-                                    <div class="btn-group pull-right">
-                                        <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="form-group col-md-10">
+                                    <div class="media-body">
+                                        <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User.ID})">
+                                            <div class="float-left">
+                                                @Html.DisplayFor(modelItem => item.User.Name)
 
-                        </td>
-
-                    }
-                    else
-                    {
-                        <td>
-                            <div class="form-group col-md-2">
-                                <div class="media">
-                                    <div class="pull-left">
-                                        <img src="@item.User1.Avatar" alt="Profilový obrázek" class="media-photo" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-10">
-                                <div class="media-body">
-                                    <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User1.ID})">
-                                        <div class="float-left">
-                                            @Html.DisplayFor(modelItem => item.User1.Name)
-
-                                            @Html.DisplayFor(modelItem => item.User1.Surname)
+                                                @Html.DisplayFor(modelItem => item.User.Surname)
+                                            </div>
+                                        </a>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
                                         </div>
-                                    </a>
-                                    <div class="btn-group pull-right">
-                                        <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
                                     </div>
                                 </div>
-                            </div>
 
-                        </td>
-                    }
+                            </td>
 
-                </tr>
-            }
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="form-group col-md-2">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img src="@item.User1.Avatar" alt="Profilový obrázek" class="media-photo" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-10">
+                                    <div class="media-body">
+                                        <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User1.ID})">
+                                            <div class="float-left">
+                                                @Html.DisplayFor(modelItem => item.User1.Name)
 
-        </table>
+                                                @Html.DisplayFor(modelItem => item.User1.Surname)
+                                            </div>
+                                        </a>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        }
+
+                    </tr>
+                }
+
+            </table>
+        </div>
     </div>
+
 
 
 @section Scripts{

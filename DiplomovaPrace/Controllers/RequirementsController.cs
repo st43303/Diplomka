@@ -324,5 +324,24 @@ namespace DiplomovaPrace.Controllers
             return View(requirement);
          
         }
+
+
+        public ActionResult Matrix()
+        {
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (Session["projectID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int projectID = (int)Session["projectID"];
+
+            ViewBag.Reqs = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType==1).ToList();
+            ViewBag.Uses = db.UseCases.Where(u => u.ID_Project == projectID).ToList();
+            return View();
+        }
     }
 }

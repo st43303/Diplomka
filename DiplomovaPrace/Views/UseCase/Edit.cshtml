@@ -47,71 +47,75 @@
     </div>
 
     <h2>Aktéři</h2>
-    <hr />
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Jméno aktéra</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var useCaseActor in Model.UseCaseActors)
-                {
+    <div class="container tableContainer">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => useCaseActor.Actor.Name)
-                        </td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <div class="form-group">
-                                    <button class="btn btn-sm btn-outline-danger" title="Odstranit aktéra" onclick="location.href='javascript:Delete(@useCaseActor.ID,@Model.ID);'" type="button"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </td>
+                        <th>Jméno aktéra</th>
+                        <th></th>
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var useCaseActor in Model.UseCaseActors)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => useCaseActor.Actor.Name)
+                            </td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-outline-danger" title="Odstranit aktéra" onclick="location.href='javascript:Delete(@useCaseActor.ID,@Model.ID);'" type="button"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
 
-                }
-            </tbody>
-        </table>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
+
 
     <h2>Požadavky</h2>
-    <hr />
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID požadavku</th>
-                    <th>Text požadavku</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var useCaseRequirement in Model.UseCaseRequirements)
-                {
+    <div class="container tableContainer">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => useCaseRequirement.Requirement.ID_Requirement)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => useCaseRequirement.Requirement.Text)
-
-                        </td>
-                        <td>
-                            <div class="btn-group float-right">
-                                <div class="form-group">
-                                    <button class="btn btn-sm btn-outline-danger" title="Odstranit požadavek" onclick="location.href='javascript:DeleteRequirement(@useCaseRequirement.ID,@Model.ID);'" type="button"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </td>
+                        <th>ID požadavku</th>
+                        <th>Text požadavku</th>
+                        <th></th>
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var useCaseRequirement in Model.UseCaseRequirements)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => useCaseRequirement.Requirement.ID_Requirement)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => useCaseRequirement.Requirement.Text)
 
-                }
-            </tbody>
-        </table>
+                            </td>
+                            <td>
+                                <div class="btn-group float-right">
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-outline-danger" title="Odstranit požadavek" onclick="location.href='javascript:DeleteRequirement(@useCaseRequirement.ID,@Model.ID);'" type="button"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
+  
 
 }
 

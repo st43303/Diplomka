@@ -18,7 +18,7 @@
         <img src="@Model.Avatar" class="img-responsive img-thumbnail" />
     </div>
     <div class="col-md-9">
-
+       
         <div class="table-responsive">
             <table class="table" style="background: none">
                 <tr>
@@ -92,48 +92,51 @@
 
             <h3>Sdílené projekty</h3>
             <br />
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayName("Název projektu")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Autor projektu")
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                  <tbody>
-                    @foreach (var item in projects)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @if (item.ID_Author == (int)Session["userID"])
-                                {
-                                    <p>já</p>
-                                }
-                                else
-                                {
-                                    <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.ID_Author})">@item.User.Name @item.User.Surname</a>
-                                }
-                                
-                            </td>
-                            <td>
-                                <div class="btn-group pull-right">
-                                    <button class="btn btn-sm btn-outline-dark" title="Vybrat projekt"  onclick="location.href='@Url.Action("SetProject", "Home", new { id = item.ID })'"><i class="fa fa-eye"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    }
+            <div class="container tableContainer">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Název projektu")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Autor projektu")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in projects)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @if (item.ID_Author == (int)Session["userID"])
+                                        {
+                                            <p>já</p>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.ID_Author})">@item.User.Name @item.User.Surname</a>
+                                        }
 
-                      </tbody>
-                </table>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-sm btn-outline-dark" title="Vybrat projekt" onclick="location.href='@Url.Action("SetProject", "Home", new { id = item.ID })'"><i class="fa fa-eye"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        
            
 
     }

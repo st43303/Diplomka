@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Matrix";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Matice sledovatelnosti požadavků</h2>
+
+<div class="container tableContainer">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            @{
+                var reqs = (List<DiplomovaPrace.Models.Requirement>)ViewBag.Reqs;
+                var uses = (List<DiplomovaPrace.Models.UseCase>)ViewBag.Uses;
+
+                for (int i = 0; i < reqs.Count; i++)
+                {
+
+
+                    for (int j = 0; j < reqs.Count; j++)
+                    {
+                        if (i == 1)
+                        {
+                            <tr>
+                            <td>
+                                @reqs[j].ID_Requirement
+                            </td>
+                                </tr>
+                        }
+                    }
+                }
+            }
+        </table>
+    </div>
+</div>
+

@@ -26,7 +26,7 @@ namespace DiplomovaPrace.Controllers
         
            
             int projectID = (int)Session["projectID"];
-            var scenarious = db.Scenarios.Where(s => s.ID_Project == projectID&&s.Done).OrderByDescending(i=>i.ID);
+            var scenarious = db.Scenarios.Where(s => s.ID_Project == projectID && s.Done && s.ID_MainScenario==null).OrderByDescending(i=>i.ID);
             return View(scenarious);
         }
 

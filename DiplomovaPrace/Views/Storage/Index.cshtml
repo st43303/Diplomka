@@ -43,87 +43,91 @@
 
 </div>
 
-
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayName("Název souboru")
-                </th>
-
-                <th>
-                    @Html.DisplayName("Vlastník souboru")
-                </th>
-                <th>
-                    @Html.DisplayName("Typ souboru")
-                </th>
-                <th>
-                    @Html.DisplayName("Datum přidání")
-                </th>
-                <th>
-                    @Html.DisplayName("Velikost souboru")
-                </th>
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var item in Model)
-            {
+<div class="container tableContainer">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
                 <tr>
-                    <td>
-                        <i class="@item.FileType.Icon"></i>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @if (item.ID_User == (int)Session["userID"])
-                        {
-                            <p>já</p>
-                        }
-                        else
-                        {
-                            <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User.ID})">@item.User.Name @item.User.Surname</a>
-                        }
+                    <th>
+                        @Html.DisplayName("Název souboru")
+                    </th>
 
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem=>item.FileType.Extension)
-                    </td>
-                    <td>
-                        @item.Date_Uploaded.ToString()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Length)
-                    </td>
+                    <th>
+                        @Html.DisplayName("Vlastník souboru")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Typ souboru")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Datum přidání")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Velikost souboru")
+                    </th>
 
-                    <td>
-                        <div class="btn-group pull-right">
-                            <div class="form-group">
-                                <button class="btn btn-sm btn-outline-dark" title="Stáhnout soubor" onclick="location.href='@Url.Action("Download","Storage",new { id=item.ID})'"><i class="fa fa-download"></i></button>
-                            </div>
+                    <th>
+                        @Html.DisplayName("Akce")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <i class="@item.FileType.Icon"></i>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
                             @if (item.ID_User == (int)Session["userID"])
                             {
-                                <div class="form-group">
-                                    <button class="btn btn-sm btn-outline-danger" title="Odstranit soubor" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
-                                </div>
+                                <p>já</p>
                             }
                             else
                             {
-                                <div class="form-group">
-                                    <button class="btn btn-sm btn-outline-danger" title="Tento soubor odstranit nelze" disabled><i class="fa fa-trash"></i></button>
-                                </div>
+                                <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User.ID})">@item.User.Name @item.User.Surname</a>
                             }
 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FileType.Extension)
+                        </td>
+                        <td>
+                            @item.Date_Uploaded.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Length)
+                        </td>
 
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-dark" title="Stáhnout soubor" onclick="location.href='@Url.Action("Download","Storage",new { id=item.ID})'"><i class="fa fa-download"></i></button>
+                                </div>
+                                @if (item.ID_User == (int)Session["userID"])
+                                {
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-outline-danger" title="Odstranit soubor" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-outline-danger" title="Tento soubor odstranit nelze" disabled><i class="fa fa-trash"></i></button>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
 
 @section Scripts{
     <script>
