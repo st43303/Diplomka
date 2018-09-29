@@ -339,9 +339,16 @@ namespace DiplomovaPrace.Controllers
             }
             int projectID = (int)Session["projectID"];
 
-            ViewBag.Reqs = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType==1).ToList();
-            ViewBag.Uses = db.UseCases.Where(u => u.ID_Project == projectID).ToList();
-            return View();
+            var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1).OrderBy(r => r.ID_Requirement).ToList();
+            var usecases = db.UseCases.Where(u => u.ID_Project == projectID).OrderByDescending(i => i.ID).ToList();
+            var matrix = new Matrix(requirements, usecases);
+
+            ViewBag.ReqCount = requirements.Count;
+            ViewBag.UseCount = usecases.Count;
+
+
+            var output = matrix.GetMatrix();
+            return View(output);
         }
     }
 }

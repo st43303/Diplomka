@@ -1,34 +1,48 @@
-﻿
+﻿@model SortedDictionary<DiplomovaPrace.Models.Point,object>
 @{
     ViewBag.Title = "Matrix";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Matice sledovatelnosti požadavků</h2>
-
+<p></p>
 <div class="container tableContainer">
     <div class="table-responsive">
-        <table class="table table-bordered">
-            @{
-                var reqs = (List<DiplomovaPrace.Models.Requirement>)ViewBag.Reqs;
-                var uses = (List<DiplomovaPrace.Models.UseCase>)ViewBag.Uses;
-
-                for (int i = 0; i < reqs.Count; i++)
-                {
-
-
-                    for (int j = 0; j < reqs.Count; j++)
+        <table class="table table-bordered" cellspacing="0">
+            @for (int i = 0; i < (int)ViewBag.ReqCount+1; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < (int)ViewBag.UseCount+1; j++)
                     {
-                        if (i == 1)
+                        DiplomovaPrace.Models.Point point = new DiplomovaPrace.Models.Point(j, i);
+                        object item = null;
+                        Model.TryGetValue(point, out item);
+                    <td>
+                        @if (item != null)
                         {
-                            <tr>
-                            <td>
-                                @reqs[j].ID_Requirement
-                            </td>
-                                </tr>
+                            if (item is DiplomovaPrace.Models.Requirement)
+                            {
+                                DiplomovaPrace.Models.Requirement req = (DiplomovaPrace.Models.Requirement)item;
+                                <a class="btn-link" href="@Url.Action("Functional","Requirements")">@req.ID_Requirement</a>
+                            }
+
+                            if (item is DiplomovaPrace.Models.UseCase)
+                            {
+                                DiplomovaPrace.Models.UseCase use = (DiplomovaPrace.Models.UseCase)item;
+                                <a class="btn-link" href="@Url.Action("Index","UseCase")">@use.Name</a>
+                            }
+
+                            if (item is Boolean)
+                            {
+                                <i class="fa fa-check" style="color: green"></i>
+                            }
+
                         }
+
+                    </td>
+
                     }
-                }
+                </tr>
             }
         </table>
     </div>

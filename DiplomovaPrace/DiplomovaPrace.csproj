@@ -191,9 +191,11 @@
     <Compile Include="Models\Friendship.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Point.cs" />
     <Compile Include="Models\PriorityRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
