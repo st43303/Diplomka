@@ -182,39 +182,40 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
             requirement.ID_Project = projectID;
 
-            try
+            if(db.Requirements.Where(r=>r.ID_Project==projectID && r.ID_Requirement.Equals(requirement.ID_Requirement)).FirstOrDefault() != null)
             {
-                db.Requirements.Add(requirement);
-                db.SaveChanges();
-
-                LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
-                categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
-                ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
-
-                LinkedList<PriorityRequirement> priorities = new LinkedList<PriorityRequirement>(db.PriorityRequirements.ToList());
-                priorities.AddFirst(new PriorityRequirement() { ID = 0, Priority = "Priorita" });
-                ViewBag.ID_Priority = new SelectList(priorities, "ID", "Priority");
-
-                LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
-                statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
-                ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
-
-                if (requirement.ID_ReqType == 1)
-                {
-                    NotificationSystem.SendNotification(EnumNotification.CREATE_REQUIREMENT, "/Requirements/Functional");
-                    return RedirectToAction("Functional");
-                }
-                else
-                {
-                    NotificationSystem.SendNotification(EnumNotification.CREATE_REQUIREMENT, "/Requirements/Nonfunctional");
-                    return RedirectToAction("Nonfunctional");
-                }
-            }catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                ViewBag.Error = "Vyskytla se chyba. Opakujte prosím akci.";
-                ViewBag.ID_ReqType = new SelectList(db.ReqTypes, "ID", "Type");
+                ViewBag.Error = "Zadané ID požadavku se již v projektu vyskytuje. Zvolte prosím jiné.";
             }
+            else
+            {
+                try
+                {
+                    db.Requirements.Add(requirement);
+                    db.SaveChanges();
+
+                    if (requirement.ID_ReqType == 1)
+                    {
+                        NotificationSystem.SendNotification(EnumNotification.CREATE_REQUIREMENT, "/Requirements/Functional");
+                        return RedirectToAction("Functional");
+                    }
+                    else
+                    {
+                        NotificationSystem.SendNotification(EnumNotification.CREATE_REQUIREMENT, "/Requirements/Nonfunctional");
+                        return RedirectToAction("Nonfunctional");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    ViewBag.Error = "Vyskytla se chyba. Opakujte prosím akci.";
+                }
+            }
+
+            ViewBag.ID_ReqType = new SelectList(db.ReqTypes, "ID", "Type");
+            ViewBag.ID_Priority = db.PriorityRequirements.ToList();
+            ViewBag.ID_Category = new SelectList(db.CategoryRequirements.Where(c => c.ID_Project == projectID), "ID", "Name");
+            ViewBag.ID_Status = db.StatusRequirements.ToList();
+
             return View(requirement);
         }
 
