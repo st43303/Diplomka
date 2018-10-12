@@ -23,6 +23,8 @@ namespace DiplomovaPrace.Models
             this.Projects = new HashSet<Project>();
             this.ProjectUsers = new HashSet<ProjectUser>();
             this.Files = new HashSet<File>();
+            this.Tasks = new HashSet<Task>();
+            this.Tasks1 = new HashSet<Task>();
         }
     
         public int ID { get; set; }
@@ -50,5 +52,9 @@ namespace DiplomovaPrace.Models
         public virtual User User2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<File> Files { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Task> Tasks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Task> Tasks1 { get; set; }
     }
 }

@@ -76,6 +76,13 @@
           <Property Name="Priority" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PriorityDescription" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="PriorityTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Priority" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="ID" />
@@ -139,6 +146,13 @@
           <Property Name="ID_Scenario" Type="int" Nullable="false" />
           <Property Name="ID_ActorType" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="StateTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="StatusRequirement">
           <Key>
             <PropertyRef Name="ID" />
@@ -146,6 +160,19 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="StatusDescription" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Deadline" Type="datetime" />
+          <Property Name="ID_Priority" Type="int" Nullable="false" />
+          <Property Name="ID_State" Type="int" Nullable="false" />
+          <Property Name="ID_User_Creator" Type="int" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="ID_User_Executor" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UseCase">
           <Key>
@@ -475,6 +502,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Task_Creator">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_User_Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Executor">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_User_Executor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_PriorityTask">
+          <End Role="PriorityTask" Type="Self.PriorityTask" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriorityTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_Priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_StateTask">
+          <End Role="StateTask" Type="Self.StateTask" Multiplicity="1" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UseCase_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -560,13 +647,16 @@
           <EntitySet Name="Friendship" EntityType="Self.Friendship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriorityRequirement" EntityType="Self.PriorityRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriorityTask" EntityType="Self.PriorityTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectUser" EntityType="Self.ProjectUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReqType" EntityType="Self.ReqType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requirement" EntityType="Self.Requirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Scenario" EntityType="Self.Scenario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScenarioActor" EntityType="Self.ScenarioActor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StateTask" EntityType="Self.StateTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusRequirement" EntityType="Self.StatusRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCase" EntityType="Self.UseCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
@@ -662,6 +752,26 @@
           <AssociationSet Name="FK_ScenarioActor_Scenario" Association="Self.FK_ScenarioActor_Scenario">
             <End Role="Scenario" EntitySet="Scenario" />
             <End Role="ScenarioActor" EntitySet="ScenarioActor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Creator" Association="Self.FK_Task_Creator">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Executor" Association="Self.FK_Task_Executor">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_PriorityTask" Association="Self.FK_Task_PriorityTask">
+            <End Role="PriorityTask" EntitySet="PriorityTask" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Project" Association="Self.FK_Task_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_StateTask" Association="Self.FK_Task_StateTask">
+            <End Role="StateTask" EntitySet="StateTask" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
           <AssociationSet Name="FK_UseCase_Project" Association="Self.FK_UseCase_Project">
             <End Role="Project" EntitySet="Project" />
@@ -828,6 +938,29 @@
             <End Role="StatusRequirement" EntitySet="StatusRequirements" />
             <End Role="Requirement" EntitySet="Requirements" />
           </AssociationSet>
+          <EntitySet Name="PriorityTasks" EntityType="SDTModel.PriorityTask" />
+          <EntitySet Name="StateTasks" EntityType="SDTModel.StateTask" />
+          <EntitySet Name="Tasks" EntityType="SDTModel.Task" />
+          <AssociationSet Name="FK_Task_PriorityTask" Association="SDTModel.FK_Task_PriorityTask">
+            <End Role="PriorityTask" EntitySet="PriorityTasks" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Project" Association="SDTModel.FK_Task_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_StateTask" Association="SDTModel.FK_Task_StateTask">
+            <End Role="StateTask" EntitySet="StateTasks" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Creator" Association="SDTModel.FK_Task_Creator">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Executor" Association="SDTModel.FK_Task_Executor">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Actor">
           <Key>
@@ -889,6 +1022,7 @@
           <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_Project" FromRole="Project" ToRole="File" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
+          <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1005,6 +1139,8 @@
           <NavigationProperty Name="User1" Relationship="SDTModel.FK_User_User" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User2" Relationship="SDTModel.FK_User_User" FromRole="User1" ToRole="User" />
           <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_User" FromRole="User" ToRole="File" />
+          <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Creator" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="Tasks1" Relationship="SDTModel.FK_Task_Executor" FromRole="User" ToRole="Task" />
         </EntityType>
         <Association Name="FK_Actor_Project">
           <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
@@ -1431,6 +1567,100 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PriorityTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Priority" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_PriorityTask" FromRole="PriorityTask" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="StateTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_StateTask" FromRole="StateTask" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="ID_Priority" Type="Int32" Nullable="false" />
+          <Property Name="ID_State" Type="Int32" Nullable="false" />
+          <Property Name="ID_User_Creator" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="ID_User_Executor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PriorityTask" Relationship="SDTModel.FK_Task_PriorityTask" FromRole="Task" ToRole="PriorityTask" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_Task_Project" FromRole="Task" ToRole="Project" />
+          <NavigationProperty Name="StateTask" Relationship="SDTModel.FK_Task_StateTask" FromRole="Task" ToRole="StateTask" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_Task_Creator" FromRole="Task" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="SDTModel.FK_Task_Executor" FromRole="Task" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Task_PriorityTask">
+          <End Type="SDTModel.PriorityTask" Role="PriorityTask" Multiplicity="1" />
+          <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriorityTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_Priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_StateTask">
+          <End Type="SDTModel.StateTask" Role="StateTask" Multiplicity="1" />
+          <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateTask">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Creator">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_User_Creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Executor">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ID_User_Executor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1634,6 +1864,36 @@
               <MappingFragment StoreEntitySet="StatusRequirement">
                 <ScalarProperty Name="StatusDescription" ColumnName="StatusDescription" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriorityTasks">
+            <EntityTypeMapping TypeName="SDTModel.PriorityTask">
+              <MappingFragment StoreEntitySet="PriorityTask">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StateTasks">
+            <EntityTypeMapping TypeName="SDTModel.StateTask">
+              <MappingFragment StoreEntitySet="StateTask">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="SDTModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="ID_User_Executor" ColumnName="ID_User_Executor" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_User_Creator" ColumnName="ID_User_Creator" />
+                <ScalarProperty Name="ID_State" ColumnName="ID_State" />
+                <ScalarProperty Name="ID_Priority" ColumnName="ID_Priority" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

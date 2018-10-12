@@ -53,6 +53,14 @@
         <AssociationConnector Association="SDTModel.FK_Requirement_CategoryRequirement" />
         <AssociationConnector Association="SDTModel.FK_Requirement_PriorityRequirement" />
         <AssociationConnector Association="SDTModel.FK_Requirement_StatusRequirement" />
+        <EntityTypeShape EntityType="SDTModel.PriorityTask" Width="1.5" PointX="6.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SDTModel.StateTask" Width="1.5" PointX="5.375" PointY="3.25" />
+        <EntityTypeShape EntityType="SDTModel.Task" Width="1.5" PointX="8.625" PointY="7.75" />
+        <AssociationConnector Association="SDTModel.FK_Task_PriorityTask" />
+        <AssociationConnector Association="SDTModel.FK_Task_Project" />
+        <AssociationConnector Association="SDTModel.FK_Task_StateTask" />
+        <AssociationConnector Association="SDTModel.FK_Task_Creator" />
+        <AssociationConnector Association="SDTModel.FK_Task_Executor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

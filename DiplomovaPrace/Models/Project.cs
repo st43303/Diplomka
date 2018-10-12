@@ -24,6 +24,7 @@ namespace DiplomovaPrace.Models
             this.UseCases = new HashSet<UseCase>();
             this.Files = new HashSet<File>();
             this.CategoryRequirements = new HashSet<CategoryRequirement>();
+            this.Tasks = new HashSet<Task>();
         }
     
         public int ID { get; set; }
@@ -49,5 +50,7 @@ namespace DiplomovaPrace.Models
         public virtual ICollection<File> Files { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CategoryRequirement> CategoryRequirements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }

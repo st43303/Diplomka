@@ -44,5 +44,8 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<CategoryRequirement> CategoryRequirements { get; set; }
         public virtual DbSet<PriorityRequirement> PriorityRequirements { get; set; }
         public virtual DbSet<StatusRequirement> StatusRequirements { get; set; }
+        public virtual DbSet<PriorityTask> PriorityTasks { get; set; }
+        public virtual DbSet<StateTask> StateTasks { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
     }
 }

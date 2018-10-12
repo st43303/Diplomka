@@ -11,7 +11,8 @@ namespace DiplomovaPrace.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+
     public partial class Scenario
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -28,6 +29,7 @@ namespace DiplomovaPrace.Models
         public string OutCondition { get; set; }
         public int ID_UseCase { get; set; }
         public int ID_Project { get; set; }
+        [AllowHtml]
         public string Scenario1 { get; set; }
         public bool Done { get; set; }
         public Nullable<int> ID_MainScenario { get; set; }

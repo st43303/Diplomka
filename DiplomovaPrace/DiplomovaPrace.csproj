@@ -199,6 +199,9 @@
     <Compile Include="Models\PriorityRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PriorityTask.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Project.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -232,7 +235,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SDTmodel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\StateTask.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\StatusRequirement.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Task.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UseCase.cs">
