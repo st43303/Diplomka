@@ -173,6 +173,7 @@
           <Property Name="ID_User_Creator" Type="int" Nullable="false" />
           <Property Name="ID_Project" Type="int" Nullable="false" />
           <Property Name="ID_User_Executor" Type="int" Nullable="false" />
+          <Property Name="DateFinished" Type="datetime" />
         </EntityType>
         <EntityType Name="UseCase">
           <Key>
@@ -1600,6 +1601,7 @@
           <NavigationProperty Name="StateTask" Relationship="SDTModel.FK_Task_StateTask" FromRole="Task" ToRole="StateTask" />
           <NavigationProperty Name="User" Relationship="SDTModel.FK_Task_Creator" FromRole="Task" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="SDTModel.FK_Task_Executor" FromRole="Task" ToRole="User" />
+          <Property Name="DateFinished" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_Task_PriorityTask">
           <End Type="SDTModel.PriorityTask" Role="PriorityTask" Multiplicity="1" />
@@ -1887,6 +1889,7 @@
           <EntitySetMapping Name="Tasks">
             <EntityTypeMapping TypeName="SDTModel.Task">
               <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="DateFinished" ColumnName="DateFinished" />
                 <ScalarProperty Name="ID_User_Executor" ColumnName="ID_User_Executor" />
                 <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
                 <ScalarProperty Name="ID_User_Creator" ColumnName="ID_User_Creator" />

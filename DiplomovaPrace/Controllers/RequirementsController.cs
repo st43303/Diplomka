@@ -27,7 +27,7 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
 
             var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1).OrderByDescending(r => r.ID_Requirement);
-
+ 
             LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
             categories.AddFirst(new CategoryRequirement() { ID = 0, Name = "Kategorie" });
             ViewBag.ID_Category = new SelectList(categories, "ID", "Name");
@@ -40,15 +40,22 @@ namespace DiplomovaPrace.Controllers
             statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
             ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
 
+            LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+            sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
+            sources.AddFirst("Zdroj");
+            ViewBag.Source = new SelectList(sources.Select(x=>new { Value=x,Text=x}),"Value","Text");
+
 
             return View(requirements);
         }
 
         [HttpPost]
-        public ActionResult Functional(int ID_Category, int ID_Priority, int ID_Status, int Count)
+        public ActionResult Functional(int ID_Category, int ID_Priority, int ID_Status, int Count, string Source)
         {
             int projectID = (int)Session["projectID"];
-            var requirements = db.Requirements.Where(r => r.ID_Project == projectID);
+            var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1);
+            LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+
             if (ID_Category != 0)
             {
                 requirements = requirements.Where(r => r.ID_Category == ID_Category);
@@ -63,10 +70,18 @@ namespace DiplomovaPrace.Controllers
             {
                 requirements = requirements.Where(r => r.ID_Status == ID_Status);
             }
+
+            if (Source != "Zdroj")
+            {
+                requirements = requirements.Where(r => r.Source.Equals(Source));
+            }
+
             if (Count != 0)
             {
                 requirements = requirements.Take(Count);
             }
+
+           
 
 
             LinkedList<CategoryRequirement> categories = new LinkedList<CategoryRequirement>(db.CategoryRequirements.Where(c => c.ID_Project == projectID).ToList());
@@ -81,7 +96,11 @@ namespace DiplomovaPrace.Controllers
             statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
             ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
 
-            return View(requirements);
+            sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
+            sources.AddFirst("Zdroj");
+            ViewBag.Source = new SelectList(sources.Select(x => new { Value = x, Text = x }), "Value", "Text");
+
+            return View(requirements.OrderByDescending(r=>r.ID_Requirement));
         }
 
         public ActionResult Create()
@@ -132,14 +151,22 @@ namespace DiplomovaPrace.Controllers
             LinkedList<StatusRequirement> statuses = new LinkedList<StatusRequirement>(db.StatusRequirements.ToList());
             statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
             ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
+
+            LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+            sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
+            sources.AddFirst("Zdroj");
+            ViewBag.Source = new SelectList(sources.Select(x => new { Value = x, Text = x }), "Value", "Text");
+
             return View(requirements);
         }
 
         [HttpPost]
-        public ActionResult Nonfunctional(int ID_Category, int ID_Priority, int ID_Status, int Count)
+        public ActionResult Nonfunctional(int ID_Category, int ID_Priority, int ID_Status, int Count, string Source)
         {
             int projectID = (int)Session["projectID"];
-            var requirements = db.Requirements.Where(r => r.ID_Project == projectID);
+            var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 2);
+            LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+
             if (ID_Category != 0)
             {
                 requirements = requirements.Where(r => r.ID_Category == ID_Category);
@@ -154,6 +181,12 @@ namespace DiplomovaPrace.Controllers
             {
                 requirements = requirements.Where(r => r.ID_Status == ID_Status);
             }
+
+            if (Source != "Zdroj")
+            {
+                requirements = requirements.Where(r => r.Source.Equals(Source));
+            }
+
             if (Count != 0)
             {
                 requirements = requirements.Take(Count);
@@ -172,7 +205,11 @@ namespace DiplomovaPrace.Controllers
             statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
             ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
 
-            return View(requirements);
+            sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
+            sources.AddFirst("Zdroj");
+            ViewBag.Source = new SelectList(sources.Select(x => new { Value = x, Text = x }), "Value", "Text");
+
+            return View(requirements.OrderByDescending(r=>r.ID_Requirement));
         }
 
 

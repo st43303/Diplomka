@@ -77,6 +77,11 @@
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Tým</a>
                             <ul class="sub-menu children dropdown-menu">
+                                <li><h3 class="menu-title">ÚKOLY</h3></li><!-- /.menu-title -->
+                                <li class="@Html.IsSelected(actions: "Index", controllers: "Task")">
+                                    <i class="menu-icon fa fa-tasks"></i><a href="@Url.Action("Index","Task")">Úkoly</a>
+                                </li>
+
                                 <li><h3 class="menu-title">ČLENOVÉ PROJEKTU</h3></li><!-- /.menu-title -->
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Team")">
                                     <i class="menu-icon fa fa-users"></i><a href="@Url.Action("Index","Team")">Team</a>

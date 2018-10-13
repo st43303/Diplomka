@@ -22,6 +22,7 @@ namespace DiplomovaPrace.Models
         public int ID_User_Creator { get; set; }
         public int ID_Project { get; set; }
         public int ID_User_Executor { get; set; }
+        public Nullable<System.DateTime> DateFinished { get; set; }
     
         public virtual PriorityTask PriorityTask { get; set; }
         public virtual Project Project { get; set; }
