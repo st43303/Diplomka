@@ -20,7 +20,36 @@ namespace DiplomovaPrace.Controllers
             }
             int userID = (int)Session["userID"];
             var projects = db.Projects.Where(p => p.ID_Author == userID).ToList().OrderByDescending(x => x.ID);
+
             return View(projects);
+        }
+
+        private void controlTasks(int projectID)
+        {
+            if (db.TaskHistories.Where(t => t.ID_Project == projectID).Count()==0)
+            {
+                TaskHistory taskHistory = new TaskHistory();
+                taskHistory.CreateCount = 0;
+                taskHistory.FinishCount = 0;
+                taskHistory.ProgressCount = 0;
+                taskHistory.ID_Project = projectID;
+                if (db.Projects.Find(projectID).DateCreated.HasValue)
+                {
+                    taskHistory.Date = db.Projects.Find(projectID).DateCreated.Value;
+                }
+                else
+                {
+                    taskHistory.Date = DateTime.Now;
+                }
+                try
+                {
+                    db.TaskHistories.Add(taskHistory);
+                    db.SaveChanges();
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
 
         public ActionResult SetProject(int id)
@@ -32,7 +61,7 @@ namespace DiplomovaPrace.Controllers
                 var projectName = project.Name;
                 Session["projectID"] = id;
                 Session["projectName"] = projectName;
-
+                controlTasks(id);
             }
             else
             {

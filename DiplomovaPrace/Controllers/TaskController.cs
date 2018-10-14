@@ -144,12 +144,11 @@ namespace DiplomovaPrace.Controllers
             task.ID_Project = projectID;
             task.ID_State = 1;
 
-
             try
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
-                updateTaskHistory(projectID, 1);
+                updateTaskHistory(projectID, 1,true);
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -158,7 +157,7 @@ namespace DiplomovaPrace.Controllers
 
         }
 
-        private void updateTaskHistory(int projectID, int ID_State)
+        private void updateTaskHistory(int projectID, int ID_State, Boolean increment)
         {
             int createCount = 0;
             int progressCount = 0;
@@ -169,19 +168,41 @@ namespace DiplomovaPrace.Controllers
                 progressCount = db.TaskHistories.Where(t => t.ID_Project == projectID).ToList().LastOrDefault().ProgressCount;
                 finishCount = db.TaskHistories.Where(t => t.ID_Project == projectID).ToList().LastOrDefault().FinishCount;
             }
-       
 
-            if (ID_State == 1)
+            if (increment)
             {
-                createCount++;
-            }else if (ID_State == 2)
-            {
-                progressCount++;
+                if (ID_State == 1)
+                {
+                    createCount++;
+                }
+                else if (ID_State == 2)
+                {
+                    progressCount++;
+                }
+                else
+                {
+                    finishCount++;
+                }
             }
             else
             {
-                finishCount++;
+                if (ID_State == 1)
+                {
+                    createCount--;
+                }
+                else if (ID_State == 2)
+                {
+                    createCount--;
+                    progressCount--;
+                }
+                else
+                {
+                    createCount--;
+                    progressCount--;
+                    finishCount--;
+                }
             }
+           
 
             TaskHistory taskHistory = new TaskHistory();
             taskHistory.CreateCount = createCount;
@@ -212,17 +233,17 @@ namespace DiplomovaPrace.Controllers
             if (ID_State == 3)
             {
                 task.DateFinished = DateTime.Now;
-                updateTaskHistory(projectID, 3);
+                updateTaskHistory(projectID, 3,true);
             }
             else if(ID_State==2)
             {
                 task.DateFinished = null;
-                updateTaskHistory(projectID, 2);
+                updateTaskHistory(projectID, 2,true);
 
             }
             else
             {
-                updateTaskHistory(projectID, 1);
+                updateTaskHistory(projectID, 1,true);
                 task.DateFinished = null;
 
             }
@@ -309,8 +330,6 @@ namespace DiplomovaPrace.Controllers
                 }
            
             }
-
-
             return View(list);
         }
 
@@ -320,6 +339,20 @@ namespace DiplomovaPrace.Controllers
         public ActionResult Delete(int id)
         {
             var task = db.Tasks.Find(id);
+            int projectID = (int)Session["projectID"];
+            if (task.ID_State == 3)
+            {
+                updateTaskHistory(projectID, 3, false);
+            }
+            else if (task.ID_State == 2)
+            {
+                updateTaskHistory(projectID, 2, false);
+
+            }
+            else
+            {
+                updateTaskHistory(projectID, 1, false);
+            }
             try
             {
                 db.Tasks.Remove(task);
