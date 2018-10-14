@@ -245,6 +245,9 @@
     <Compile Include="Models\Task.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TaskHistory.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UseCase.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -1133,6 +1136,7 @@
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\buttons.js" />
+    <Content Include="Scripts\chartjs.min.js" />
     <Content Include="Scripts\chosen\chosen.jquery.js" />
     <Content Include="Scripts\chosen\chosen.jquery.min.js" />
     <Content Include="Scripts\chosen\chosen.proto.js" />
@@ -1480,6 +1484,8 @@
     <Content Include="Views\Requirements\Matrix.cshtml" />
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Task\Create.cshtml" />
+    <Content Include="Views\Task\Edit.cshtml" />
+    <Content Include="Views\Task\Chart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

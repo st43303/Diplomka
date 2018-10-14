@@ -1,6 +1,7 @@
 ﻿using DiplomovaPrace.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -143,10 +144,12 @@ namespace DiplomovaPrace.Controllers
             task.ID_Project = projectID;
             task.ID_State = 1;
 
+
             try
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
+                updateTaskHistory(projectID, 1);
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -154,6 +157,164 @@ namespace DiplomovaPrace.Controllers
             return RedirectToAction("Index");
 
         }
+
+        private void updateTaskHistory(int projectID, int ID_State)
+        {
+            int createCount = 0;
+            int progressCount = 0;
+            int finishCount = 0;
+            if (db.TaskHistories.Where(t => t.ID_Project == projectID).FirstOrDefault()!=null)
+            {
+                createCount = db.TaskHistories.Where(t => t.ID_Project == projectID).ToList().LastOrDefault().CreateCount;
+                progressCount = db.TaskHistories.Where(t => t.ID_Project == projectID).ToList().LastOrDefault().ProgressCount;
+                finishCount = db.TaskHistories.Where(t => t.ID_Project == projectID).ToList().LastOrDefault().FinishCount;
+            }
+       
+
+            if (ID_State == 1)
+            {
+                createCount++;
+            }else if (ID_State == 2)
+            {
+                progressCount++;
+            }
+            else
+            {
+                finishCount++;
+            }
+
+            TaskHistory taskHistory = new TaskHistory();
+            taskHistory.CreateCount = createCount;
+            taskHistory.ProgressCount = progressCount;
+            taskHistory.FinishCount = finishCount;
+            taskHistory.ID_Project = projectID;
+            taskHistory.Date = DateTime.Now;
+
+            try
+            {
+                db.TaskHistories.Add(taskHistory);
+                db.SaveChanges();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+        }
+
+
+        [HttpPost]
+        public ActionResult ChangeState(int id, int ID_State)
+        {
+            int projectID = (int)Session["projectID"];
+            var task = db.Tasks.Find(id);
+            task.ID_State = ID_State;
+            if (ID_State == 3)
+            {
+                task.DateFinished = DateTime.Now;
+                updateTaskHistory(projectID, 3);
+            }
+            else if(ID_State==2)
+            {
+                task.DateFinished = null;
+                updateTaskHistory(projectID, 2);
+
+            }
+            else
+            {
+                updateTaskHistory(projectID, 1);
+                task.DateFinished = null;
+
+            }
+
+            try
+            {
+                db.Entry(task).State = EntityState.Modified;
+                db.SaveChanges();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["projectID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var task = db.Tasks.Find(id);
+
+            int projectID = (int)Session["projectID"];
+            ViewBag.ID_Priority = new SelectList(db.PriorityTasks, "ID", "Priority",task.ID_Priority);
+            List<User> users = db.ProjectUsers.Where(p => p.ID_Project == projectID).Select(s => s.User).ToList();
+            ViewBag.ID_User_Executor = new SelectList((from s in users select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName",task.ID_User_Executor);
+            return View(task);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Task task)
+        {
+            var old = db.Tasks.Find(task.ID);
+            old.Deadline = task.Deadline;
+            old.ID_Priority = task.ID_Priority;
+            old.ID_User_Executor = task.ID_User_Executor;
+            old.Text = task.Text;
+
+            try
+            {
+                db.Entry(old).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            int projectID = (int)Session["projectID"];
+            ViewBag.ID_Priority = new SelectList(db.PriorityTasks, "ID", "Priority", task.ID_Priority);
+            List<User> users = db.ProjectUsers.Where(p => p.ID_Project == projectID).Select(s => s.User).ToList();
+            ViewBag.ID_User_Executor = new SelectList((from s in users select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName", task.ID_User_Executor);
+
+            return View(old);
+        }
+
+        public ActionResult Chart()
+        {
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["projectID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int projectID = (int)Session["projectID"];
+            var taskHistory = db.TaskHistories.Where(t => t.ID_Project == projectID);
+            List<TaskHistory> list = new List<TaskHistory>();
+            var date = taskHistory.FirstOrDefault().Date;
+            var last = taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month==date.Month && t.Date.Day==date.Day).ToList().LastOrDefault();
+            list.Add(last);
+            foreach (TaskHistory task in taskHistory)
+            {
+                if (task.Date.ToShortDateString() != date.ToShortDateString())
+                {
+                    date = task.Date;
+                    last= taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month == date.Month && t.Date.Day == date.Day).ToList().LastOrDefault();
+                    list.Add(last);
+                }
+           
+            }
+
+
+            return View(list);
+        }
+
+
 
         [HttpPost]
         public ActionResult Delete(int id)

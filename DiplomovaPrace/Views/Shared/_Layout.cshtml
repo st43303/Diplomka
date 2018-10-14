@@ -81,6 +81,9 @@
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Task")">
                                     <i class="menu-icon fa fa-tasks"></i><a href="@Url.Action("Index","Task")">Úkoly</a>
                                 </li>
+                                <li class="@Html.IsSelected(actions: "Chart", controllers: "Task")">
+                                    <i class="menu-icon fa fa-line-chart"></i><a href="@Url.Action("Chart","Task")">Sledování úkolů</a>
+                                </li>
 
                                 <li><h3 class="menu-title">ČLENOVÉ PROJEKTU</h3></li><!-- /.menu-title -->
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Team")">

@@ -175,6 +175,17 @@
           <Property Name="ID_User_Executor" Type="int" Nullable="false" />
           <Property Name="DateFinished" Type="datetime" />
         </EntityType>
+        <EntityType Name="TaskHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="CreateCount" Type="int" Nullable="false" />
+          <Property Name="ProgressCount" Type="int" Nullable="false" />
+          <Property Name="FinishCount" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UseCase">
           <Key>
             <PropertyRef Name="ID" />
@@ -563,6 +574,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TaskHistory_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="TaskHistory" Type="Self.TaskHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TaskHistory">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UseCase_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -658,6 +681,7 @@
           <EntitySet Name="StateTask" EntityType="Self.StateTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusRequirement" EntityType="Self.StatusRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskHistory" EntityType="Self.TaskHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCase" EntityType="Self.UseCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
@@ -773,6 +797,10 @@
           <AssociationSet Name="FK_Task_StateTask" Association="Self.FK_Task_StateTask">
             <End Role="StateTask" EntitySet="StateTask" />
             <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskHistory_Project" Association="Self.FK_TaskHistory_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="TaskHistory" EntitySet="TaskHistory" />
           </AssociationSet>
           <AssociationSet Name="FK_UseCase_Project" Association="Self.FK_UseCase_Project">
             <End Role="Project" EntitySet="Project" />
@@ -962,6 +990,11 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Task" EntitySet="Tasks" />
           </AssociationSet>
+          <EntitySet Name="TaskHistories" EntityType="SDTModel.TaskHistory" />
+          <AssociationSet Name="FK_TaskHistory_Project" Association="SDTModel.FK_TaskHistory_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="TaskHistory" EntitySet="TaskHistories" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Actor">
           <Key>
@@ -1024,6 +1057,7 @@
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
+          <NavigationProperty Name="TaskHistories" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="Project" ToRole="TaskHistory" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1663,6 +1697,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TaskHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateCount" Type="Int32" Nullable="false" />
+          <Property Name="ProgressCount" Type="Int32" Nullable="false" />
+          <Property Name="FinishCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="TaskHistory" ToRole="Project" />
+        </EntityType>
+        <Association Name="FK_TaskHistory_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.TaskHistory" Role="TaskHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TaskHistory">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1897,6 +1955,18 @@
                 <ScalarProperty Name="ID_Priority" ColumnName="ID_Priority" />
                 <ScalarProperty Name="Deadline" ColumnName="Deadline" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskHistories">
+            <EntityTypeMapping TypeName="SDTModel.TaskHistory">
+              <MappingFragment StoreEntitySet="TaskHistory">
+                <ScalarProperty Name="FinishCount" ColumnName="FinishCount" />
+                <ScalarProperty Name="ProgressCount" ColumnName="ProgressCount" />
+                <ScalarProperty Name="CreateCount" ColumnName="CreateCount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -61,6 +61,8 @@
         <AssociationConnector Association="SDTModel.FK_Task_StateTask" />
         <AssociationConnector Association="SDTModel.FK_Task_Creator" />
         <AssociationConnector Association="SDTModel.FK_Task_Executor" />
+        <EntityTypeShape EntityType="SDTModel.TaskHistory" Width="1.5" PointX="5.25" PointY="20.25" />
+        <AssociationConnector Association="SDTModel.FK_TaskHistory_Project" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

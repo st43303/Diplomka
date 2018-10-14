@@ -47,5 +47,6 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<PriorityTask> PriorityTasks { get; set; }
         public virtual DbSet<StateTask> StateTasks { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<TaskHistory> TaskHistories { get; set; }
     }
 }
