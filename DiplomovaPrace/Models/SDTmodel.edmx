@@ -182,9 +182,9 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_Project" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="CreateCount" Type="int" Nullable="false" />
-          <Property Name="ProgressCount" Type="int" Nullable="false" />
-          <Property Name="FinishCount" Type="int" Nullable="false" />
+          <Property Name="CreateCount" Type="float" Nullable="false" />
+          <Property Name="ProgressCount" Type="float" Nullable="false" />
+          <Property Name="FinishCount" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="UseCase">
           <Key>
@@ -1704,9 +1704,9 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_Project" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreateCount" Type="Int32" Nullable="false" />
-          <Property Name="ProgressCount" Type="Int32" Nullable="false" />
-          <Property Name="FinishCount" Type="Int32" Nullable="false" />
+          <Property Name="CreateCount" Type="Double" Nullable="false" />
+          <Property Name="ProgressCount" Type="Double" Nullable="false" />
+          <Property Name="FinishCount" Type="Double" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="TaskHistory" ToRole="Project" />
         </EntityType>
         <Association Name="FK_TaskHistory_Project">

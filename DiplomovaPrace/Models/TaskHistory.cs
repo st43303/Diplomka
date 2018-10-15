@@ -17,9 +17,9 @@ namespace DiplomovaPrace.Models
         public int ID { get; set; }
         public int ID_Project { get; set; }
         public System.DateTime Date { get; set; }
-        public int CreateCount { get; set; }
-        public int ProgressCount { get; set; }
-        public int FinishCount { get; set; }
+        public double CreateCount { get; set; }
+        public double ProgressCount { get; set; }
+        public double FinishCount { get; set; }
     
         public virtual Project Project { get; set; }
     }
