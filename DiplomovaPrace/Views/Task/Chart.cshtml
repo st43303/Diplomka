@@ -8,60 +8,122 @@
 <h2>Sledování úkolů</h2>
 
 
-<canvas id="lineChart"></canvas>
+<div id="container" style="min-width: 310px; max-width: 100%; height: 400px; margin: 0 auto"></div>
 
 @section Scripts{
-    <script src="~/Scripts/chartjs.min.js"></script>
-    <script type="text/javascript">
-        //line
-        var ctxL = document.getElementById("lineChart").getContext('2d');
-        var arrayCreate = @Html.Raw(Json.Encode(Model.Select(s => s.CreateCount).ToArray()));
-        var arrayProgress =@Html.Raw(Json.Encode(Model.Select(s => s.ProgressCount).ToArray()));
-        var arrayFinish =@Html.Raw(Json.Encode(Model.Select(s => s.FinishCount).ToArray()));
-        var labels=@Html.Raw(Json.Encode(Model.Select(s => s.Date.ToShortDateString()).ToArray()));
-        var myLineChart = new Chart(ctxL, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: "Zadáno",
-                    data: arrayCreate,
-                    backgroundColor: [
-                        'rgba(0, 123, 255, .2)',
-                    ],
-                    borderColor: [
-                        'rgba(0, 123, 255, .7)',
-                    ],
-                    borderWidth: 2
-                },
-                {
-                    label: "Rozpracováno",
-                    data: arrayProgress,
-                    backgroundColor: [
-                        'rgba(224, 168, 0, .2)',
-                    ],
-                    borderColor: [
-                        'rgba(224, 168, 0, .7)',
-                    ],
-                    borderWidth: 2
-                    },
-                    {
-                        label: "Dokončeno",
-                        data: arrayFinish,
-                        backgroundColor: [
-                            'rgba(40, 167, 69, .2)',
-                        ],
-                        borderColor: [
-                            'rgba(40, 167, 69, .7)',
-                        ],
-                        borderWidth: 2
-                    }
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-                ]
+    <script>
+              var arrayCreate = @Html.Raw(Json.Encode(Model.Select(s => s.CreateCount).ToArray()));
+            var arrayProgress =@Html.Raw(Json.Encode(Model.Select(s => s.ProgressCount).ToArray()));
+            var arrayFinish =@Html.Raw(Json.Encode(Model.Select(s => s.FinishCount).ToArray()));
+            var labels=@Html.Raw(Json.Encode(Model.Select(s => s.Date.ToShortDateString()).ToArray()));
+        Highcharts.chart('container', {
+            chart: {
+                type: 'area'
             },
-            options: {
-                responsive: true
-            }
+            title: {
+                text: 'Vývoj úkolů'
+            },
+        
+            xAxis: {
+                categories: labels,
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Počet úkolů'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                split: true,
+                valueSuffix: ' úkolů'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            series: [{
+                name: 'Zadané',
+                data: arrayCreate
+            }, {
+                    name: 'Rozpracované',
+                    data: arrayProgress
+            }, {
+                    name: 'Dokončené',
+                    data: arrayFinish
+            }]
         });
     </script>
+
+    @*<script src="~/Scripts/chartjs.min.js"></script>
+        <script type="text/javascript">
+            //line
+            var ctxL = document.getElementById("lineChart").getContext('2d');
+            var arrayCreate = @Html.Raw(Json.Encode(Model.Select(s => s.CreateCount).ToArray()));
+            var arrayProgress =@Html.Raw(Json.Encode(Model.Select(s => s.ProgressCount).ToArray()));
+            var arrayFinish =@Html.Raw(Json.Encode(Model.Select(s => s.FinishCount).ToArray()));
+            var labels=@Html.Raw(Json.Encode(Model.Select(s => s.Date.ToShortDateString()).ToArray()));
+            var myLineChart = new Chart(ctxL, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Zadáno",
+                        data: arrayCreate,
+                        backgroundColor: [
+                            'rgba(0, 123, 255, .2)',
+                        ],
+                        borderColor: [
+                            'rgba(0, 123, 255, .7)',
+                        ],
+                        borderWidth: 2
+                    },
+                    {
+                        label: "Rozpracováno",
+                        data: arrayProgress,
+                        backgroundColor: [
+                            'rgba(224, 168, 0, .2)',
+                        ],
+                        borderColor: [
+                            'rgba(224, 168, 0, .7)',
+                        ],
+                        borderWidth: 2
+                        },
+                        {
+                            label: "Dokončeno",
+                            data: arrayFinish,
+                            backgroundColor: [
+                                'rgba(40, 167, 69, .2)',
+                            ],
+                            borderColor: [
+                                'rgba(40, 167, 69, .7)',
+                            ],
+                            borderWidth: 2
+                        }
+
+                    ]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+        </script>*@
 }
