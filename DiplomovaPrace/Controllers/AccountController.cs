@@ -37,6 +37,7 @@ namespace DiplomovaPrace.Controllers
             else
             {
                 Session["userID"] = userDetails.ID;
+                Session["userName"] = userDetails.Username;
                 Session["avatar"] = userDetails.Avatar;
                 try
                 {

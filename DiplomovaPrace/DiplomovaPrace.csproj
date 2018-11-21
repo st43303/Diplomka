@@ -177,12 +177,14 @@
     <Compile Include="Models\Actor.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActorAttributes.cs" />
     <Compile Include="Models\ActorType.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CategoryRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoryRequirementAttributes.cs" />
     <Compile Include="Models\EnumNotification.cs" />
     <Compile Include="Models\File.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
@@ -194,6 +196,9 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Matrix.cs" />
+    <Compile Include="Models\ProjectAttributes.cs" />
+    <Compile Include="Models\RequirementAttributes.cs" />
+    <Compile Include="Models\ScenarioAttributes.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -255,6 +260,7 @@
     <Compile Include="Models\UseCaseActor.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UseCaseAttributes.cs" />
     <Compile Include="Models\UseCaseRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
