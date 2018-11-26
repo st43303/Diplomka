@@ -25,51 +25,55 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.Label("Kategorie požadavku")
+            @Html.LabelFor(model=>model.ID_Category)
             @Html.DropDownList("ID_Category", null, htmlAttributes: new { @class = "form-control", @required="required" })
             <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#modalCreate">Přidat kategorii</button>
         </div>
 
         <div class="form-group">
-            @Html.Label("ID požadavku")
+            @Html.LabelFor(model => model.ID_Requirement)
             @Html.EditorFor(model => model.ID_Requirement, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.ID_Requirement, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            @Html.Label("Typ požadavku")
-            @Html.DropDownList("ID_ReqType", null, htmlAttributes: new { @class = "form-control", @required="required" })
+            @Html.LabelFor(model => model.ID_ReqType)
+            @Html.DropDownList("ID_ReqType", null, htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.ID_ReqType, "", new { @class = "text-danger" })
         </div>
 
 
         <div class="form-group">
-            @Html.Label("Priorita požadavku")
+            @Html.LabelFor(model => model.ID_Priority)
             <select class="form-control" name="ID_Priority" required>
                 @foreach (DiplomovaPrace.Models.PriorityRequirement item in (List<DiplomovaPrace.Models.PriorityRequirement>)ViewBag.ID_Priority)
                 {
                     <option value="@item.ID" title="@item.PriorityDescription">@item.Priority</option>
                 }
             </select>
+            @Html.ValidationMessageFor(model => model.ID_Priority, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            @Html.Label("Status požadavku")
+            @Html.LabelFor(model => model.ID_Status)
             <select class="form-control" name="ID_Status" required>
                 @foreach (DiplomovaPrace.Models.StatusRequirement item in (List<DiplomovaPrace.Models.StatusRequirement>)ViewBag.ID_Status)
                 {
                     <option value="@item.ID" title="@item.StatusDescription">@item.Status</option>
                 }
             </select>
+            @Html.ValidationMessageFor(model => model.ID_Status, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Zdroj požadavku")
+            @Html.LabelFor(model => model.Source)
             @Html.EditorFor(model => model.Source, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Source, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Text požadavku")
-            @Html.TextAreaFor(model => model.Text,4,3, new  { @class = "form-control", @required = "required" })
+            @Html.LabelFor(model => model.Text)
+            @Html.TextAreaFor(model => model.Text, 4, 3, new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Source, "", new { @class = "text-danger" })
         </div>
-
-
 
         <div class="form-group">
             <input type="submit" value="Vytvořit požadavek" class="btn btn-success btn-block" />
@@ -87,8 +91,10 @@
                     </div>
 
                     <div class="modal-body">
-                        @Html.Label("Název kategorie")
+                        @Html.LabelFor(model => model.CategoryRequirement.Name)
                         @Html.Editor("Name", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.CategoryRequirement.Name, "", new { @class = "text-danger" })
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success btn-block">Vytvořit kategorii</button>

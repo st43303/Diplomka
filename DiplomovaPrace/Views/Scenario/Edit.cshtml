@@ -23,8 +23,10 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Stručný popis")
+            @Html.LabelFor(model => model.Description)
             @Html.TextAreaFor(model => model.Description, 4, 3, new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
         </div>
 
         <div class="form-group">
@@ -38,18 +40,21 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Vstupní podmínky")
+            @Html.LabelFor(model => model.InCondition)
             @Html.EditorFor(model => model.InCondition, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.InCondition, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Hlavní scénář")
+            @Html.LabelFor(model => model.Scenario1)
             @Html.TextAreaFor(model => model.Scenario1, 4, 3, new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Scenario1, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Výstupní podmínky")
+            @Html.LabelFor(model => model.OutCondition)
             @Html.EditorFor(model => model.OutCondition, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.OutCondition, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">

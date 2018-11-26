@@ -25,20 +25,23 @@
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
-            @Html.Label("Kategorie požadavku")
-            @Html.DropDownList("ID_Category", null, htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.LabelFor(model => model.ID_Category)
+            @Html.DropDownList("ID_Category", null, htmlAttributes: new { @class = "form-control" })
             <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#modalCreate">Přidat kategorii</button>
+            @Html.ValidationMessageFor(model => model.ID_Category, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.Label("ID požadavku")
-            @Html.EditorFor(model => model.ID_Requirement, new { htmlAttributes = new { @class = "form-control", @required="required" } })
+            @Html.LabelFor(model => model.ID_Requirement)
+            @Html.EditorFor(model => model.ID_Requirement, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ID_Requirement, "", new { @class = "text-danger" })
         </div>
 
 
         <div class="form-group">
-            @Html.Label("Typ požadavku")
+            @Html.LabelFor(model => model.ID_ReqType)
             @Html.DropDownList("ID_ReqType", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ID_ReqType, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -58,6 +61,7 @@
                     }
                 }
             </select>
+            @Html.ValidationMessageFor(model => model.ID_Priority, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -77,16 +81,19 @@
                     }
                 }
             </select>
+            @Html.ValidationMessageFor(model => model.ID_Status, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
             @Html.Label("Zdroj požadavku")
             @Html.EditorFor(model => model.Source, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Source, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
             @Html.Label("Text požadavku")
             @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
         </div>
 
 
@@ -106,8 +113,9 @@
                 </div>
 
                 <div class="modal-body">
-                    @Html.Label("Název kateogie")
-                    @Html.Editor("Name", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.LabelFor(model => model.CategoryRequirement.Name)
+                    @Html.Editor("Name", null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CategoryRequirement.Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-block">Vytvořit kategorii</button>

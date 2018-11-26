@@ -15,7 +15,6 @@
 }
 
 
-
 @using (Html.BeginForm("Index","Profile",FormMethod.Post,new { enctype="multipart/form-data", @autocomplete="off"}))
 {
     @Html.AntiForgeryToken()
@@ -39,17 +38,21 @@
     @Html.HiddenFor(model => model.ID)
 
     <div class="form-group">
-        @Html.Label("Jméno")
+        @Html.LabelFor(model => model.Name)
         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
     </div>
 
     <div class="form-group">
-        @Html.Label("Příjmení")
+        @Html.LabelFor(model => model.Surname)
         @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+
     </div>
 
     <div class="form-group">
-        @Html.Label("Datum narození")
+        @Html.LabelFor(model => model.BirthDate)
         @if (Model.BirthDate != null)
         {
             @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @Value = Model.BirthDate.Value.ToShortDateString() } })
@@ -59,11 +62,14 @@
             @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control", @id = "datepicker" } })
 
         }
+        @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+
     </div>
 
     <div class="form-group">
-        @Html.Label("Město")
+        @Html.LabelFor(model=>model.City)
         @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">

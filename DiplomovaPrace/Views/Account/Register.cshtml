@@ -34,25 +34,31 @@
                 }
 
                 <div class="form-row">
-                    <div class="form-group-lg col-md-6">
+                    <div class="form-group col-md-6">
                         @Html.TextBoxFor(model => model.Name, new { placeholder = "Jméno", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
                     </div>
-                    <div class="form-group-lg col-md-6">
+                    <div class="form-group col-md-6">
                         @Html.TextBoxFor(model => model.Surname, new { placeholder = "Příjmení", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group-lg col-md-12">
-                        @Html.TextBoxFor(model => model.Username, new { placeholder = "Uživatelské jméno", @class = "form-control", @required = "required" })
+                    <div class="form-group col-md-12">
+                        @Html.TextBoxFor(model => model.Username, new { placeholder = "Uživatelské jméno", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group-lg col-md-6">
-                        @Html.PasswordFor(model => model.Password, new { placeholder = "Heslo", @class = "form-control", @required = "required" })
+                    <div class="form-group col-md-6">
+                        @Html.PasswordFor(model => model.Password, new { placeholder = "Heslo", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
+
                     </div>
-                    <div class="form-group-lg col-md-6">
-                        @Html.Password("ConfirmPassword", "", new { @class="form-control",placeholder="Heslo znovu", @required="required"})
+                    <div class="form-group col-md-6">
+                        @Html.Password("ConfirmPassword", "", new { @class = "form-control", placeholder = "Heslo znovu", @required = "required" })
                     </div>
+
                 </div>
 
                 <button class="btn btn-success btn-block" type="submit">Zaregistrovat se</button>

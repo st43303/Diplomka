@@ -67,7 +67,7 @@
                             </div>
                         </td>
                     </tr>
-                    foreach (var son in item.Scenario11)
+                    foreach (var son in item.Scenario11.Where(c=>c.Done))
                     {
                         <tr data-tt-id="@son.ID" data-tt-parent-id="@item.ID">
                             <td>

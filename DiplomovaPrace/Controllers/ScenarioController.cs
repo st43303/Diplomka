@@ -60,11 +60,13 @@ namespace DiplomovaPrace.Controllers
             if (db.Scenarios.Where(s => s.ID_UseCase == idUseCase).Count()==0)
             {
                 scenario = PrepareScenario(projectID, idUseCase,null);
+                ViewBag.AlterScenario = false;
             }
             else
             {
                 int? ID_MainScenario = db.Scenarios.Where(s => s.ID_UseCase == idUseCase && s.Done == true && s.ID_MainScenario == null).FirstOrDefault().ID;
                 scenario = PrepareScenario(projectID, idUseCase,ID_MainScenario);
+                ViewBag.AlterScenario = true;
 
             }
         
@@ -149,8 +151,17 @@ namespace DiplomovaPrace.Controllers
             scenario.Done = false;
             scenario.ID_Scenario = db.Scenarios.Where(s => s.ID_Project == projectID).Count() + 1;
             scenario.ID_MainScenario = ID_MainScenario;
-            db.Scenarios.Add(scenario);
-            db.SaveChanges();
+
+            try
+            {
+                db.Scenarios.Add(scenario);
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        
             return scenario;
         }
 

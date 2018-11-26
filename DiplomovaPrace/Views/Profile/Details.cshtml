@@ -22,11 +22,11 @@
         <div class="table-responsive">
             <table class="table" style="background: none">
                 <tr>
-                    <td>Jméno a příjmení:</td>
+                    <td>@Html.DisplayNameFor(model => model.Name) @Html.DisplayNameFor(model => model.Surname)</td>
                     <td>@Model.Name @Model.Surname</td>
                 </tr>
                 <tr>
-                    <td>Datum narození:</td>
+                    <td>@Html.DisplayNameFor(model=>model.BirthDate)</td>
                     @if (Model.BirthDate != null)
                     {
                         <td>@Model.BirthDate.Value.ToShortDateString()</td>
@@ -37,15 +37,15 @@
                     }
                 </tr>
                 <tr>
-                    <td>Město:</td>
+                    <td>@Html.DisplayNameFor(model=>model.City)</td>
                     <td>@Model.City</td>
                 </tr>
                 <tr>
-                    <td>Datum registrace:</td>
+                    <td>@Html.DisplayNameFor(model=>model.RegistrationDate)</td>
                     <td>@Model.RegistrationDate.ToShortDateString()</td>
                 </tr>
                 <tr>
-                    <td>Poslední přihlášení:</td>
+                    <td>@Html.DisplayNameFor(model=>model.LastActive)</td>
                     @if (Model.LastActive != null)
                     {
                         <td>@Model.LastActive.Value.ToString()</td>
@@ -98,10 +98,10 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayName("Název projektu")
+                                    @Html.DisplayNameFor(model=>model.Projects.FirstOrDefault().Name)
                                 </th>
                                 <th>
-                                    @Html.DisplayName("Autor projektu")
+                                    @Html.DisplayNameFor(model=>model.Projects.FirstOrDefault().ID_Author)
                                 </th>
                                 <th></th>
                             </tr>

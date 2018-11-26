@@ -17,7 +17,7 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayName("Název kategorie")
+                        @Html.DisplayNameFor(model=>model.Name)
                     </th>
                     <th>
                         @Html.DisplayName("Počet požadavků v této kategorii")
@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="modal-body">
-                    @Html.Label("Název kategorie")
+                    @Html.LabelFor(model=>model.FirstOrDefault().Name)
                     @Html.Editor("Name", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                 </div>
                 <div class="modal-footer">
@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="modal-body">
-                    @Html.Label("Název kategorie")
+                    @Html.LabelFor(model=>model.FirstOrDefault().Name)
                     @Html.Hidden("ID")
                     @Html.Editor("editCategory", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                 </div>

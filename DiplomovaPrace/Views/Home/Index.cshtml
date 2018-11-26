@@ -25,21 +25,19 @@
                     else
                     {
                         <th>
-                            @Html.DisplayName("Název projektu")
+                            @Html.DisplayNameFor(model=>model.Name)
                         </th>
                         <th>
-                            @Html.DisplayName("Popis projektu")
+                            @Html.DisplayNameFor(model=>model.Description)
                         </th>
                         <th>
-                            @Html.DisplayName("Datum vytvoření projektu")
+                            @Html.DisplayNameFor(model=>model.DateCreated)
                         </th>
                         <th>
                             @Html.DisplayName("Akce")
                         </th>
 
                     }
-
-
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +65,9 @@
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-sm btn-outline-danger" title="Odstranit projekt" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-info" title="Stáhnout dokumentaci"><i class="fa fa-file-pdf-o"></i></button>
                                 </div>
 
                             </div>

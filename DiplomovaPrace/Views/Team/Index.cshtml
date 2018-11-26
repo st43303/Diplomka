@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<DiplomovaPrace.Models.ProjectUser>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Členové teamu projektu "+Session["projectName"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,10 +21,7 @@
 
                 <div class="modal-body">
                     @Html.Label("Vyberte nového člena")
-
                     @Html.DropDownList("Contacts", null, htmlAttributes: new { @class = "form-control", @required = "required" })
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-block">Přidat člena</button>
@@ -40,13 +37,13 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayName("Jméno")
+                        @Html.DisplayNameFor(model=>model.User.Name)
                     </th>
                     <th>
-                        @Html.DisplayName("Příjmení")
+                        @Html.DisplayNameFor(model=>model.User.Surname)
                     </th>
                     <th>
-                        @Html.DisplayName("Autor projektu")
+                        @Html.DisplayNameFor(model=>model.Project.ID_Author)
                     </th>
                     <th></th>
                 </tr>

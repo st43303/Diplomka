@@ -22,22 +22,21 @@
                     else
                     {
                         <th>
-                            @Html.DisplayName("Název projektu")
+                            @Html.DisplayNameFor(model=>model.Project.Name)
                         </th>
                         <th>
-                            @Html.DisplayName("Autor projektu")
+                            @Html.DisplayNameFor(model=>model.Project.ID_Author)
                         </th>
                         <th>
-                            @Html.DisplayName("Popis projektu")
+                            @Html.DisplayNameFor(model=>model.Project.Description)
                         </th>
                         <th>
-                            @Html.DisplayName("Datum vytvoření projektu")
+                            @Html.DisplayNameFor(model=>model.Project.DateCreated)
                         </th>
                         <th>
                             @Html.DisplayName("Akce")
                         </th>
                     }
-
                 </tr>
             </thead>
             <tbody>

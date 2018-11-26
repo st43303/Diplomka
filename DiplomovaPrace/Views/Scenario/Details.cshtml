@@ -11,12 +11,12 @@
     <hr />
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.Label("ID")
+            @Html.LabelFor(model=>model.ID_Scenario)
             @Html.TextBoxFor(model => model.ID_Scenario, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Popis")
+            @Html.LabelFor(model=>model.Description)
             @Html.TextAreaFor(model => model.Description, 4, 3, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
         </div>
 
@@ -41,22 +41,21 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Vstupní podmínky")
+            @Html.LabelFor(model=>model.InCondition)
             @Html.TextBoxFor(model => model.InCondition, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
         </div>
 
         <div class="form-group">
-            @Html.Label("Hlavní scénář")
+            @Html.LabelFor(model=>model.Scenario1)
             <div class="form-control">
                 <div style="margin: 10px">
                     @Html.Raw(Model.Scenario1)
                 </div>
-
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Výstupní podmínky")
+            @Html.LabelFor(model=>model.OutCondition)
             @Html.TextBoxFor(model => model.OutCondition, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
         </div>
 
