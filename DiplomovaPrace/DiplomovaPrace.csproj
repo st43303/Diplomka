@@ -51,6 +51,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -159,6 +162,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\Database.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\NotificationSystem.cs" />
@@ -181,6 +185,9 @@
     <Compile Include="Models\ActorType.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActorView.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CategoryRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -199,7 +206,13 @@
     <Compile Include="Models\FriendshipAttributes.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\ProjectAttributes.cs" />
+    <Compile Include="Models\ProjectInfoView.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RequirementAttributes.cs" />
+    <Compile Include="Models\RequirementView.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ScenarioAttributes.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
@@ -227,6 +240,9 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ScenarioActor.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScenarioView.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SDTmodel.Context.cs">
@@ -257,6 +273,9 @@
     <Compile Include="Models\TaskHistory.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TeamView.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UseCase.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -265,6 +284,9 @@
     </Compile>
     <Compile Include="Models\UseCaseAttributes.cs" />
     <Compile Include="Models\UseCaseRequirement.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UseCaseView.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
@@ -1501,6 +1523,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="files\" />
+    <Folder Include="Views\Export\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

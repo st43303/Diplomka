@@ -63,6 +63,12 @@
         <AssociationConnector Association="SDTModel.FK_Task_Executor" />
         <EntityTypeShape EntityType="SDTModel.TaskHistory" Width="1.5" PointX="5.25" PointY="20.25" />
         <AssociationConnector Association="SDTModel.FK_TaskHistory_Project" />
+        <EntityTypeShape EntityType="SDTModel.ActorView" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SDTModel.ProjectInfoView" Width="1.5" PointX="8.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SDTModel.RequirementView" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SDTModel.ScenarioView" Width="1.5" PointX="11.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SDTModel.TeamView" Width="1.5" PointX="11.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SDTModel.UseCaseView" Width="1.5" PointX="11.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
