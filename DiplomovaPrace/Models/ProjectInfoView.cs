@@ -19,5 +19,6 @@ namespace DiplomovaPrace.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public int ID { get; set; }
+        public Nullable<System.DateTime> DateCreated { get; set; }
     }
 }

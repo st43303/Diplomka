@@ -185,9 +185,6 @@
     <Compile Include="Models\ActorType.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ActorView.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CategoryRequirement.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>

@@ -228,20 +228,11 @@
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SDT.dbo.ActorView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ActorView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="Type" Type="varchar" MaxLength="50" />
-          <Property Name="ID_Scenario" Type="int" />
-          <Property Name="UseCase" Type="varchar" MaxLength="50" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SDT.dbo.ProjectInfoView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ProjectInfoView">
           <Key>
+            
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ProjectName" Type="varchar" MaxLength="20" Nullable="false" />
@@ -249,11 +240,14 @@ warning 6002: The table/view 'SDT.dbo.ProjectInfoView' does not have a primary k
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Surname" Type="varchar" MaxLength="50" />
           <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SDT.dbo.RequirementView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RequirementView">
           <Key>
+            
+            
             <PropertyRef Name="ID_Project" />
           </Key>
           <Property Name="Category" Type="varchar" MaxLength="50" />
@@ -269,6 +263,8 @@ warning 6002: The table/view 'SDT.dbo.RequirementView' does not have a primary k
 warning 6002: The table/view 'SDT.dbo.ScenarioView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScenarioView">
           <Key>
+            
+            
             <PropertyRef Name="ID_Project" />
           </Key>
           <Property Name="ActorName" Type="varchar" MaxLength="50" />
@@ -300,6 +296,7 @@ warning 6002: The table/view 'SDT.dbo.TeamView' does not have a primary key defi
 warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UseCaseView">
           <Key>
+            
             <PropertyRef Name="ID_Project" />
           </Key>
           <Property Name="ActorName" Type="varchar" MaxLength="50" />
@@ -768,22 +765,14 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ActorView" EntityType="Self.ActorView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ActorView].[Name] AS [Name], 
-    [ActorView].[ID_Project] AS [ID_Project], 
-    [ActorView].[Type] AS [Type], 
-    [ActorView].[ID_Scenario] AS [ID_Scenario], 
-    [ActorView].[UseCase] AS [UseCase]
-    FROM [dbo].[ActorView] AS [ActorView]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ProjectInfoView" EntityType="Self.ProjectInfoView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ProjectInfoView].[ProjectName] AS [ProjectName], 
     [ProjectInfoView].[Description] AS [Description], 
     [ProjectInfoView].[Name] AS [Name], 
     [ProjectInfoView].[Surname] AS [Surname], 
-    [ProjectInfoView].[ID] AS [ID]
+    [ProjectInfoView].[ID] AS [ID], 
+    [ProjectInfoView].[DateCreated] AS [DateCreated]
     FROM [dbo].[ProjectInfoView] AS [ProjectInfoView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RequirementView" EntityType="Self.RequirementView" store:Type="Views" store:Schema="dbo">
@@ -1141,7 +1130,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
             <End Role="Project" EntitySet="Projects" />
             <End Role="TaskHistory" EntitySet="TaskHistories" />
           </AssociationSet>
-          <EntitySet Name="ActorViews" EntityType="SDTModel.ActorView" />
           <EntitySet Name="ProjectInfoViews" EntityType="SDTModel.ProjectInfoView" />
           <EntitySet Name="RequirementViews" EntityType="SDTModel.RequirementView" />
           <EntitySet Name="ScenarioViews" EntityType="SDTModel.ScenarioView" />
@@ -1873,16 +1861,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ActorView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Scenario" Type="Int32" />
-          <Property Name="UseCase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="ProjectInfoView">
           <Key>
             <PropertyRef Name="ID" />
@@ -1892,6 +1870,7 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="RequirementView">
           <Key>
@@ -2193,20 +2172,10 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ActorViews">
-            <EntityTypeMapping TypeName="SDTModel.ActorView">
-              <MappingFragment StoreEntitySet="ActorView">
-                <ScalarProperty Name="UseCase" ColumnName="UseCase" />
-                <ScalarProperty Name="ID_Scenario" ColumnName="ID_Scenario" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProjectInfoViews">
             <EntityTypeMapping TypeName="SDTModel.ProjectInfoView">
               <MappingFragment StoreEntitySet="ProjectInfoView">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

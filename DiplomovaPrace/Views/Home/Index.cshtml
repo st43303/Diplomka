@@ -27,12 +27,16 @@
                         <label class="form-check-label" for="check2">Požadavky</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("UseCase", false, htmlAttributes: new { @class = "form-check-input", @id = "check3" })
-                        <label class="form-check-label" for="check3">Případy užití</label>
+                        @Html.CheckBox("Actors", false, htmlAttributes: new { @class = "form-check-input", @id = "check3" })
+                        <label class="form-check-label" for="check3">Aktéři</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("Scenario", false, htmlAttributes: new { @class = "form-check-input", @id = "check4" })
-                        <label class="form-check-label" for="check4">Scénáře</label>
+                        @Html.CheckBox("UseCase", false, htmlAttributes: new { @class = "form-check-input", @id = "check4" })
+                        <label class="form-check-label" for="check4">Případy užití</label>
+                    </div>
+                    <div class="form-check">
+                        @Html.CheckBox("Scenario", false, htmlAttributes: new { @class = "form-check-input", @id = "check5" })
+                        <label class="form-check-label" for="check5">Scénáře</label>
                     </div>
                     @Html.Hidden("projectID")
 
