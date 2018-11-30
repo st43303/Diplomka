@@ -24,61 +24,57 @@ namespace DiplomovaPrace.Controllers
             {
                 case EnumNotification.CREATE_ACTOR:
                     message += CreateActor();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.EDIT_ACTOR:
                     message += EditActor();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.DELETE_ACTOR:
                     message += DeleteActor();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.CREATE_REQUIREMENT:
                     message += CreateRequirement();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.EDIT_REQUIREMENT:
                     message += EditRequirement();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.DELETE_REQUIREMENT:
                     message += DeleteRequirement();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.CREATE_USECASE:
                     message += CreateUseCase();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.EDIT_USECASE:
                     message += EditUseCase();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.DELETE_USECASE:
                     message += DeleteUseCase();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.CREATE_SCENARIO:
                     message += CreateScenario();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.EDIT_SCENARIO:
                     message += EditScenario();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.DELETE_SCENARIO:
                     message += DeleteScenario();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.CREATE_FILE:
                     message += CreateFile();
-                    message += projectName + ".";
                     break;
                 case EnumNotification.DELETE_FILE:
                     message += DeleteFile();
-                    message += projectName + ".";
+                    break;
+                case EnumNotification.CREATE_TASK:
+                    message += CreateTask();
+                    break;
+                case EnumNotification.CHANGE_TASK:
+                    message += ChangeTask();
+                    break;
+                case EnumNotification.DELETE_TASK:
+                    message += DeleteTask();
                     break;
             }
+            message += projectName + ".";
 
             foreach(ProjectUser projectUser in receivers)
             {
@@ -87,6 +83,7 @@ namespace DiplomovaPrace.Controllers
                 notification.ID_User = projectUser.ID_User;
                 notification.Message = message;
                 notification.URL = url;
+                notification.DateNotification = DateTime.Now;
                 Database.GetDatabase().Notifications.Add(notification);
                 Database.GetDatabase().SaveChanges();
             }
@@ -162,6 +159,21 @@ namespace DiplomovaPrace.Controllers
         private static string DeleteFile()
         {
             return " odstranil svůj soubor z projektu ";
+        }
+
+        private static string CreateTask()
+        {
+            return " vytvořil nový úkol v projektu ";
+        }
+
+        private static string ChangeTask()
+        {
+            return " změnil stav úkolu v projektu ";
+        }
+
+        private static string DeleteTask()
+        {
+            return " odstranil úkol z projektu ";
         }
 
     }

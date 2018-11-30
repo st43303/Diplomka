@@ -149,7 +149,9 @@ namespace DiplomovaPrace.Controllers
                 db.Tasks.Add(task);
                 db.SaveChanges();
                 updateTaskHistory(projectID, 1,0,true);
-            }catch(Exception ex)
+                NotificationSystem.SendNotification(EnumNotification.CREATE_TASK, "/Task");
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -283,7 +285,9 @@ namespace DiplomovaPrace.Controllers
             {
                 db.Entry(task).State = EntityState.Modified;
                 db.SaveChanges();
-            }catch(Exception ex)
+                NotificationSystem.SendNotification(EnumNotification.CHANGE_TASK, "/Task");
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -388,7 +392,9 @@ namespace DiplomovaPrace.Controllers
             {
                 db.Tasks.Remove(task);
                 db.SaveChanges();
-            }catch(Exception ex)
+                NotificationSystem.SendNotification(EnumNotification.DELETE_TASK, "/Task");
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

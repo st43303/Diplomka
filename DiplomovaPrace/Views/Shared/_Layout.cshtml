@@ -87,7 +87,7 @@
 
                                 <li><h3 class="menu-title">ČLENOVÉ PROJEKTU</h3></li><!-- /.menu-title -->
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Team")">
-                                    <i class="menu-icon fa fa-users"></i><a href="@Url.Action("Index","Team")">Team</a>
+                                    <i class="menu-icon fa fa-users"></i><a href="@Url.Action("Index","Team")">Členové týmu</a>
                                 </li>
                             </ul>
                         </li>
@@ -133,10 +133,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="user-avatar rounded-circle" src="@Session["avatar"]" alt="User Avatar">
                         </a>
-                        <div class="user-menu dropdown-menu">
-                            <a class="nav-link nav-hoover" href="@Url.Action("Index","Profile")"> Můj profil</a>
-                            <a class="nav-link nav-hoover" href="@Url.Action("Index","Contacts")"> Kontakty</a>
-                            <a class="nav-link nav-hoover" href="@Url.Action("Logout","Account")"> Odhlásit se</a>
+                        <div class="user-menu dropdown-menu" style="padding-left: 0; padding-right: 0">
+                            <a class="nav-link nav-hoover" href="@Url.Action("Index","Profile")"><span class="nav-text"><i class="fa fa-user" style="margin-right: 10px"></i> Můj profil</span></a>
+                            <a class="nav-link nav-hoover" href="@Url.Action("Index","Contacts")"><span class="nav-text"><i class="fa fa-users" style="margin-right: 10px"></i> Kontakty</span></a>
+                            <a class="nav-link nav-hoover" href="@Url.Action("Logout","Account")"><span class="nav-text"><i class="fa fa-power-off" style="margin-right: 10px"></i> Odhlásit se</span></a>
                         </div>
                     </div>
                     <div class="img-thumbnail float-right" style="color: #e74c3c; border: none">

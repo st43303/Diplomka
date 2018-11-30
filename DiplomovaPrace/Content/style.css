@@ -40,14 +40,16 @@ body {
 }
 
 .nav-hoover:hover {
-    color: #e74c3c !important;
-    margin-left: 5px;
-    font-weight: 700;
+    width: 100%;
+    background-color: rgb(222,226,230);
+    color: #272c33;
 }
-.nav-hoover{
-    border-style: outset;
-    border-radius: 5px;
-    border-color: cornsilk;
+.nav-hoover {
+    color: #878787;    
+}
+
+.nav-text{
+    margin-left: 5px;
 }
 
 .btn-group {

@@ -67,6 +67,7 @@
           <Property Name="Message" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="URL" Type="varchar" MaxLength="50" />
           <Property Name="Avatar" Type="varchar" MaxLength="50" />
+          <Property Name="DateNotification" Type="datetime" />
         </EntityType>
         <EntityType Name="PriorityRequirement">
           <Key>
@@ -88,8 +89,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="400" />
           <Property Name="ID_Author" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
         </EntityType>
@@ -114,7 +115,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_Requirement" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Text" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Text" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="ID_ReqType" Type="int" Nullable="false" />
           <Property Name="ID_Project" Type="int" Nullable="false" />
           <Property Name="ID_Category" Type="int" />
@@ -128,12 +129,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_Scenario" Type="int" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
           <Property Name="InCondition" Type="varchar" MaxLength="100" />
           <Property Name="OutCondition" Type="varchar" MaxLength="100" />
           <Property Name="ID_UseCase" Type="int" Nullable="false" />
           <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="Scenario" Type="varchar" MaxLength="300" />
+          <Property Name="Scenario" Type="varchar" MaxLength="1000" />
           <Property Name="Done" Type="bit" Nullable="false" />
           <Property Name="ID_MainScenario" Type="int" />
         </EntityType>
@@ -225,85 +226,6 @@
           <Property Name="BirthDate" Type="datetime" />
           <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
           <Property Name="LastActive" Type="datetime" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.ActorView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.ProjectInfoView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ProjectInfoView">
-          <Key>
-            
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ProjectName" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="Surname" Type="varchar" MaxLength="50" />
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="DateCreated" Type="datetime" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.RequirementView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="RequirementView">
-          <Key>
-            
-            
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="Category" Type="varchar" MaxLength="50" />
-          <Property Name="Priority" Type="varchar" MaxLength="50" />
-          <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="Type" Type="varchar" MaxLength="50" />
-          <Property Name="ID_Requirement" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Text" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Source" Type="varchar" MaxLength="100" />
-          <Property Name="Status" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.ScenarioView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="ScenarioView">
-          <Key>
-            
-            
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ActorName" Type="varchar" MaxLength="50" />
-          <Property Name="ActorType" Type="varchar" MaxLength="50" />
-          <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="ID_Scenario" Type="int" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="50" />
-          <Property Name="InCondition" Type="varchar" MaxLength="100" />
-          <Property Name="OutCondition" Type="varchar" MaxLength="100" />
-          <Property Name="Text" Type="varchar" MaxLength="300" />
-          <Property Name="Done" Type="bit" Nullable="false" />
-          <Property Name="ID_MainScenario" Type="int" />
-          <Property Name="UseCaseName" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.TeamView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TeamView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="Surname" Type="varchar" MaxLength="50" />
-          <Property Name="City" Type="varchar" MaxLength="50" />
-          <Property Name="Avatar" Type="varchar" MaxLength="50" />
-          <Property Name="BirthDate" Type="datetime" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="UseCaseView">
-          <Key>
-            
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ActorName" Type="varchar" MaxLength="50" />
-          <Property Name="ID_Project" Type="int" Nullable="false" />
-          <Property Name="ID_Requirement" Type="varchar" MaxLength="50" />
-          <Property Name="UseCaseName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="150" />
         </EntityType>
         <Association Name="FK_Actor_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1">
@@ -765,62 +687,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProjectInfoView" EntityType="Self.ProjectInfoView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ProjectInfoView].[ProjectName] AS [ProjectName], 
-    [ProjectInfoView].[Description] AS [Description], 
-    [ProjectInfoView].[Name] AS [Name], 
-    [ProjectInfoView].[Surname] AS [Surname], 
-    [ProjectInfoView].[ID] AS [ID], 
-    [ProjectInfoView].[DateCreated] AS [DateCreated]
-    FROM [dbo].[ProjectInfoView] AS [ProjectInfoView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="RequirementView" EntityType="Self.RequirementView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [RequirementView].[Category] AS [Category], 
-    [RequirementView].[Priority] AS [Priority], 
-    [RequirementView].[ID_Project] AS [ID_Project], 
-    [RequirementView].[Type] AS [Type], 
-    [RequirementView].[ID_Requirement] AS [ID_Requirement], 
-    [RequirementView].[Text] AS [Text], 
-    [RequirementView].[Source] AS [Source], 
-    [RequirementView].[Status] AS [Status]
-    FROM [dbo].[RequirementView] AS [RequirementView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ScenarioView" EntityType="Self.ScenarioView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ScenarioView].[ActorName] AS [ActorName], 
-    [ScenarioView].[ActorType] AS [ActorType], 
-    [ScenarioView].[ID_Project] AS [ID_Project], 
-    [ScenarioView].[ID_Scenario] AS [ID_Scenario], 
-    [ScenarioView].[Description] AS [Description], 
-    [ScenarioView].[InCondition] AS [InCondition], 
-    [ScenarioView].[OutCondition] AS [OutCondition], 
-    [ScenarioView].[Text] AS [Text], 
-    [ScenarioView].[Done] AS [Done], 
-    [ScenarioView].[ID_MainScenario] AS [ID_MainScenario], 
-    [ScenarioView].[UseCaseName] AS [UseCaseName]
-    FROM [dbo].[ScenarioView] AS [ScenarioView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TeamView" EntityType="Self.TeamView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TeamView].[ID_Project] AS [ID_Project], 
-    [TeamView].[Name] AS [Name], 
-    [TeamView].[Surname] AS [Surname], 
-    [TeamView].[City] AS [City], 
-    [TeamView].[Avatar] AS [Avatar], 
-    [TeamView].[BirthDate] AS [BirthDate]
-    FROM [dbo].[TeamView] AS [TeamView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UseCaseView" EntityType="Self.UseCaseView" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UseCaseView].[ActorName] AS [ActorName], 
-    [UseCaseView].[ID_Project] AS [ID_Project], 
-    [UseCaseView].[ID_Requirement] AS [ID_Requirement], 
-    [UseCaseView].[UseCaseName] AS [UseCaseName], 
-    [UseCaseView].[Description] AS [Description]
-    FROM [dbo].[UseCaseView] AS [UseCaseView]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Actor_Project" Association="Self.FK_Actor_Project">
             <End Role="Project" EntitySet="Project" />
             <End Role="Actor" EntitySet="Actor" />
@@ -1130,11 +996,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
             <End Role="Project" EntitySet="Projects" />
             <End Role="TaskHistory" EntitySet="TaskHistories" />
           </AssociationSet>
-          <EntitySet Name="ProjectInfoViews" EntityType="SDTModel.ProjectInfoView" />
-          <EntitySet Name="RequirementViews" EntityType="SDTModel.RequirementView" />
-          <EntitySet Name="ScenarioViews" EntityType="SDTModel.ScenarioView" />
-          <EntitySet Name="TeamViews" EntityType="SDTModel.TeamView" />
-          <EntitySet Name="UseCaseViews" EntityType="SDTModel.UseCaseView" />
         </EntityContainer>
         <EntityType Name="Actor">
           <Key>
@@ -1176,14 +1037,15 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="User" Relationship="SDTModel.FK_Notification_User" FromRole="Notification" ToRole="User" />
+          <Property Name="DateNotification" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
           <Property Name="ID_Author" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Actors" Relationship="SDTModel.FK_Actor_Project" FromRole="Project" ToRole="Actor" />
           <NavigationProperty Name="Project1" Relationship="SDTModel.FK_Project_Project" FromRole="Project" ToRole="Project1" />
@@ -1223,7 +1085,7 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_Requirement" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="ID_ReqType" Type="Int32" Nullable="false" />
           <Property Name="ID_Project" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="SDTModel.FK_Requirement_Project" FromRole="Requirement" ToRole="Project" />
@@ -1243,12 +1105,12 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_Scenario" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="InCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="OutCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ID_UseCase" Type="Int32" Nullable="false" />
           <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="Scenario1" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Scenario1" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Project" Relationship="SDTModel.FK_Scenario_Project" FromRole="Scenario" ToRole="Project" />
           <NavigationProperty Name="UseCase" Relationship="SDTModel.FK_Scenario_UseCase" FromRole="Scenario" ToRole="UseCase" />
           <NavigationProperty Name="ScenarioActors" Relationship="SDTModel.FK_ScenarioActor_Scenario" FromRole="Scenario" ToRole="ScenarioActor" />
@@ -1861,67 +1723,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ProjectInfoView">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ProjectName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="RequirementView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Requirement" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ScenarioView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ActorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ActorType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="ID_Scenario" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="InCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="OutCondition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Text" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Name="Done" Type="Boolean" Nullable="false" />
-          <Property Name="ID_MainScenario" Type="Int32" />
-          <Property Name="UseCaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="TeamView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="BirthDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="UseCaseView">
-          <Key>
-            <PropertyRef Name="ID_Project" />
-          </Key>
-          <Property Name="ActorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="ID_Requirement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UseCaseName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1958,6 +1759,7 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="SDTModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="DateNotification" ColumnName="DateNotification" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
@@ -2169,72 +1971,6 @@ warning 6002: The table/view 'SDT.dbo.UseCaseView' does not have a primary key d
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProjectInfoViews">
-            <EntityTypeMapping TypeName="SDTModel.ProjectInfoView">
-              <MappingFragment StoreEntitySet="ProjectInfoView">
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RequirementViews">
-            <EntityTypeMapping TypeName="SDTModel.RequirementView">
-              <MappingFragment StoreEntitySet="RequirementView">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="ID_Requirement" ColumnName="ID_Requirement" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="Category" ColumnName="Category" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ScenarioViews">
-            <EntityTypeMapping TypeName="SDTModel.ScenarioView">
-              <MappingFragment StoreEntitySet="ScenarioView">
-                <ScalarProperty Name="UseCaseName" ColumnName="UseCaseName" />
-                <ScalarProperty Name="ID_MainScenario" ColumnName="ID_MainScenario" />
-                <ScalarProperty Name="Done" ColumnName="Done" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="OutCondition" ColumnName="OutCondition" />
-                <ScalarProperty Name="InCondition" ColumnName="InCondition" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ID_Scenario" ColumnName="ID_Scenario" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-                <ScalarProperty Name="ActorType" ColumnName="ActorType" />
-                <ScalarProperty Name="ActorName" ColumnName="ActorName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TeamViews">
-            <EntityTypeMapping TypeName="SDTModel.TeamView">
-              <MappingFragment StoreEntitySet="TeamView">
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UseCaseViews">
-            <EntityTypeMapping TypeName="SDTModel.UseCaseView">
-              <MappingFragment StoreEntitySet="UseCaseView">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="UseCaseName" ColumnName="UseCaseName" />
-                <ScalarProperty Name="ID_Requirement" ColumnName="ID_Requirement" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-                <ScalarProperty Name="ActorName" ColumnName="ActorName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

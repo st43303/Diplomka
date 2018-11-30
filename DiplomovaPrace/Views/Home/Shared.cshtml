@@ -51,7 +51,7 @@
                             <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.Project.ID_Author})">@item.Project.User.Name @item.Project.User.Surname</a>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Project.Description)
+                            @Html.DisplayFor(modelItem => item.Project.DescriptionPreview)
                         </td>
                         <td>
                             <p>@item.Project.DateCreated.Value.ToShortDateString()</p>

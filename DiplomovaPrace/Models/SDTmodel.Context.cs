@@ -48,10 +48,5 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<StateTask> StateTasks { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TaskHistory> TaskHistories { get; set; }
-        public virtual DbSet<ProjectInfoView> ProjectInfoViews { get; set; }
-        public virtual DbSet<RequirementView> RequirementViews { get; set; }
-        public virtual DbSet<ScenarioView> ScenarioViews { get; set; }
-        public virtual DbSet<TeamView> TeamViews { get; set; }
-        public virtual DbSet<UseCaseView> UseCaseViews { get; set; }
     }
 }

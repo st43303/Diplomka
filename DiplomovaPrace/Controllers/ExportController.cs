@@ -21,7 +21,7 @@ namespace DiplomovaPrace.Controllers
 
 
         [HttpPost]
-        public ActionResult Index(bool Team, bool Requirement, bool UseCase, bool Scenario, bool Actors, int projectID)
+        public ActionResult Index(bool Team, bool Requirement, bool UseCase, bool Scenario, bool Actors, bool Tasks, int projectID)
         {
             int userID = (int)Session["userID"];
             var user = db.Users.Find(userID);
@@ -51,6 +51,12 @@ namespace DiplomovaPrace.Controllers
             {
                 document.NewPage();
                 document.Add(tableTeam(projectID));
+            }
+
+            if (Tasks)
+            {
+                document.NewPage();
+                document.Add(tableTasks(projectID));
             }
 
             if (Requirement)
@@ -114,12 +120,12 @@ namespace DiplomovaPrace.Controllers
             tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
-            ProjectInfoView project = db.ProjectInfoViews.Find(projectID);
+            Project project = db.Projects.Find(projectID);
 
             string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
-            tableLayout.AddCell(new PdfPCell(new Phrase(project.ProjectName, new Font(bf, 25, Font.BOLD, BaseColor.BLACK)))
+            tableLayout.AddCell(new PdfPCell(new Phrase(project.Name, new Font(bf, 25, Font.BOLD, BaseColor.BLACK)))
             {
                 Colspan = 12,
                 Border = 0,
@@ -135,7 +141,7 @@ namespace DiplomovaPrace.Controllers
                 PaddingBottom = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
-            tableLayout.AddCell(new PdfPCell(new Phrase("Autor projektu: " + project.Name + " " + project.Surname, new Font(bf, 11, Font.NORMAL, BaseColor.BLACK)))
+            tableLayout.AddCell(new PdfPCell(new Phrase("Autor projektu: " + project.User.Name + " " + project.User.Surname, new Font(bf, 11, Font.NORMAL, BaseColor.BLACK)))
             {
                 Colspan = 12,
                 Border = 0,
@@ -150,6 +156,64 @@ namespace DiplomovaPrace.Controllers
                 Padding = 5,
                 HorizontalAlignment = Element.ALIGN_RIGHT,
             });
+
+            return tableLayout;
+        }
+
+        private PdfPTable tableTasks(int projectID)
+        {
+            PdfPTable tableLayout = new PdfPTable(7);
+            float[] headers = { 50, 50, 100, 50, 50, 60, 50 };
+            tableLayout.SetWidths(headers);
+            tableLayout.WidthPercentage = 100;
+            tableLayout.HeaderRows = 1;
+
+            List<Task> tasks = db.Tasks.Where(t => t.ID_Project == projectID).ToList();
+            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+            tableLayout.AddCell(new PdfPCell(new Phrase("Seznam úkolů", new Font(bf, 20, Font.BOLD, BaseColor.BLACK)))
+            {
+                Colspan = 12,
+                Border = 0,
+                PaddingBottom = 20,
+                HorizontalAlignment = Element.ALIGN_CENTER
+            });
+
+            AddCellToHeader(tableLayout, "Zadavatel");
+            AddCellToHeader(tableLayout, "Vyřizovatel");
+            AddCellToHeader(tableLayout, "Úkol");
+            AddCellToHeader(tableLayout, "Deadline");
+            AddCellToHeader(tableLayout, "Priorita");
+            AddCellToHeader(tableLayout, "Stav");
+            AddCellToHeader(tableLayout, "Dokončeno");
+
+            foreach(var task in tasks)
+            {
+                AddCellToBody(tableLayout, task.User.Name+" "+task.User.Surname);
+                AddCellToBody(tableLayout, task.User1.Name + " " + task.User1.Surname);
+                AddCellToBody(tableLayout, task.Text);
+                if (task.Deadline.HasValue)
+                {
+                    AddCellToBody(tableLayout, task.Deadline.Value.ToShortDateString());
+                }
+                else
+                {
+                    AddCellToBody(tableLayout, "");
+                }
+                
+                AddCellToBody(tableLayout, task.PriorityTask.Priority);
+                AddCellToBody(tableLayout, task.StateTask.State);
+                if (task.DateFinished.HasValue)
+                {
+                    AddCellToBody(tableLayout, task.DateFinished.Value.ToShortDateString());
+                }
+                else
+                {
+                    AddCellToBody(tableLayout, "");
+                }
+
+            }
 
             return tableLayout;
         }
@@ -184,7 +248,15 @@ namespace DiplomovaPrace.Controllers
             {
                 AddCellToBody(tableLayout, t.Name);
                 AddCellToBody(tableLayout, t.Surname);
-                AddCellToBody(tableLayout, t.BirthDate.Value.ToShortDateString());
+                if (t.BirthDate.HasValue)
+                {
+                    AddCellToBody(tableLayout, t.BirthDate.Value.ToShortDateString());
+                }
+                else
+                {
+                    AddCellToBody(tableLayout, "");
+                }
+                
                 AddCellToBody(tableLayout, t.City);
                 AddCellToBody(tableLayout, t.RegistrationDate.ToShortDateString());
             }
@@ -199,7 +271,7 @@ namespace DiplomovaPrace.Controllers
             tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
-            List<RequirementView> requirements = db.RequirementViews.Where(r => r.ID_Project == projectID).AsNoTracking().ToList();
+            List<Requirement> requirements = db.Requirements.Where(r => r.ID_Project == projectID).ToList();
 
             string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -223,11 +295,11 @@ namespace DiplomovaPrace.Controllers
             {
                 AddCellToBody(tableLayout, req.ID_Requirement);
                 AddCellToBody(tableLayout, req.Text);
-                AddCellToBody(tableLayout, req.Type);
-                AddCellToBody(tableLayout, req.Category);
-                AddCellToBody(tableLayout, req.Priority);
+                AddCellToBody(tableLayout, req.ReqType.Type);
+                AddCellToBody(tableLayout, req.CategoryRequirement.Name);
+                AddCellToBody(tableLayout, req.PriorityRequirement.Priority);
                 AddCellToBody(tableLayout, req.Source);
-                AddCellToBody(tableLayout, req.Status);
+                AddCellToBody(tableLayout, req.StatusRequirement.Status);
             }
             return tableLayout;
         }

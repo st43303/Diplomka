@@ -105,8 +105,9 @@ namespace DiplomovaPrace.Controllers
         public JsonResult GetNotifications()
         {
             var userID = (int)Session["userID"];
-            var notifications = db.Notifications.Where(n => n.ID_User == userID);
-            var output = notifications.Select(s => new { s.Message, s.URL, s.ID, s.Avatar });
+            List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i=>i.ID).ToList();
+
+            var output = notifications.Select(s => new { Message=s.Message+" "+s.DateNotification.Value.ToShortDateString() + " "+s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
             return new JsonResult { Data = output, JsonRequestBehavior= JsonRequestBehavior.AllowGet };
 
         }

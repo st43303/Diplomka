@@ -203,13 +203,7 @@
     <Compile Include="Models\FriendshipAttributes.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\ProjectAttributes.cs" />
-    <Compile Include="Models\ProjectInfoView.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\RequirementAttributes.cs" />
-    <Compile Include="Models\RequirementView.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ScenarioAttributes.cs" />
     <Compile Include="Models\Notification.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
@@ -237,9 +231,6 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ScenarioActor.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ScenarioView.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SDTmodel.Context.cs">
@@ -270,9 +261,6 @@
     <Compile Include="Models\TaskHistory.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TeamView.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UseCase.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -281,9 +269,6 @@
     </Compile>
     <Compile Include="Models\UseCaseAttributes.cs" />
     <Compile Include="Models\UseCaseRequirement.cs">
-      <DependentUpon>SDTmodel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UseCaseView.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">

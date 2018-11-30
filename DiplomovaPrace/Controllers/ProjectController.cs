@@ -139,7 +139,8 @@ namespace DiplomovaPrace.Controllers
             {
                 return RedirectToAction("Index","Home");
             }
-            List<User> listContacts = GetContacts(userID,id);
+            LinkedList<User> listContacts = new LinkedList<User>(GetContacts(userID,id));
+            listContacts.AddFirst(new Models.User() { ID = 0, Name = "Vyberte", Surname = "" });
             ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
             ViewBag.Team = GetTeam(id, userID);
 
@@ -153,7 +154,7 @@ namespace DiplomovaPrace.Controllers
             old.Name = project.Name;
             old.Description = project.Description;
           
-            if (Contacts != null)
+            if (Contacts != 0)
             {
                 ProjectUser projectUser = new ProjectUser();
                 projectUser.ID_Project = project.ID;

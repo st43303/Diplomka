@@ -158,11 +158,11 @@
                                 <div class="form-group">
                                     @if (item.ID_User_Creator == (int)Session["userID"] || item.ID_User_Executor == (int)Session["userID"])
                                     {
-                                        <button class="btn btn-sm btn-outline-dark" type="button" data-toggle="modal" data-target="#modalEdit" title="Zobrazit úkol" onclick="location.href='javascript:OpenDialog(@item.ID,@item.ID_State)'"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-outline-dark" type="button" data-toggle="modal" data-target="#modalEdit" title="Změnit stav úkolu" onclick="location.href='javascript:OpenDialog(@item.ID,@item.ID_State)'"><i class="fa fa-eye"></i></button>
                                     }
                                     else
                                     {
-                                        <button class="btn btn-sm btn-outline-dark" title="Zobrazit úkol" disabled><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-outline-dark" title="Tento úkol vám nenáleží" disabled><i class="fa fa-eye"></i></button>
                                     }
                                 </div>
                                 <div class="form-group">
