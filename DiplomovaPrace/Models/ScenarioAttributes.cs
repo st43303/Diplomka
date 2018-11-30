@@ -21,7 +21,7 @@ namespace DiplomovaPrace.Models
         public int ID_Scenario { get; set; }
 
         [DisplayName("Popis")]
-        [StringLength(50, ErrorMessage = "Maximální délka je 50 znaků")]
+        [StringLength(100, ErrorMessage = "Maximální délka je 100 znaků")]
         public string Description { get; set; }
 
         [DisplayName("Vstupní podmínky")]
@@ -36,7 +36,7 @@ namespace DiplomovaPrace.Models
         public int ID_UseCase { get; set; }
 
         [DisplayName("Hlavní scénář")]
-        [StringLength(300,ErrorMessage ="Maximální délka je 300 znaků")]
+        [StringLength(1000,ErrorMessage ="Maximální délka je 1000 znaků")]
         [AllowHtml]
         public string Scenario1 { get; set; }
 

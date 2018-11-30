@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,12 +31,14 @@ namespace DiplomovaPrace.Controllers
             StringBuilder status = new StringBuilder("");
             string fileName = "Dokumentace " + DateTime.Now.ToShortDateString() + ".pdf";
             document = new Document();
-            document.SetMargins(0, 0, 0, 0);
+            document.SetMargins(60, 60, 60, 60);
 
 
             string strAttachment = Server.MapPath("~/Downloads/" + fileName);
             pdfWriter = PdfWriter.GetInstance(document, workStream);
             pdfWriter.CloseStream = false;
+            PageEventHelper pageEvent = new PageEventHelper();
+            pdfWriter.PageEvent = pageEvent;
             document.Open();
 
             document.AddAuthor(user.Name + " " + user.Surname);
@@ -75,14 +78,21 @@ namespace DiplomovaPrace.Controllers
  
                 for(int i = 0; i < scenarios.Count; i++)
                 {
+                    Scenario scenario = scenarios[i];
+                    List<Scenario> alternativeScenarios = db.Scenarios.Where(a => a.ID_MainScenario == scenario.ID && a.Done).ToList();
                     document.NewPage();
                     if (i == 0)
                     {
-                        document.Add(tableScenarios(scenarios[i],true));
+                        document.Add(tableScenarios(scenario,true,false));
                     }
                     else
                     {
-                        document.Add(tableScenarios(scenarios[i], false));
+                        document.Add(tableScenarios(scenario, false,false));
+                    }
+                    foreach(var alt in alternativeScenarios)
+                    {
+                        document.NewPage();
+                        document.Add(tableScenarios(alt, false, true));
                     }
                 }
                 
@@ -101,7 +111,7 @@ namespace DiplomovaPrace.Controllers
             PdfPTable tableLayout = new PdfPTable(1);
             float[] headers = { 100 };
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
             ProjectInfoView project = db.ProjectInfoViews.Find(projectID);
@@ -109,11 +119,11 @@ namespace DiplomovaPrace.Controllers
             string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
-            tableLayout.AddCell(new PdfPCell(new Phrase(project.ProjectName + " - dokumentace", new Font(bf, 25, Font.BOLD, BaseColor.BLACK)))
+            tableLayout.AddCell(new PdfPCell(new Phrase(project.ProjectName, new Font(bf, 25, Font.BOLD, BaseColor.BLACK)))
             {
                 Colspan = 12,
                 Border = 0,
-                PaddingTop = 250,
+                PaddingTop = 150,
                 PaddingBottom = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
@@ -133,7 +143,7 @@ namespace DiplomovaPrace.Controllers
                 HorizontalAlignment = Element.ALIGN_RIGHT,
             });
 
-            tableLayout.AddCell(new PdfPCell(new Phrase("Datum zahájení projektu: " + project.DateCreated.Value.ToShortDateString(), new Font(bf, 11, Font.NORMAL, BaseColor.BLACK)))
+            tableLayout.AddCell(new PdfPCell(new Phrase("Datum založení projektu: " + project.DateCreated.Value.ToShortDateString(), new Font(bf, 11, Font.NORMAL, BaseColor.BLACK)))
             {
                 Colspan = 12,
                 Border = 0,
@@ -146,13 +156,13 @@ namespace DiplomovaPrace.Controllers
 
         private PdfPTable tableTeam(int projectID)
         {
-            PdfPTable tableLayout = new PdfPTable(4);
-            float[] headers = { 50,50,50,50};
+            PdfPTable tableLayout = new PdfPTable(5);
+            float[] headers = { 50,50,50,50,50};
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
-            List<TeamView> team = db.TeamViews.Where(r => r.ID_Project == projectID).AsNoTracking().ToList();
+            List<User> team = db.ProjectUsers.Where(p => p.ID_Project == projectID).Select(s => s.User).ToList();
             string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
@@ -161,7 +171,6 @@ namespace DiplomovaPrace.Controllers
                 Colspan = 12,
                 Border = 0,
                 PaddingBottom = 20,
-                PaddingTop = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
 
@@ -169,6 +178,7 @@ namespace DiplomovaPrace.Controllers
             AddCellToHeader(tableLayout, "Příjmení");
             AddCellToHeader(tableLayout, "Datum narození");
             AddCellToHeader(tableLayout, "Bydliště");
+            AddCellToHeader(tableLayout, "Datum registrace");
 
             foreach(var t in team)
             {
@@ -176,6 +186,7 @@ namespace DiplomovaPrace.Controllers
                 AddCellToBody(tableLayout, t.Surname);
                 AddCellToBody(tableLayout, t.BirthDate.Value.ToShortDateString());
                 AddCellToBody(tableLayout, t.City);
+                AddCellToBody(tableLayout, t.RegistrationDate.ToShortDateString());
             }
 
             return tableLayout;
@@ -185,7 +196,7 @@ namespace DiplomovaPrace.Controllers
             PdfPTable tableLayout = new PdfPTable(7);
             float[] headers = { 50, 100, 50, 50, 50, 50, 50 };
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
             List<RequirementView> requirements = db.RequirementViews.Where(r => r.ID_Project == projectID).AsNoTracking().ToList();
@@ -197,7 +208,6 @@ namespace DiplomovaPrace.Controllers
                 Colspan = 12,
                 Border = 0,
                 PaddingBottom = 20,
-                PaddingTop = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
 
@@ -222,12 +232,12 @@ namespace DiplomovaPrace.Controllers
             return tableLayout;
         }
       
-        private PdfPTable tableScenarios(Scenario scenario,bool first)
+        private PdfPTable tableScenarios(Scenario scenario,bool first, bool alternate)
         {
             PdfPTable tableLayout = new PdfPTable(1);
             float[] headers = { 100 };
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
             string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
@@ -240,16 +250,28 @@ namespace DiplomovaPrace.Controllers
                     Colspan = 12,
                     Border = 0,
                     PaddingBottom = 20,
-                    PaddingTop = 20,
                     HorizontalAlignment = Element.ALIGN_CENTER
                 });
             }
 
-            tableLayout.AddCell(new PdfPCell(new Phrase("Případ užití: "+scenario.UseCase.Name, new Font(bf, 8, Font.NORMAL, BaseColor.BLACK)))
+            if (alternate)
             {
-                Padding=5,
-                HorizontalAlignment = Element.ALIGN_CENTER
-            });
+                tableLayout.AddCell(new PdfPCell(new Phrase("Alternativní scénář: " + scenario.UseCase.Name, new Font(bf, 8, Font.NORMAL, BaseColor.BLACK)))
+                {
+                    Padding = 5,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                });
+            }
+            else
+            {
+                tableLayout.AddCell(new PdfPCell(new Phrase("Případ užití: " + scenario.UseCase.Name, new Font(bf, 8, Font.NORMAL, BaseColor.BLACK)))
+                {
+                    Padding = 5,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                });
+            }
+
+     
             AddCellToBody(tableLayout, "ID: " + scenario.ID_Scenario);
             AddCellToBody(tableLayout, "Stručný popis:\n" + scenario.Description);
             List<Actor> mainActors = db.ScenarioActors.Where(s => s.ID_Scenario == scenario.ID && s.ID_ActorType == 1).Select(s=>s.Actor).ToList();
@@ -293,28 +315,40 @@ namespace DiplomovaPrace.Controllers
                 AddCellToBody(tableLayout, oActors);
             }
             AddCellToBody(tableLayout, "Vstupní podmínky:\n" + scenario.InCondition);
-            AddCellToBody(tableLayout, "Hlavní scénář:\n" + scenario.Scenario1);
-            AddCellToBody(tableLayout, "Výstupní podmínky:\n" + scenario.OutCondition);
-
-            List<Scenario> alternateScenarios = db.Scenarios.Where(s => s.ID_MainScenario == scenario.ID).ToList();
-            String alScenarios = "Alternativní scénáře:\n";
-
-            for(int i = 0;i< alternateScenarios.Count; i++)
+            if (alternate)
             {
-                alScenarios += alternateScenarios[i].ID_Scenario;
-                if (i != (alternateScenarios.Count - 1))
-                {
-                    alScenarios += ", ";
-                }
-            }
-            if (alternateScenarios.Count == 0)
-            {
-                AddCellToBody(tableLayout, "Alternativní scénáře:\nŽádné.");
+                AddCellToBody(tableLayout, "Alternativní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", String.Empty));
             }
             else
             {
-                AddCellToBody(tableLayout, alScenarios);
+                AddCellToBody(tableLayout, "Hlavní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", String.Empty));
             }
+            AddCellToBody(tableLayout, "Výstupní podmínky:\n" + scenario.OutCondition);
+
+            if (!alternate)
+            {
+                List<Scenario> alternateScenarios = db.Scenarios.Where(s => s.ID_MainScenario == scenario.ID && s.Done).ToList();
+                String alScenarios = "Alternativní scénáře:\n";
+
+                for (int i = 0; i < alternateScenarios.Count; i++)
+                {
+                    alScenarios += alternateScenarios[i].ID_Scenario;
+                    if (i != (alternateScenarios.Count - 1))
+                    {
+                        alScenarios += ", ";
+                    }
+                }
+                if (alternateScenarios.Count == 0)
+                {
+                    AddCellToBody(tableLayout, "Alternativní scénáře:\nŽádné.");
+                }
+                else
+                {
+                    AddCellToBody(tableLayout, alScenarios);
+                }
+            }
+
+
 
             return tableLayout;
         }
@@ -323,7 +357,7 @@ namespace DiplomovaPrace.Controllers
             PdfPTable tableLayout = new PdfPTable(3);
             float[] headers = { 50, 50, 50};
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
             List<UseCase> useCases = db.UseCases.Where(u => u.ID_Project == projectID).ToList();
@@ -336,7 +370,6 @@ namespace DiplomovaPrace.Controllers
                 Colspan = 12,
                 Border = 0,
                 PaddingBottom = 20,
-                PaddingTop = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
 
@@ -369,7 +402,7 @@ namespace DiplomovaPrace.Controllers
             PdfPTable tableLayout = new PdfPTable(2);
             float[] headers = { 50,50};
             tableLayout.SetWidths(headers);
-            tableLayout.WidthPercentage = 80;
+            tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
             List<Actor> actors = db.Actors.Where(a => a.ID_Project == projectID).ToList();
@@ -381,7 +414,6 @@ namespace DiplomovaPrace.Controllers
                 Colspan = 12,
                 Border = 0,
                 PaddingBottom = 20,
-                PaddingTop = 20,
                 HorizontalAlignment = Element.ALIGN_CENTER
             });
 
@@ -439,47 +471,53 @@ namespace DiplomovaPrace.Controllers
     }
 
 
-    public class PDFFooter : PdfPageEventHelper
+    public class PageEventHelper : PdfPageEventHelper
     {
-        // write on top of document
+        PdfContentByte cb;
+        PdfTemplate template;
+
+
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
-            base.OnOpenDocument(writer, document);
-            PdfPTable tabFot = new PdfPTable(new float[] { 1F });
-            tabFot.SpacingAfter = 10F;
-            PdfPCell cell;
-            tabFot.TotalWidth = 300F;
-            cell = new PdfPCell(new Phrase(""));
-            cell.Border = Rectangle.NO_BORDER;
-            tabFot.AddCell(cell);
-            tabFot.WriteSelectedRows(0, -1, 150, document.Top, writer.DirectContent);
+            cb = writer.DirectContent;
+            template = cb.CreateTemplate(50, 50);
         }
 
-        // write on start of each page
-        public override void OnStartPage(PdfWriter writer, Document document)
-        {
-            base.OnStartPage(writer, document);
-        }
-
-        // write on end of each page
         public override void OnEndPage(PdfWriter writer, Document document)
         {
-            DateTime horario = DateTime.Now;
             base.OnEndPage(writer, document);
-            PdfPTable tabFot = new PdfPTable(new float[] { 1F });
-            PdfPCell cell;
-            tabFot.TotalWidth = 300F;
-            cell = new PdfPCell(new Phrase("TEST" + " - " + horario));
-            cell.Border = Rectangle.NO_BORDER;
-            cell.HorizontalAlignment = Element.ALIGN_CENTER;
-            tabFot.AddCell(cell);
-            tabFot.WriteSelectedRows(0, -1, 150, document.Bottom, writer.DirectContent);
+            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+            int pageN = writer.PageNumber;
+            String text = pageN.ToString() + "/";
+            float len = bf.GetWidthPoint(text, 9f);
+
+            iTextSharp.text.Rectangle pageSize = document.PageSize;
+
+            cb.SetRGBColorFill(100, 100, 100);
+
+            cb.BeginText();
+            cb.SetFontAndSize(bf, 9);
+            cb.SetTextMatrix(document.LeftMargin, pageSize.GetBottom(document.BottomMargin));
+            cb.ShowText(text);
+
+            cb.EndText();
+
+            cb.AddTemplate(template, document.LeftMargin + len, pageSize.GetBottom(document.BottomMargin));
         }
 
-        //write on close of document
         public override void OnCloseDocument(PdfWriter writer, Document document)
         {
             base.OnCloseDocument(writer, document);
+            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+            template.BeginText();
+            template.SetFontAndSize(bf, 9);
+            template.SetTextMatrix(0, 0);
+            template.ShowText("" + (writer.PageNumber));
+            template.EndText();
         }
     }
 }

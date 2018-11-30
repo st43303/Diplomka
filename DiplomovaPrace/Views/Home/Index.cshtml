@@ -19,23 +19,23 @@
                 <div class="modal-body">
                     @Html.Label("Vyberte co vše má dokumentace zahrnovat")
                     <div class="form-check">
-                        @Html.CheckBox("Team", false, htmlAttributes: new { @class = "form-check-input", @id = "check1" })
+                        @Html.CheckBox("Team", true, htmlAttributes: new { @class = "form-check-input", @id = "check1" })
                         <label class="form-check-label" for="check1">Tým</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("Requirement", false, htmlAttributes: new { @class = "form-check-input", @id = "check2" })
+                        @Html.CheckBox("Requirement", true, htmlAttributes: new { @class = "form-check-input", @id = "check2" })
                         <label class="form-check-label" for="check2">Požadavky</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("Actors", false, htmlAttributes: new { @class = "form-check-input", @id = "check3" })
+                        @Html.CheckBox("Actors", true, htmlAttributes: new { @class = "form-check-input", @id = "check3" })
                         <label class="form-check-label" for="check3">Aktéři</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("UseCase", false, htmlAttributes: new { @class = "form-check-input", @id = "check4" })
+                        @Html.CheckBox("UseCase", true, htmlAttributes: new { @class = "form-check-input", @id = "check4" })
                         <label class="form-check-label" for="check4">Případy užití</label>
                     </div>
                     <div class="form-check">
-                        @Html.CheckBox("Scenario", false, htmlAttributes: new { @class = "form-check-input", @id = "check5" })
+                        @Html.CheckBox("Scenario", true, htmlAttributes: new { @class = "form-check-input", @id = "check5" })
                         <label class="form-check-label" for="check5">Scénáře</label>
                     </div>
                     @Html.Hidden("projectID")
@@ -91,7 +91,7 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
+                           @Html.DisplayFor(modelItem=>item.DescriptionPreview)
                         </td>
                         <td>
                             <p>@item.DateCreated.Value.ToShortDateString()</p>

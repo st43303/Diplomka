@@ -41,7 +41,8 @@ namespace DiplomovaPrace.Controllers
             }
             int projectID = (int) Session["projectID"];
             ViewBag.actors = new MultiSelectList(db.Actors.Where(a=>a.ID_Project==projectID),"ID","Name");
-            ViewBag.requirements = new MultiSelectList(db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType==1), "ID", "Text");
+
+            ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType==1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
             return View();
         }
 

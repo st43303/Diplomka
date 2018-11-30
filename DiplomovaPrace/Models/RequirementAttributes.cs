@@ -18,7 +18,7 @@ namespace DiplomovaPrace.Models
 
         [DisplayName("Text")]
         [Required(ErrorMessage = "Text je povinná položka")]
-        [StringLength(50, ErrorMessage = "Maximální délka je 50 znaků")]
+        [StringLength(150, ErrorMessage = "Maximální délka je 150 znaků")]
         public string Text { get; set; }
 
         [DisplayName("Typ")]

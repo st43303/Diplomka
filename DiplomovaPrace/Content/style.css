@@ -39,7 +39,18 @@ body {
   width: 100%;
 }
 
-.btn-group{
+.nav-hoover:hover {
+    color: #e74c3c !important;
+    margin-left: 5px;
+    font-weight: 700;
+}
+.nav-hoover{
+    border-style: outset;
+    border-radius: 5px;
+    border-color: cornsilk;
+}
+
+.btn-group {
     opacity: 0;
 }
 
