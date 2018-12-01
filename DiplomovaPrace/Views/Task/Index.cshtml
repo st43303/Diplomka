@@ -115,6 +115,21 @@
                         color = "#5cb85c";
                     }
 
+                    if (item.Deadline.HasValue)
+                    {
+                        if (item.DateFinished.HasValue)
+                        {
+                            if (item.Deadline.Value < item.DateFinished.Value)
+                            {
+                                color = "#ff6666";
+                            }
+                        }else if (item.Deadline.Value < DateTime.Now)
+                        {
+                            color = "#ff6666";
+                        }
+
+                    }
+
                     <tr>
 
                         <td>

@@ -14,7 +14,12 @@ namespace DiplomovaPrace.Models
         {
             get
             {
-                return Description.Substring(0, Description.Length / 4) + "...";
+                if (Description.Length <= 50)
+                {
+                    return Description;
+                }
+
+                return Description.Substring(0, 50) + "...";
             }
         }
     }
@@ -36,6 +41,11 @@ namespace DiplomovaPrace.Models
         [DisplayName("Datum vytvoření projektu")]
         public Nullable<System.DateTime> DateCreated { get; set; }
 
-   
+        [DisplayName("Zkratka projektu")]
+        [Required(ErrorMessage ="Zkratka projektu je povinná položka")]
+        [StringLength(20,ErrorMessage ="Maximální délka je 20 znaků")]
+        public string Code { get; set; }
+
+
     }
 }

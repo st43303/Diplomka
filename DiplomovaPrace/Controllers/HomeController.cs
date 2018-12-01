@@ -58,7 +58,16 @@ namespace DiplomovaPrace.Controllers
             Project project = db.Projects.Find(id);
             if (project != null)
             {
-                var projectName = project.Name;
+                var projectName = "";
+                if (project.Name.Length<20)
+                {
+                    projectName = project.Name;
+                }
+                else
+                {
+                    projectName = project.Code;
+                }
+                
                 Session["projectID"] = id;
                 Session["projectName"] = projectName;
                 controlTasks(id);

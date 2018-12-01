@@ -153,6 +153,7 @@ namespace DiplomovaPrace.Controllers
             Project old = db.Projects.Find(project.ID);
             old.Name = project.Name;
             old.Description = project.Description;
+            old.Code = project.Code;
           
             if (Contacts != 0)
             {

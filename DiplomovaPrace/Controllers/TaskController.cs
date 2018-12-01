@@ -1,4 +1,5 @@
 ﻿using DiplomovaPrace.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -353,22 +354,21 @@ namespace DiplomovaPrace.Controllers
             var taskHistory = db.TaskHistories.Where(t => t.ID_Project == projectID).OrderBy(s => s.ID);
             List<TaskHistory> list = new List<TaskHistory>();
             var date = taskHistory.FirstOrDefault().Date;
-            var last = taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month==date.Month && t.Date.Day==date.Day).ToList().LastOrDefault();
+            var last = taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month == date.Month && t.Date.Day == date.Day).ToList().LastOrDefault();
             list.Add(last);
             foreach (TaskHistory task in taskHistory)
             {
                 if (task.Date.ToShortDateString() != date.ToShortDateString())
                 {
                     date = task.Date;
-                    last= taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month == date.Month && t.Date.Day == date.Day).ToList().LastOrDefault();
+                    last = taskHistory.Where(t => t.Date.Year == date.Year && t.Date.Month == date.Month && t.Date.Day == date.Day).ToList().LastOrDefault();
                     list.Add(last);
                 }
-           
+
             }
+
             return View(list);
         }
-
-
 
         [HttpPost]
         public ActionResult Delete(int id)

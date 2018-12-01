@@ -50,6 +50,9 @@
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Category")">
                                     <i class="menu-icon fa fa-tags"></i><a href="@Url.Action("Index","Category")">Kategorie požadavků</a>
                                 </li>
+                                <li class="@Html.IsSelected(actions: "Import", controllers: "Requirements")">
+                                    <i class="menu-icon fa fa-upload"></i><a href="@Url.Action("Import","Requirements")">Import dat</a>
+                                </li>
 
                                 <li><h3 class="menu-title">AKTÉŘI A PŘÍPADY UŽITÍ</h3></li><!-- /.menu-title -->
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Actor")">
@@ -61,6 +64,7 @@
                                 <li class="@Html.IsSelected(actions: "Matrix", controllers: "Requirements")">
                                     <i class="menu-icon fa fa-table"></i><a href="@Url.Action("Matrix","Requirements")">Matice sledovatelnosti požadavků</a>
                                 </li>
+
 
 
                                 <li><h3 class="menu-title">SCÉNÁŘE</h3></li><!-- /.menu-title -->

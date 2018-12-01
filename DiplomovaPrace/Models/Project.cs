@@ -33,6 +33,7 @@ namespace DiplomovaPrace.Models
         public string Description { get; set; }
         public int ID_Author { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
+        public string Code { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actor> Actors { get; set; }

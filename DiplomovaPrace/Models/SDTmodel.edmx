@@ -93,6 +93,7 @@
           <Property Name="Description" Type="varchar" MaxLength="400" />
           <Property Name="ID_Author" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
+          <Property Name="Code" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1060,6 +1061,7 @@
           <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
           <NavigationProperty Name="TaskHistories" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="Project" ToRole="TaskHistory" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1771,6 +1773,7 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="SDTModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
