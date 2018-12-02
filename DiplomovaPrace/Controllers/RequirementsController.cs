@@ -215,12 +215,21 @@ namespace DiplomovaPrace.Controllers
             return View(requirements.OrderByDescending(r=>r.ID_Requirement));
         }
 
+        private string createID(int projectID)
+        {
+            string projectName=(string)Session["projectName"];
+            int count = db.Requirements.Where(r => r.ID_Project == projectID).Count() + 1;
+            string ID = projectName.First()+"" +count;
+            return ID;
+        }
+
 
         [HttpPost]
         public ActionResult Create(Requirement requirement )
         {
             int projectID = (int)Session["projectID"];
             requirement.ID_Project = projectID;
+            requirement.ID_Requirement = createID(projectID);
 
             if(db.Requirements.Where(r=>r.ID_Project==projectID && r.ID_Requirement.Equals(requirement.ID_Requirement)).FirstOrDefault() != null)
             {
@@ -392,70 +401,6 @@ namespace DiplomovaPrace.Controllers
             return View(output);
         }
 
-        public ActionResult Import()
-        {
-            if (Session["userID"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
-            if (Session["projectID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            ViewBag.Count = 5;
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Import(HttpPostedFileBase upload, string Header, string Encoding, string Delimiter, string count)
-        {
-            bool hasHeaders = Header.Equals("true");
-            char delimiter=';';
-            ViewBag.Count = Int32.Parse(count);
-            switch (Delimiter)
-            {
-                case ",":
-                    delimiter = ',';
-                    break;
-                case ";":
-                    delimiter = ';';
-                    break;
-                case "|":
-                    delimiter = '|';
-                    break;
-                case ":":
-                    delimiter = ':';
-                    break;
-                case " ":
-                    delimiter = ' ';
-                    break;
-            }
-
-            if (upload != null && upload.ContentLength > 0)
-            {
-
-                if (upload.FileName.EndsWith(".csv"))
-                {
-                    Stream stream = upload.InputStream;
-                    DataTable csvTable = new DataTable();
-                    CsvReader csvReader = new CsvReader(new StreamReader(stream),hasHeaders,delimiter);
-                    csvTable.Load(csvReader);
-
-                   
-                    return View(csvTable);
-                }
-                else
-                {
-                    ModelState.AddModelError("File", "This file format is not supported");
-                    return View();
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("File", "Please Upload Your file");
-            }
-            return View();
-        }
     }
 }

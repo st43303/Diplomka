@@ -1,7 +1,10 @@
 ﻿using DiplomovaPrace.Models;
+using LumenWorks.Framework.IO.Csv;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -85,6 +88,80 @@ namespace DiplomovaPrace.Controllers
                 Console.WriteLine(ex.Message);
             }
 
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Import()
+        {
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (Session["projectID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.Count = 5;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase upload, string Header, string Encoding, string Delimiter, string count)
+        {
+            bool hasHeaders = Header.Equals("true");
+            char delimiter = ';';
+            ViewBag.Count = Int32.Parse(count);
+            switch (Delimiter)
+            {
+                case ",":
+                    delimiter = ',';
+                    break;
+                case ";":
+                    delimiter = ';';
+                    break;
+                case "|":
+                    delimiter = '|';
+                    break;
+                case ":":
+                    delimiter = ':';
+                    break;
+                case " ":
+                    delimiter = ' ';
+                    break;
+            }
+
+            if (upload != null && upload.ContentLength > 0)
+            {
+
+                if (upload.FileName.EndsWith(".csv"))
+                {
+                    Stream stream = upload.InputStream;
+                    DataTable csvTable = new DataTable();
+                    CsvReader csvReader = new CsvReader(new StreamReader(stream), hasHeaders, delimiter);
+                    csvTable.Load(csvReader);
+
+                    ImportData import = new ImportData();
+                    import.DataTable = csvTable;
+                    ViewBag.Table = import;
+                    return View(import);
+                }
+                else
+                {
+                    ModelState.AddModelError("File", "This file format is not supported");
+                    return View();
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("File", "Please Upload Your file");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ActorImport(ImportData DataTable)
+        {
             return RedirectToAction("Index");
         }
     }

@@ -50,13 +50,14 @@
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Category")">
                                     <i class="menu-icon fa fa-tags"></i><a href="@Url.Action("Index","Category")">Kategorie požadavků</a>
                                 </li>
-                                <li class="@Html.IsSelected(actions: "Import", controllers: "Requirements")">
-                                    <i class="menu-icon fa fa-upload"></i><a href="@Url.Action("Import","Requirements")">Import dat</a>
-                                </li>
+
 
                                 <li><h3 class="menu-title">AKTÉŘI A PŘÍPADY UŽITÍ</h3></li><!-- /.menu-title -->
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "Actor")">
                                     <i class="menu-icon fa fa-users"></i><a href="@Url.Action("Index","Actor")">Aktéři</a>
+                                </li>
+                                <li class="@Html.IsSelected(actions: "Import", controllers: "Actor")">
+                                    <i class="menu-icon fa fa-upload"></i><a href="@Url.Action("Import","Actor")">Import aktérů</a>
                                 </li>
                                 <li class="@Html.IsSelected(actions: "Index", controllers: "UseCase")">
                                     <i class="menu-icon fa fa-random"></i><a href="@Url.Action("Index","UseCase")">Případy užití</a>

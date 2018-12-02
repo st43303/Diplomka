@@ -204,6 +204,7 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FriendshipAttributes.cs" />
+    <Compile Include="Models\ImportData.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\ProjectAttributes.cs" />
     <Compile Include="Models\RequirementAttributes.cs" />
@@ -1504,7 +1505,7 @@
     <Content Include="Views\Task\Create.cshtml" />
     <Content Include="Views\Task\Edit.cshtml" />
     <Content Include="Views\Task\Chart.cshtml" />
-    <Content Include="Views\Requirements\Import.cshtml" />
+    <Content Include="Views\Actor\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
