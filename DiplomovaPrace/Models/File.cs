@@ -22,6 +22,7 @@ namespace DiplomovaPrace.Models
         public int ID_User { get; set; }
         public string Name { get; set; }
         public string Length { get; set; }
+        public string TypeFile { get; set; }
     
         public virtual FileType FileType { get; set; }
         public virtual Project Project { get; set; }

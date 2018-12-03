@@ -40,6 +40,7 @@
           <Property Name="ID_User" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Length" Type="varchar" MaxLength="20" />
+          <Property Name="TypeFile" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="FileType">
           <Key>
@@ -927,20 +928,7 @@
             <End Role="Scenario" EntitySet="Scenarios" />
             <End Role="Scenario1" EntitySet="Scenarios" />
           </AssociationSet>
-          <EntitySet Name="Files" EntityType="SDTModel.File" />
           <EntitySet Name="FileTypes" EntityType="SDTModel.FileType" />
-          <AssociationSet Name="FK_File_FileType" Association="SDTModel.FK_File_FileType">
-            <End Role="FileType" EntitySet="FileTypes" />
-            <End Role="File" EntitySet="Files" />
-          </AssociationSet>
-          <AssociationSet Name="FK_File_Project" Association="SDTModel.FK_File_Project">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="File" EntitySet="Files" />
-          </AssociationSet>
-          <AssociationSet Name="FK_File_User" Association="SDTModel.FK_File_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="File" EntitySet="Files" />
-          </AssociationSet>
           <EntitySet Name="UseCaseRequirements" EntityType="SDTModel.UseCaseRequirement" />
           <AssociationSet Name="FK_UseCaseRequirement_Requirement" Association="SDTModel.FK_UseCaseRequirement_Requirement">
             <End Role="Requirement" EntitySet="Requirements" />
@@ -996,6 +984,19 @@
           <AssociationSet Name="FK_TaskHistory_Project" Association="SDTModel.FK_TaskHistory_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="TaskHistory" EntitySet="TaskHistories" />
+          </AssociationSet>
+          <EntitySet Name="Files" EntityType="SDTModel.File" />
+          <AssociationSet Name="FK_File_FileType" Association="SDTModel.FK_File_FileType">
+            <End Role="FileType" EntitySet="FileTypes" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_Project" Association="SDTModel.FK_File_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_File_User" Association="SDTModel.FK_File_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="File" EntitySet="Files" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Actor">
@@ -1056,12 +1057,12 @@
           <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_Project" FromRole="Project" ToRole="Requirement" />
           <NavigationProperty Name="Scenarios" Relationship="SDTModel.FK_Scenario_Project" FromRole="Project" ToRole="Scenario" />
           <NavigationProperty Name="UseCases" Relationship="SDTModel.FK_UseCase_Project" FromRole="Project" ToRole="UseCase" />
-          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_Project" FromRole="Project" ToRole="File" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
           <NavigationProperty Name="TaskHistories" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="Project" ToRole="TaskHistory" />
           <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_Project" FromRole="Project" ToRole="File" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1177,9 +1178,9 @@
           <NavigationProperty Name="ProjectUsers" Relationship="SDTModel.FK_ProjectUser_User" FromRole="User" ToRole="ProjectUser" />
           <NavigationProperty Name="User1" Relationship="SDTModel.FK_User_User" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User2" Relationship="SDTModel.FK_User_User" FromRole="User1" ToRole="User" />
-          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_User" FromRole="User" ToRole="File" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Creator" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="Tasks1" Relationship="SDTModel.FK_Task_Executor" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_User" FromRole="User" ToRole="File" />
         </EntityType>
         <Association Name="FK_Actor_Project">
           <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
@@ -1435,22 +1436,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="File">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Path" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="ID_File_Type" Type="Int32" Nullable="false" />
-          <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <Property Name="Date_Uploaded" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ID_User" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FileType" Relationship="SDTModel.FK_File_FileType" FromRole="File" ToRole="FileType" />
-          <NavigationProperty Name="Project" Relationship="SDTModel.FK_File_Project" FromRole="File" ToRole="Project" />
-          <NavigationProperty Name="User" Relationship="SDTModel.FK_File_User" FromRole="File" ToRole="User" />
-          <Property Name="Length" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="FileType">
           <Key>
             <PropertyRef Name="ID" />
@@ -1460,42 +1445,6 @@
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_FileType" FromRole="FileType" ToRole="File" />
         </EntityType>
-        <Association Name="FK_File_FileType">
-          <End Type="SDTModel.FileType" Role="FileType" Multiplicity="1" />
-          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FileType">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="File">
-              <PropertyRef Name="ID_File_Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_File_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="File">
-              <PropertyRef Name="ID_Project" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_File_User">
-          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
-          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="File">
-              <PropertyRef Name="ID_User" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="UseCaseRequirement">
           <Key>
             <PropertyRef Name="ID" />
@@ -1725,6 +1674,59 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ID_File_Type" Type="Int32" Nullable="false" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="Date_Uploaded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_User" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Length" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TypeFile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FileType" Relationship="SDTModel.FK_File_FileType" FromRole="File" ToRole="FileType" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_File_Project" FromRole="File" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_File_User" FromRole="File" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_File_FileType">
+          <End Type="SDTModel.FileType" Role="FileType" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_File_Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_File_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.File" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1875,20 +1877,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Files">
-            <EntityTypeMapping TypeName="SDTModel.File">
-              <MappingFragment StoreEntitySet="File">
-                <ScalarProperty Name="Length" ColumnName="Length" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
-                <ScalarProperty Name="Date_Uploaded" ColumnName="Date_Uploaded" />
-                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
-                <ScalarProperty Name="ID_File_Type" ColumnName="ID_File_Type" />
-                <ScalarProperty Name="Path" ColumnName="Path" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FileTypes">
             <EntityTypeMapping TypeName="SDTModel.FileType">
               <MappingFragment StoreEntitySet="FileType">
@@ -1973,6 +1961,21 @@
                 <ScalarProperty Name="CreateCount" ColumnName="CreateCount" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="SDTModel.File">
+              <MappingFragment StoreEntitySet="File">
+                <ScalarProperty Name="TypeFile" ColumnName="TypeFile" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="Date_Uploaded" ColumnName="Date_Uploaded" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
+                <ScalarProperty Name="ID_File_Type" ColumnName="ID_File_Type" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

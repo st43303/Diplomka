@@ -2,7 +2,7 @@
     $('input.datetimepicker').datepicker({
         duration: '',
         changeMonth: false,
-        changeYear: false,
+        changeYear: true,
         yearRange: '1900:2020',
         showTime: false,
         time24h: true

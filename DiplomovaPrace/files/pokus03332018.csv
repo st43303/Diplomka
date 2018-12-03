@@ -1,0 +1,32 @@
+Name;Type
+Nefunkční požadavky;Package
+Funkční požadavky;Package
+Účastnická sekce;Package
+Sekce bez přihlášení;Package
+Sekce administrátora;Package
+Lektorská sekce;Package
+R10 - IS bude umožňovat přihlásit uživatele na kurz;Requirement
+R12 - IS bude umožňovat lektorovi zobrazit kurzy které vyučuje;Requirement
+R09 - IS bude umožňovat odeslat hromadnou zprávu vybraným účastníkům kurzu;Requirement
+R11 - IS bude umožňovat odhlásit uživatele z kurzu;Requirement
+R08 - IS bude umožňovat editaci údajů o lektorovi;Requirement
+R20 - IS bude umožňovat vytvořit nového lektora;Requirement
+R14 - IS bude umožňovat editovat vytvořený kurz;Requirement
+R16 - IS bude umoňovat odeslat hromadnou zprávu účastníkům vybraných kurzů;Requirement
+R15 - IS bude umožňovat odeslat hromadnou zprávu vybraným účastníkům kurzu;Requirement
+R13 - IS bude umožňovat vytvořit nový kurz;Requirement
+R18 - IS bude umožňovat přiřadit lektora ke kurzu;Requirement
+R19 - IS bude umožňovat odhlásit uživatele z kurzu;Requirement
+R04 - IS bude umožňovat registraci uživatele;Requirement
+R02 - IS bude umožňovat prohlížení jednotlivých kurzů;Requirement
+R01 - IS bude umožňovat zobrazit základní informace o firmě;Requirement
+R03 - IS bude umožňovat zobrazit vyučující lektory;Requirement
+R06 - IS bude umožňovat uživateli přihlášení na kurz;Requirement
+R05 - IS bude umožňovat editaci údajů uživatele;Requirement
+R07 - IS bude umožňovat uživateli odhlášení z kurzu;Requirement
+R21 - IS bude umoňovat zobrazit účastníky kurzu;Requirement
+R17 - IS bude umožňovat přihlásit se do systému;Requirement
+R24 - IS bude zajištovat bezpečnost uživatelských údajů ;Requirement
+R25 - IS bude umožňovat responzivní web design;Requirement
+R23 - IS bude umožňovat rychlou odezvu;Requirement
+R22 - IS bude umožňovat co nejvyšší dostupnost;Requirement

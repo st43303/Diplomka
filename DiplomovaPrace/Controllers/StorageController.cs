@@ -47,6 +47,7 @@ namespace DiplomovaPrace.Controllers
             file.ID_Project = projectID;
             file.ID_User = userID;
             file.ID_File_Type = GetTypeID(File);
+            file.TypeFile = Path.GetExtension(File.FileName).Substring(1);
             file.Path = SaveFile(File);
             file.Length = GetLength(File);
 
@@ -68,7 +69,7 @@ namespace DiplomovaPrace.Controllers
         public FileResult Download(int id)
         {
             Models.File file = db.Files.Find(id);
-            string extension = db.FileTypes.Find(file.ID_File_Type).Extension;
+            string extension = file.TypeFile;
             byte[] fileBytes = System.IO.File.ReadAllBytes(file.Path);
             string fileName = file.Name + "."+extension;
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);

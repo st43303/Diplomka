@@ -38,7 +38,6 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<UseCase> UseCases { get; set; }
         public virtual DbSet<UseCaseActor> UseCaseActors { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<File> Files { get; set; }
         public virtual DbSet<FileType> FileTypes { get; set; }
         public virtual DbSet<UseCaseRequirement> UseCaseRequirements { get; set; }
         public virtual DbSet<CategoryRequirement> CategoryRequirements { get; set; }
@@ -48,5 +47,6 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<StateTask> StateTasks { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TaskHistory> TaskHistories { get; set; }
+        public virtual DbSet<File> Files { get; set; }
     }
 }

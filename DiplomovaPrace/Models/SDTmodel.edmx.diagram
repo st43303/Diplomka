@@ -38,11 +38,7 @@
         <AssociationConnector Association="SDTModel.FK_UseCaseActor_UseCase" />
         <AssociationConnector Association="SDTModel.FK_User_User" />
         <AssociationConnector Association="SDTModel.FK_Scenario_Scenario" />
-        <EntityTypeShape EntityType="SDTModel.File" Width="1.5" PointX="5.625" PointY="6.375" />
         <EntityTypeShape EntityType="SDTModel.FileType" Width="1.5" PointX="0.75" PointY="1.5" />
-        <AssociationConnector Association="SDTModel.FK_File_FileType" />
-        <AssociationConnector Association="SDTModel.FK_File_Project" />
-        <AssociationConnector Association="SDTModel.FK_File_User" />
         <EntityTypeShape EntityType="SDTModel.UseCaseRequirement" Width="1.5" PointX="10.75" PointY="14.625" />
         <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_Requirement" />
         <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_UseCase" />
@@ -63,6 +59,10 @@
         <AssociationConnector Association="SDTModel.FK_Task_Executor" />
         <EntityTypeShape EntityType="SDTModel.TaskHistory" Width="1.5" PointX="5.25" PointY="20.25" />
         <AssociationConnector Association="SDTModel.FK_TaskHistory_Project" />
+        <EntityTypeShape EntityType="SDTModel.File" Width="1.5" PointX="5.5" PointY="6.5" />
+        <AssociationConnector Association="SDTModel.FK_File_FileType" />
+        <AssociationConnector Association="SDTModel.FK_File_Project" />
+        <AssociationConnector Association="SDTModel.FK_File_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

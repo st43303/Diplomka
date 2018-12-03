@@ -1,5 +1,6 @@
 ﻿using DiplomovaPrace.Models;
 using LumenWorks.Framework.IO.Csv;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -141,10 +142,11 @@ namespace DiplomovaPrace.Controllers
                     CsvReader csvReader = new CsvReader(new StreamReader(stream), hasHeaders, delimiter);
                     csvTable.Load(csvReader);
 
-                    ImportData import = new ImportData();
-                    import.DataTable = csvTable;
-                    ViewBag.Table = import;
-                    return View(import);
+
+                    string JSONString = string.Empty;
+                    JSONString = JsonConvert.SerializeObject(csvTable);
+                    ViewBag.JSONTable = JSONString;
+                    return View(csvTable);
                 }
                 else
                 {
@@ -159,9 +161,27 @@ namespace DiplomovaPrace.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult ActorImport(ImportData DataTable)
+        public ActionResult ActorImport(string table)
         {
+            DataTable dataTable = JsonConvert.DeserializeObject<DataTable>(table);
+            int projectID = (int)Session["projectID"];
+            
+            foreach(DataRow row in dataTable.Rows)
+            {
+                foreach(DataColumn col in dataTable.Columns)
+                {
+                    if (col.ColumnName == "Name")
+                    {
+                        string name = row[col.ColumnName].ToString();
+                        Actor actor = new Actor();
+                        actor.Name = name;
+                        actor.ID_Project = projectID;
+                        db.Actors.Add(actor);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
             return RedirectToAction("Index");
         }
     }

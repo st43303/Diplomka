@@ -204,7 +204,6 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FriendshipAttributes.cs" />
-    <Compile Include="Models\ImportData.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\ProjectAttributes.cs" />
     <Compile Include="Models\RequirementAttributes.cs" />
