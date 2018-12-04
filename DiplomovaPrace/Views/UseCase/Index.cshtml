@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             @{
-                                var scenario = item.Scenarios.Where(s => s.ID_MainScenario != null && s.Done).FirstOrDefault();
+                                var scenario = item.Scenarios.Where(s => s.ID_MainScenario == null && s.Done).FirstOrDefault();
                                 if (scenario != null)
                                 {
                                     <a class="btn-link" href="@Url.Action("Details","Scenario",new { id=scenario.ID})">@scenario.ID_Scenario</a>

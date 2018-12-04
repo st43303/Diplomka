@@ -65,7 +65,7 @@ namespace DiplomovaPrace.Controllers
                 Console.WriteLine(ex.Message);
             }
             ViewBag.actors = new MultiSelectList(db.Actors.Where(a => a.ID_Project == projectID), "ID", "Name");
-            ViewBag.requirements = new MultiSelectList(db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1), "ID", "Text");
+            ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
             return View(useCase);
         }
 
@@ -123,7 +123,7 @@ namespace DiplomovaPrace.Controllers
             }
 
             ViewBag.actors = new MultiSelectList(GetActors(useCase), "ID", "Name");
-            ViewBag.requirements = new MultiSelectList(GetRequirements(useCase), "ID", "Text");
+            ViewBag.requirements = new MultiSelectList((from s in GetRequirements(useCase) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
 
             return View(useCase);
         }
@@ -146,13 +146,17 @@ namespace DiplomovaPrace.Controllers
                     db.UseCaseActors.Add(useCaseActor);
                 }
             }
-            for(int i = 0; i < requirements.Count; i++)
+            if (requirements != null)
             {
-                UseCaseRequirement useCaseRequirement = new UseCaseRequirement();
-                useCaseRequirement.ID_Requirement = requirements[i];
-                useCaseRequirement.ID_UseCase = old.ID;
-                db.UseCaseRequirements.Add(useCaseRequirement);
+                for (int i = 0; i < requirements.Count; i++)
+                {
+                    UseCaseRequirement useCaseRequirement = new UseCaseRequirement();
+                    useCaseRequirement.ID_Requirement = requirements[i];
+                    useCaseRequirement.ID_UseCase = old.ID;
+                    db.UseCaseRequirements.Add(useCaseRequirement);
+                }
             }
+         
             try
             {
                 db.Entry(old).State = EntityState.Modified;

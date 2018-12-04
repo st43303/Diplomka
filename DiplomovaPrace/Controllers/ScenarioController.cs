@@ -176,6 +176,14 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Index", "Home");
             }
             var scenario = db.Scenarios.Find(id);
+            if (scenario.ID_MainScenario != null)
+            {
+                ViewBag.AlterScenario = true;
+            }
+            else
+            {
+                ViewBag.AlterScenario = false;
+            }
             return View(scenario);
         }
 
