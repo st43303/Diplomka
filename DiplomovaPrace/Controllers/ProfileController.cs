@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -36,8 +38,6 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Index(User user, HttpPostedFileBase AvatarFile)
         {
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     User old = db.Users.Find(user.ID);
@@ -65,7 +65,6 @@ namespace DiplomovaPrace.Controllers
                     ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
                 }
 
-            }
 
             return RedirectToAction("Index");
         }
@@ -214,6 +213,219 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Details", new { id });
+        }
+
+        private static byte[] GetHash(string inputString)
+        {
+            HashAlgorithm algorithm = SHA256.Create();  //or use SHA256.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        private static string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
+        [HttpPost]
+        public ActionResult CancelAccount(int ID, string pswd)
+        {
+
+            User user = db.Users.Find(ID);
+            if(user.Password == GetHashString(pswd))
+            {
+                try
+                {
+                    // odstranění nahraných souborů
+                    RemoveFiles(db.Files.ToList());
+                    // odstranění navázaných kontaktů
+                    db.Friendships.RemoveRange(user.Friendships);
+                    user.Friendships.Clear();
+                    db.Friendships.RemoveRange(user.Friendships1);
+                    user.Friendships1.Clear();
+                    // odstranění nepřečtených upozornění
+                    db.Notifications.RemoveRange(user.Notifications);
+                    user.Notifications.Clear();
+                    // odstranění projektů, či jejich předání jinému členovi týmu
+                    List<Project> projects = user.Projects.ToList();
+                    foreach (Project project in projects)
+                    {
+                        ChangeProjectAuthor(project, ID);
+                    }
+                    user.Projects.Clear();
+                    // odstranění vazeb uživatele na jiné projekty
+                    db.ProjectUsers.RemoveRange(user.ProjectUsers);
+                    user.ProjectUsers.Clear();
+                    // odstranění úkolů uživatele
+                    db.Tasks.RemoveRange(user.Tasks);
+                    user.Tasks.Clear();
+                    db.Tasks.RemoveRange(user.Tasks1);
+                    user.Tasks1.Clear();
+                    // odstranění uživatele
+                    db.Users.Remove(user);
+                    db.SaveChanges();
+                    Session.Abandon();
+                    return RedirectToAction("Login", "Account");
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                ViewBag.Error = "Heslo nebylo zadané správně. Opakujte prosím akci.";
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        private void ChangeProjectAuthor(Project project, int userID)
+        {
+            try
+            {
+                // pokud měl projekt jen jednoho uživatele, rovnou ho smaž
+                if (project.ProjectUsers.Count <=1)
+                {
+                    RemoveProject(project);
+                }
+                else
+                {
+                    // jinak nalezení jiného člena týmu a přiřazení vedení projektu
+                    List<ProjectUser> projectUsers = project.ProjectUsers.ToList();
+                    ProjectUser user = projectUsers.Where(p => p.ID_User != userID).FirstOrDefault();
+                    project.ID_Author = user.ID_User;
+                    db.Entry(project).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        private void RemoveProject(Project project)
+        {
+            try
+            {
+                RemoveScenarios(project.Scenarios.ToList());
+                db.Actors.RemoveRange(project.Actors);
+                project.Actors.Clear();
+
+                db.CategoryRequirements.RemoveRange(project.CategoryRequirements);
+                project.CategoryRequirements.Clear();
+
+                RemoveFiles(project.Files.ToList());
+
+                db.ProjectUsers.RemoveRange(project.ProjectUsers);
+                project.ProjectUsers.Clear();
+
+                RemoveRequirements(project.Requirements.ToList());
+                
+
+                db.TaskHistories.RemoveRange(project.TaskHistories);
+                project.TaskHistories.Clear();
+
+                db.Tasks.RemoveRange(project.Tasks);
+                project.Tasks.Clear();
+                RemoveUseCases(project.UseCases.ToList());
+
+                db.Projects.Remove(project);
+                db.SaveChanges();
+
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveUseCases(List<UseCase> useCases)
+        {
+            try
+            {
+                foreach (UseCase useCase in useCases)
+                {
+                    db.Scenarios.RemoveRange(useCase.Scenarios);
+                    useCase.Scenarios.Clear();
+                    db.UseCaseActors.RemoveRange(useCase.UseCaseActors);
+                    useCase.UseCaseActors.Clear();
+                    db.UseCaseRequirements.RemoveRange(useCase.UseCaseRequirements);
+                    useCase.UseCaseRequirements.Clear();
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        private void RemoveRequirements(List<Requirement> requirements)
+        {
+            try
+            {
+                foreach (Requirement requirement in requirements)
+                {
+                    db.UseCaseRequirements.RemoveRange(requirement.UseCaseRequirements);
+                    requirement.UseCaseRequirements.Clear();
+                    db.Requirements.Remove(requirement);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        private void RemoveScenarios(List<Scenario> scenarios)
+        {
+            try
+            {
+                foreach (Scenario scenario in scenarios)
+                {
+                    db.ScenarioActors.RemoveRange(scenario.ScenarioActors);
+                    scenario.ScenarioActors.Clear();
+
+                    db.Scenarios.Remove(scenario);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+        private void RemoveFiles(List<Models.File> files)
+        {
+            try
+            {
+                foreach (Models.File file in files)
+                {
+                    if (System.IO.File.Exists(file.Path))
+                    {
+                        System.IO.File.Delete(file.Path);
+                        db.Files.Remove(file);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
        
     }

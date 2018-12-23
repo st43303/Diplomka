@@ -319,8 +319,6 @@
     <Content Include="Content\themify-icons.css" />
     <Content Include="Content\variables.css" />
     <Content Include="favicon.ico" />
-    <Content Include="files\dev-folder-icon-5387523232018.ico" />
-    <Content Include="files\placeholder22502018.png" />
     <Content Include="fonts\codropsicons\codropsicons.svg" />
     <Content Include="fonts\codropsicons\index.html" />
     <Content Include="fonts\codropsicons\license.txt" />
@@ -1174,11 +1172,6 @@
     <Content Include="Models\SDTmodel.edmx.diagram">
       <DependentUpon>SDTmodel.edmx</DependentUpon>
     </Content>
-    <Content Include="files\INPAR_SemestralniPrace_Moravec03302018.docx" />
-    <Content Include="files\INPIA02_JSP-Objekty23142018.pdf" />
-    <Content Include="files\iWAS-Dokumentace24422018.docx" />
-    <Content Include="files\pokus03332018.csv" />
-    <Content Include="files\tcserver03452018.bat" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\buttons.js" />
@@ -1536,6 +1529,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="files\" />
     <Folder Include="Views\Export\" />
   </ItemGroup>
   <ItemGroup>
