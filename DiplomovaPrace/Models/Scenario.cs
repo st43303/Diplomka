@@ -17,8 +17,8 @@ namespace DiplomovaPrace.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Scenario()
         {
-            this.ScenarioActors = new HashSet<ScenarioActor>();
             this.Scenario11 = new HashSet<Scenario>();
+            this.ScenarioActors = new HashSet<ScenarioActor>();
         }
     
         public int ID { get; set; }
@@ -33,11 +33,11 @@ namespace DiplomovaPrace.Models
         public Nullable<int> ID_MainScenario { get; set; }
     
         public virtual Project Project { get; set; }
-        public virtual UseCase UseCase { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioActor> ScenarioActors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenario11 { get; set; }
         public virtual Scenario Scenario2 { get; set; }
+        public virtual UseCase UseCase { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScenarioActor> ScenarioActors { get; set; }
     }
 }

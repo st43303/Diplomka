@@ -17,6 +17,7 @@ namespace DiplomovaPrace.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.Files = new HashSet<File>();
             this.Friendships = new HashSet<Friendship>();
             this.Friendships1 = new HashSet<Friendship>();
             this.Notifications = new HashSet<Notification>();
@@ -24,7 +25,6 @@ namespace DiplomovaPrace.Models
             this.ProjectUsers = new HashSet<ProjectUser>();
             this.Tasks = new HashSet<Task>();
             this.Tasks1 = new HashSet<Task>();
-            this.Files = new HashSet<File>();
         }
     
         public int ID { get; set; }
@@ -39,6 +39,8 @@ namespace DiplomovaPrace.Models
         public Nullable<System.DateTime> LastActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<File> Files { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Friendship> Friendships { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Friendship> Friendships1 { get; set; }
@@ -48,13 +50,9 @@ namespace DiplomovaPrace.Models
         public virtual ICollection<Project> Projects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
-        public virtual User User1 { get; set; }
-        public virtual User User2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<File> Files { get; set; }
     }
 }

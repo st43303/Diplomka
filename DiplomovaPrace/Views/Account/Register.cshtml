@@ -58,12 +58,10 @@
                     <div class="form-group col-md-6">
                         @Html.Password("ConfirmPassword", "", new { @class = "form-control", placeholder = "Heslo znovu", @required = "required" })
                     </div>
-
                 </div>
 
                 <button class="btn btn-success btn-block" type="submit">Zaregistrovat se</button>
-                <p>Máte již účet? Přihlašte se <a href="@Url.Action("Login")">zde</a>.</p>
-
+                <p>Máte již účet? <a href="@Url.Action("Login")">Přihlašte se</a>.</p>
             }
         </div>
     </div>

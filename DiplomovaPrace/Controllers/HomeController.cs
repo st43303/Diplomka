@@ -1,9 +1,7 @@
 ﻿using DiplomovaPrace.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 
@@ -11,17 +9,25 @@ namespace DiplomovaPrace.Controllers
 {
     public class HomeController : Controller
     {
-       private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = Database.GetDatabase();
         public ActionResult Index()
         {
+
             if (Session["userID"] == null)
             {
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
-            var projects = db.Projects.Where(p => p.ID_Author == userID).ToList().OrderByDescending(x => x.ID);
-
-            return View(projects);
+            try
+            {
+                var projects = db.Projects.Where(p => p.ID_Author == userID).ToList().OrderByDescending(x => x.ID);
+                return View(projects);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return View();
         }
 
         private void controlTasks(int projectID)
@@ -54,7 +60,6 @@ namespace DiplomovaPrace.Controllers
 
         public ActionResult SetProject(int id)
         {
-            
             Project project = db.Projects.Find(id);
             if (project != null)
             {
@@ -76,7 +81,6 @@ namespace DiplomovaPrace.Controllers
             {
                 Console.WriteLine("Projekt nenalezen.");
             }
-
             return RedirectToAction("Index");
         }
 
@@ -89,24 +93,39 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
+            try
+            {
+                var sharedProjects = db.ProjectUsers.Where(p => p.ID_User == userID && p.Project.ID_Author != userID);
+                return View(sharedProjects);
 
-            var sharedProjects = db.ProjectUsers.Where(p => p.ID_User == userID && p.Project.ID_Author!=userID);
-     
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            return View(sharedProjects);
+            return View();
         }
 
         [HttpPost]
         public ActionResult GetUsers(string term)
         {
-            
             int userID = (int)Session["userID"];
-            List<User> users = db.Users.Where(u => u.ID != userID).ToList();
-            users = users.Where(u => u.Name.ToUpper().Contains(term.ToUpper())
-                ||u.Surname.ToUpper().Contains(term.ToUpper())
-                ||u.City.ToUpper().Contains(term.ToUpper())).ToList();
+            object output = null;
+            try
+            {
+                List<User> users = db.Users.Where(u => u.ID != userID).ToList();
+                users = users.Where(u => u.Name.ToUpper().Contains(term.ToUpper())
+                    || u.Surname.ToUpper().Contains(term.ToUpper())
+                    || u.City.ToUpper().Contains(term.ToUpper())).ToList();
 
-            var output = users.Select(s => new {s.ID, Name = s.Name + " " + s.Surname, s.City });
+                output = users.Select(s => new { s.ID, Name = s.Name + " " + s.Surname, s.City });
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return Json(output,JsonRequestBehavior.AllowGet);
 
         }
@@ -114,19 +133,27 @@ namespace DiplomovaPrace.Controllers
         public JsonResult GetNotifications()
         {
             var userID = (int)Session["userID"];
-            List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i=>i.ID).ToList();
+            try
+            {
+                List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i => i.ID).ToList();
 
-            var output = notifications.Select(s => new { Message=s.Message+" "+s.DateNotification.Value.ToShortDateString() + " "+s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
-            return new JsonResult { Data = output, JsonRequestBehavior= JsonRequestBehavior.AllowGet };
+                var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
+                return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
 
         }
 
         [HttpPost]
         public ActionResult DeleteNotification(int id, string url)
         {
-            var notification = db.Notifications.Find(id);
             try
             {
+                var notification = db.Notifications.Find(id);
                 db.Notifications.Remove(notification);
                 db.SaveChanges();
             }
@@ -134,6 +161,7 @@ namespace DiplomovaPrace.Controllers
             {
                 Console.WriteLine(ex.Message);
             }
+
             return Content("<script>location.href = "+url+";</script>");
 
             

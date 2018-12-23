@@ -17,6 +17,7 @@ namespace DiplomovaPrace.Controllers
         // GET: Login
         public ActionResult Login()
         {
+
             if (Session["userID"] != null)
             {
                 return RedirectToAction("Index", "Home");
@@ -27,32 +28,34 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Login(User user)
         {
-            var password = GetHashString(user.Password);
-            var userDetails = db.Users.Where(u => u.Username == user.Username && u.Password == password).FirstOrDefault();
-            if (userDetails == null)
+            try
             {
-                ViewBag.ErrorMessage = "Špatné uživatelské jméno či heslo.";
-                return View();
-            }
-            else
-            {
-                Session["userID"] = userDetails.ID;
-                Session["userName"] = userDetails.Username;
-                Session["avatar"] = userDetails.Avatar;
-                try
+                var password = GetHashString(user.Password);
+                var userDetails = db.Users.Where(u => u.Username == user.Username && u.Password == password).FirstOrDefault();
+                if (userDetails == null)
                 {
+                    ViewBag.ErrorMessage = "Špatné uživatelské jméno či heslo.";
+                    return View();
+                }
+                else
+                {
+                    Session["userID"] = userDetails.ID;
+                    Session["userName"] = userDetails.Username;
+                    Session["avatar"] = userDetails.Avatar;
+
                     userDetails.LastActive = DateTime.Now;
                     db.Entry(userDetails).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    ViewBag.ErrorMessage = "Něco se pokazilo. Opakujte prosím akci.";
-                    return View();
-                }
-                return RedirectToAction("Index", "Home");
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ViewBag.ErrorMessage = "Něco se pokazilo. Opakujte prosím akci.";
+                return View();
+            }
+
+                return RedirectToAction("Index", "Home");
 
         }
 
@@ -68,30 +71,40 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Register(User user, String ConfirmPassword)
         {
-            ViewBag.ErrorMessage = "";
-            if (user.Password.Equals(ConfirmPassword))
+            try
             {
-                foreach(User u in db.Users){
-                    if (u.Username.ToUpper().Equals(user.Username.ToUpper()))
+                ViewBag.ErrorMessage = "";
+                if (user.Password.Equals(ConfirmPassword))
+                {
+                    foreach (User u in db.Users)
                     {
-                        ViewBag.ErrorMessage = "Zadané uživatelské jméno již existuje. Zadejte prosím jiné.";
-                        return View();
+                        if (u.Username.ToUpper().Equals(user.Username.ToUpper()))
+                        {
+                            ViewBag.ErrorMessage = "Zadané uživatelské jméno již existuje. Zadejte prosím jiné.";
+                            return View();
+                        }
                     }
+                    string newPassword = GetHashString(ConfirmPassword);
+                    user.Password = newPassword;
+                    user.Avatar = "/images/admin.jpg";
+                    user.RegistrationDate = DateTime.Now;
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    return RedirectToAction("Login");
                 }
-                string newPassword = GetHashString(ConfirmPassword);
-                user.Password = newPassword;
-                user.Avatar = "/images/admin.jpg";
-                user.RegistrationDate = DateTime.Now;
-                db.Users.Add(user);
-                db.SaveChanges();
-                return RedirectToAction("Login");
+                else
+                {
+                    ViewBag.ErrorMessage = "Hesla se neshodují. Opakujte prosím akci.";
+                    return View();
+                }
             }
-            else
+            catch (Exception ex) 
             {
-                ViewBag.ErrorMessage = "Hesla se neshodují. Opakujte prosím akci.";
-                return View();
+                Console.WriteLine(ex.Message);
             }
 
+
+            return View();
         }
 
         public ActionResult Logout()
@@ -114,10 +127,6 @@ namespace DiplomovaPrace.Controllers
 
             return sb.ToString();
         }
-
-
-
-
 
     }
 }

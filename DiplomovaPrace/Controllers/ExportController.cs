@@ -27,6 +27,7 @@ namespace DiplomovaPrace.Controllers
             var user = db.Users.Find(userID);
             var project = db.Projects.Find(projectID);
 
+
             MemoryStream workStream = new MemoryStream();
             StringBuilder status = new StringBuilder("");
             string fileName = "Dokumentace " + DateTime.Now.ToShortDateString() + ".pdf";

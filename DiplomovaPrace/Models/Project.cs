@@ -18,14 +18,14 @@ namespace DiplomovaPrace.Models
         public Project()
         {
             this.Actors = new HashSet<Actor>();
+            this.CategoryRequirements = new HashSet<CategoryRequirement>();
+            this.Files = new HashSet<File>();
             this.ProjectUsers = new HashSet<ProjectUser>();
             this.Requirements = new HashSet<Requirement>();
             this.Scenarios = new HashSet<Scenario>();
-            this.UseCases = new HashSet<UseCase>();
-            this.CategoryRequirements = new HashSet<CategoryRequirement>();
             this.Tasks = new HashSet<Task>();
             this.TaskHistories = new HashSet<TaskHistory>();
-            this.Files = new HashSet<File>();
+            this.UseCases = new HashSet<UseCase>();
         }
     
         public int ID { get; set; }
@@ -37,8 +37,10 @@ namespace DiplomovaPrace.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Actor> Actors { get; set; }
-        public virtual Project Project1 { get; set; }
-        public virtual Project Project2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CategoryRequirement> CategoryRequirements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<File> Files { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
@@ -47,14 +49,10 @@ namespace DiplomovaPrace.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UseCase> UseCases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CategoryRequirement> CategoryRequirements { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaskHistory> TaskHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<File> Files { get; set; }
+        public virtual ICollection<UseCase> UseCases { get; set; }
     }
 }

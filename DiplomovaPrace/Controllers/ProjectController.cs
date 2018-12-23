@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
@@ -13,8 +12,7 @@ namespace DiplomovaPrace.Controllers
         private SDTEntities db = Database.GetDatabase();
         // GET: Project
         public ActionResult Create()
-        {
-            
+        {       
             if (Session["userID"] == null)
             {               
                 return RedirectToAction("Login", "Account");
@@ -26,6 +24,7 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Create(Project project)
         {
+
             if (ModelState.IsValid)
             {
                 try
@@ -67,8 +66,6 @@ namespace DiplomovaPrace.Controllers
                 }
 
                 db.UseCaseActors.RemoveRange(list);
-             
-
                 db.UseCases.RemoveRange(project.UseCases);
                 project.UseCases.Clear();
 
@@ -113,9 +110,9 @@ namespace DiplomovaPrace.Controllers
             return list;
         }
 
-        private Boolean isProjectUser(int userID,IQueryable<ProjectUser> projectUsers)
+        private bool isProjectUser(int userID,IQueryable<ProjectUser> projectUsers)
         {
-            Boolean answer = false;
+            bool answer = false;
             foreach(ProjectUser projectUser in projectUsers)
             {
                 if (projectUser.ID_User == userID)
@@ -134,17 +131,26 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            try
             {
-                return RedirectToAction("Index","Home");
-            }
-            LinkedList<User> listContacts = new LinkedList<User>(GetContacts(userID,id));
-            listContacts.AddFirst(new Models.User() { ID = 0, Name = "Vyberte", Surname = "" });
-            ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
-            ViewBag.Team = GetTeam(id, userID);
+                Project project = db.Projects.Find(id);
+                if (project == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                LinkedList<User> listContacts = new LinkedList<User>(GetContacts(userID, id));
+                listContacts.AddFirst(new Models.User() { ID = 0, Name = "Vyberte", Surname = "" });
+                ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
+                ViewBag.Team = GetTeam(id, userID);
 
-            return View(project);
+                return View(project);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return View();
         }
 
         [HttpPost]
@@ -169,9 +175,7 @@ namespace DiplomovaPrace.Controllers
                 notification.Message = "Uživatel " + user.Name + " " + user.Surname + " Vás připojil ke svému projektu „" + project.Name + "“.";
                 notification.URL = "/Home/Shared";
                 db.Notifications.Add(notification);
-
-            }
-            
+            }         
 
             if (ModelState.IsValid)
             {
@@ -187,8 +191,9 @@ namespace DiplomovaPrace.Controllers
                     Console.WriteLine(ex.Message);
                     ViewBag.Error = "Nastala chyba. Opakujte prosím akci.";
                 }
+
             }
-            List<User> listContacts = GetContacts(old.ID_Author,old.ID);
+            List<User> listContacts = GetContacts(old.ID_Author, old.ID);
             ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
             ViewBag.Team = GetTeam(old.ID, old.ID_Author);
             return RedirectToAction("Edit", new { id = old.ID });

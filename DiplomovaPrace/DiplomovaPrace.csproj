@@ -319,6 +319,8 @@
     <Content Include="Content\themify-icons.css" />
     <Content Include="Content\variables.css" />
     <Content Include="favicon.ico" />
+    <Content Include="files\dev-folder-icon-5387523232018.ico" />
+    <Content Include="files\placeholder22502018.png" />
     <Content Include="fonts\codropsicons\codropsicons.svg" />
     <Content Include="fonts\codropsicons\index.html" />
     <Content Include="fonts\codropsicons\license.txt" />
@@ -329,7 +331,25 @@
     <Content Include="fonts\index.html" />
     <Content Include="fonts\themify.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\103422018.jpg" />
+    <Content Include="images\103432018.jpg" />
+    <Content Include="images\203482018.jpg" />
+    <Content Include="images\203502018.jpg" />
+    <Content Include="images\20350201803022018.jpg" />
+    <Content Include="images\503032018.jpg" />
+    <Content Include="images\50303201804322018.jpg" />
+    <Content Include="images\503062018.jpg" />
+    <Content Include="images\505212018.jpg" />
     <Content Include="images\admin.jpg" />
+    <Content Include="images\admin03372018.jpg" />
+    <Content Include="images\admin0337201803012018.jpg" />
+    <Content Include="images\admin0337201803022018.jpg" />
+    <Content Include="images\admin03562018.jpg" />
+    <Content Include="images\admin0356201803012018.jpg" />
+    <Content Include="images\admin0356201803082018.jpg" />
+    <Content Include="images\admin0356201804322018.jpg" />
+    <Content Include="images\admin06512018.jpg" />
+    <Content Include="images\admin25502018.jpg" />
     <Content Include="images\avatar\1.jpg" />
     <Content Include="images\avatar\2.jpg" />
     <Content Include="images\avatar\3.jpg" />
@@ -1103,6 +1123,8 @@
     <Content Include="images\flag\fr.png" />
     <Content Include="images\flag\it.png" />
     <Content Include="images\flag\us.png" />
+    <Content Include="images\IMG_0364 %281%2903542018.jpg" />
+    <Content Include="images\IMG_0364 %281%2924402018.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\logo2.png" />
     <Content Include="images\placeholder.png" />
@@ -1152,6 +1174,12 @@
     <Content Include="Models\SDTmodel.edmx.diagram">
       <DependentUpon>SDTmodel.edmx</DependentUpon>
     </Content>
+    <Content Include="files\INPAR_SemestralniPrace_Moravec03302018.docx" />
+    <Content Include="files\INPIA02_JSP-Objekty23142018.pdf" />
+    <Content Include="files\iWAS-Dokumentace24422018.docx" />
+    <Content Include="files\pokus03332018.csv" />
+    <Content Include="files\tcserver03452018.bat" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\buttons.js" />
     <Content Include="Scripts\chartjs.min.js" />
@@ -1508,7 +1536,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="files\" />
     <Folder Include="Views\Export\" />
   </ItemGroup>
   <ItemGroup>

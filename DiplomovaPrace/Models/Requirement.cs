@@ -30,12 +30,12 @@ namespace DiplomovaPrace.Models
         public Nullable<int> ID_Status { get; set; }
         public string Source { get; set; }
     
-        public virtual Project Project { get; set; }
-        public virtual ReqType ReqType { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UseCaseRequirement> UseCaseRequirements { get; set; }
         public virtual CategoryRequirement CategoryRequirement { get; set; }
         public virtual PriorityRequirement PriorityRequirement { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual ReqType ReqType { get; set; }
         public virtual StatusRequirement StatusRequirement { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UseCaseRequirement> UseCaseRequirements { get; set; }
     }
 }

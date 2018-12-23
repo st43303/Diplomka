@@ -20,31 +20,38 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
-            var user = db.Users.Where(u => u.ID == userID).FirstOrDefault();
-            return View(user);
+            try
+            {
+                var user = db.Users.Where(u => u.ID == userID).FirstOrDefault();
+                return View(user);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+            return View();
         }
 
         [HttpPost]
         public ActionResult Index(User user, HttpPostedFileBase AvatarFile)
         {
-            User old = db.Users.Find(user.ID);
-            bool changedImage = false;
-            if (AvatarFile != null)
-            {
-                old.Avatar = SaveFile(AvatarFile);
-                changedImage = true;
-            }
-         
-            old.Name = user.Name;
-            old.Surname = user.Surname;
-            old.City = user.City;
-            old.BirthDate = user.BirthDate;
-
-           
             if (ModelState.IsValid)
             {
                 try
                 {
+                    User old = db.Users.Find(user.ID);
+                    bool changedImage = false;
+                    if (AvatarFile != null)
+                    {
+                        old.Avatar = SaveFile(AvatarFile);
+                        changedImage = true;
+                    }
+
+                    old.Name = user.Name;
+                    old.Surname = user.Surname;
+                    old.City = user.City;
+                    old.BirthDate = user.BirthDate;
                     db.Entry(old).State = EntityState.Modified;
                     db.SaveChanges();
                     if (changedImage)
@@ -57,6 +64,7 @@ namespace DiplomovaPrace.Controllers
                     Console.WriteLine(ex.Message);
                     ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
                 }
+
             }
 
             return RedirectToAction("Index");
@@ -85,63 +93,72 @@ namespace DiplomovaPrace.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            var contacts = db.Friendships.Where(f=>f.ID_UserA==userID||f.ID_UserB==userID);
-            ViewBag.Contact = 0;
-            foreach(Friendship f in contacts)
+            try
             {
-                if (f.ID_UserA == userID)
+                var contacts = db.Friendships.Where(f => f.ID_UserA == userID || f.ID_UserB == userID);
+                ViewBag.Contact = 0;
+                foreach (Friendship f in contacts)
                 {
-                    if (f.ID_UserB == id)
+                    if (f.ID_UserA == userID)
                     {
-                        if (f.Checked)
+                        if (f.ID_UserB == id)
                         {
-                            ViewBag.Contact = 1;
+                            if (f.Checked)
+                            {
+                                ViewBag.Contact = 1;
+                            }
+                            else
+                            {
+                                ViewBag.Contact = 2;
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (f.ID_UserA == id)
                         {
-                            ViewBag.Contact = 2;
+                            if (f.Checked)
+                            {
+                                ViewBag.Contact = 1;
+                            }
+                            else
+                            {
+                                ViewBag.Contact = 2;
+                            }
                         }
                     }
                 }
-                else
+                List<Project> myProjects = db.Projects.Where(p => p.ID_Author == userID).ToList();
+                List<Project> contactProjects = db.Projects.Where(p => p.ID_Author == id).ToList();
+                List<Project> sharedProjects = new List<Project>();
+
+                foreach (Project project in myProjects)
                 {
-                    if (f.ID_UserA == id)
+                    if (db.ProjectUsers.Where(p => p.ID_Project == project.ID && p.ID_User == id).FirstOrDefault() != null)
                     {
-                        if (f.Checked)
-                        {
-                            ViewBag.Contact = 1;
-                        }
-                        else
-                        {
-                            ViewBag.Contact = 2;
-                        }
+                        sharedProjects.Add(project);
                     }
                 }
-            }
-            List<Project> myProjects = db.Projects.Where(p => p.ID_Author == userID).ToList();
-            List<Project> contactProjects = db.Projects.Where(p => p.ID_Author == id).ToList();
-            List<Project> sharedProjects = new List<Project>();
 
-            foreach(Project project in myProjects)
-            {
-                if (db.ProjectUsers.Where(p => p.ID_Project == project.ID && p.ID_User == id).FirstOrDefault()!=null)
+                foreach (Project project in contactProjects)
                 {
-                    sharedProjects.Add(project);
+                    if (db.ProjectUsers.Where(p => p.ID_Project == project.ID && p.ID_User == userID).FirstOrDefault() != null)
+                    {
+                        sharedProjects.Add(project);
+                    }
                 }
-            }
 
-            foreach (Project project in contactProjects)
+                ViewBag.Projects = sharedProjects;
+
+
+                return View(user);
+            }
+            catch (Exception ex)
             {
-                if (db.ProjectUsers.Where(p => p.ID_Project == project.ID && p.ID_User == userID).FirstOrDefault() != null)
-                {
-                    sharedProjects.Add(project);
-                }
+                Console.WriteLine(ex.Message);
             }
 
-            ViewBag.Projects = sharedProjects;
-
-          
-            return View(user);
+            return View();
         }
 
         public ActionResult AddContact(int id)
@@ -151,9 +168,10 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int) Session["userID"];
-            User user = db.Users.Find(userID);
+            
             try
             {
+                User user = db.Users.Find(userID);
                 Friendship f = new Friendship();
                 f.ID_UserA = userID;
                 f.ID_UserB = id;
@@ -172,6 +190,7 @@ namespace DiplomovaPrace.Controllers
                 ViewBag.Error = "Nastala chyba. Opakujte prosím akci.";
                 Console.WriteLine(ex.Message);
             }
+
             return RedirectToAction("Details", new { id });
         }
 
@@ -182,10 +201,10 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
-
-            Friendship friendship = db.Friendships.Where(f => f.ID_UserA == userID && f.ID_UserB == id).FirstOrDefault();
+            
             try
             {
+                Friendship friendship = db.Friendships.Where(f => f.ID_UserA == userID && f.ID_UserB == id).FirstOrDefault();
                 db.Friendships.Remove(friendship);
                 db.SaveChanges();
             }catch(Exception ex)

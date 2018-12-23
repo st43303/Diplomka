@@ -5,64 +5,62 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="758d65f838084bca843ef7f3d59dfaac" Name="Diagram1">
-        <EntityTypeShape EntityType="SDTModel.Actor" Width="1.5" PointX="5.25" PointY="14.375" />
+        <EntityTypeShape EntityType="SDTModel.Actor" Width="1.5" PointX="5.25" PointY="20.25" />
         <EntityTypeShape EntityType="SDTModel.ActorType" Width="1.5" PointX="5.25" PointY="17.625" />
-        <EntityTypeShape EntityType="SDTModel.Friendship" Width="1.5" PointX="3" PointY="17.25" />
-        <EntityTypeShape EntityType="SDTModel.Notification" Width="1.5" PointX="3" PointY="8.375" />
-        <EntityTypeShape EntityType="SDTModel.Project" Width="1.5" PointX="3" PointY="12.25" />
-        <EntityTypeShape EntityType="SDTModel.ProjectUser" Width="1.5" PointX="8.25" PointY="10.875" />
-        <EntityTypeShape EntityType="SDTModel.ReqType" Width="1.5" PointX="3" PointY="5.125" />
-        <EntityTypeShape EntityType="SDTModel.Requirement" Width="1.5" PointX="5.25" PointY="10.75" />
-        <EntityTypeShape EntityType="SDTModel.Scenario" Width="1.5" PointX="10.5" PointY="17.75" />
-        <EntityTypeShape EntityType="SDTModel.ScenarioActor" Width="1.5" PointX="7.5" PointY="14.25" />
-        <EntityTypeShape EntityType="SDTModel.UseCase" Width="1.5" PointX="5.25" PointY="23.875" />
-        <EntityTypeShape EntityType="SDTModel.UseCaseActor" Width="1.5" PointX="7.5" PointY="19.375" />
-        <EntityTypeShape EntityType="SDTModel.User" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="SDTModel.CategoryRequirement" Width="1.5" PointX="5.25" PointY="41.5" />
+        <EntityTypeShape EntityType="SDTModel.File" Width="1.5" PointX="5.25" PointY="24.125" />
+        <EntityTypeShape EntityType="SDTModel.FileType" Width="1.5" PointX="3" PointY="20.875" />
+        <EntityTypeShape EntityType="SDTModel.Friendship" Width="1.5" PointX="3" PointY="32.375" />
+        <EntityTypeShape EntityType="SDTModel.Notification" Width="1.5" PointX="3" PointY="13.125" />
+        <EntityTypeShape EntityType="SDTModel.PriorityRequirement" Width="1.5" PointX="8.25" PointY="36.375" />
+        <EntityTypeShape EntityType="SDTModel.PriorityTask" Width="1.5" PointX="8" PointY="23.875" />
+        <EntityTypeShape EntityType="SDTModel.Project" Width="1.5" PointX="3" PointY="23.875" />
+        <EntityTypeShape EntityType="SDTModel.ProjectUser" Width="1.5" PointX="10.25" PointY="26.75" />
+        <EntityTypeShape EntityType="SDTModel.ReqType" Width="1.5" PointX="8.25" PointY="41.5" />
+        <EntityTypeShape EntityType="SDTModel.Requirement" Width="1.5" PointX="10.5" PointY="31.75" />
+        <EntityTypeShape EntityType="SDTModel.Scenario" Width="1.5" PointX="7.5" PointY="30.875" />
+        <EntityTypeShape EntityType="SDTModel.ScenarioActor" Width="1.5" PointX="7.5" PointY="20.25" />
+        <EntityTypeShape EntityType="SDTModel.StateTask" Width="1.5" PointX="8" PointY="17.125" />
+        <EntityTypeShape EntityType="SDTModel.StatusRequirement" Width="1.5" PointX="8.25" PointY="38.875" />
+        <EntityTypeShape EntityType="SDTModel.Task" Width="1.5" PointX="10.25" PointY="21.875" />
+        <EntityTypeShape EntityType="SDTModel.TaskHistory" Width="1.5" PointX="5.25" PointY="38.375" />
+        <EntityTypeShape EntityType="SDTModel.UseCase" Width="1.5" PointX="5.25" PointY="35.125" />
+        <EntityTypeShape EntityType="SDTModel.UseCaseActor" Width="1.5" PointX="7.5" PointY="28" />
+        <EntityTypeShape EntityType="SDTModel.UseCaseRequirement" Width="1.5" PointX="12.75" PointY="33.75" />
+        <EntityTypeShape EntityType="SDTModel.User" Width="1.5" PointX="0.75" PointY="19.5" />
         <AssociationConnector Association="SDTModel.FK_Actor_Project" />
         <AssociationConnector Association="SDTModel.FK_ScenarioActor_Actor" />
         <AssociationConnector Association="SDTModel.FK_UseCaseActor_Actor" />
         <AssociationConnector Association="SDTModel.FK_ScenarioActor_ActorType" />
+        <AssociationConnector Association="SDTModel.FK_CategoryRequirement_Project" />
+        <AssociationConnector Association="SDTModel.FK_Requirement_CategoryRequirement" />
+        <AssociationConnector Association="SDTModel.FK_File_FileType" />
+        <AssociationConnector Association="SDTModel.FK_File_Project" />
+        <AssociationConnector Association="SDTModel.FK_File_User" />
         <AssociationConnector Association="SDTModel.FK_Friendship_UserA" />
         <AssociationConnector Association="SDTModel.FK_Friendship_UserB" />
         <AssociationConnector Association="SDTModel.FK_Notification_User" />
-        <AssociationConnector Association="SDTModel.FK_Project_Project" />
+        <AssociationConnector Association="SDTModel.FK_Requirement_PriorityRequirement" />
+        <AssociationConnector Association="SDTModel.FK_Task_PriorityTask" />
         <AssociationConnector Association="SDTModel.FK_Project_User" />
         <AssociationConnector Association="SDTModel.FK_ProjectUser_Project" />
         <AssociationConnector Association="SDTModel.FK_Requirement_Project" />
         <AssociationConnector Association="SDTModel.FK_Scenario_Project" />
+        <AssociationConnector Association="SDTModel.FK_Task_Project" />
+        <AssociationConnector Association="SDTModel.FK_TaskHistory_Project" />
         <AssociationConnector Association="SDTModel.FK_UseCase_Project" />
         <AssociationConnector Association="SDTModel.FK_ProjectUser_User" />
         <AssociationConnector Association="SDTModel.FK_Requirement_ReqType" />
+        <AssociationConnector Association="SDTModel.FK_Requirement_StatusRequirement" />
+        <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_Requirement" />
+        <AssociationConnector Association="SDTModel.FK_Scenario_Scenario" />
         <AssociationConnector Association="SDTModel.FK_Scenario_UseCase" />
         <AssociationConnector Association="SDTModel.FK_ScenarioActor_Scenario" />
-        <AssociationConnector Association="SDTModel.FK_UseCaseActor_UseCase" />
-        <AssociationConnector Association="SDTModel.FK_User_User" />
-        <AssociationConnector Association="SDTModel.FK_Scenario_Scenario" />
-        <EntityTypeShape EntityType="SDTModel.FileType" Width="1.5" PointX="0.75" PointY="1.5" />
-        <EntityTypeShape EntityType="SDTModel.UseCaseRequirement" Width="1.5" PointX="10.75" PointY="14.625" />
-        <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_Requirement" />
-        <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_UseCase" />
-        <EntityTypeShape EntityType="SDTModel.CategoryRequirement" Width="1.5" PointX="3" PointY="20.75" />
-        <EntityTypeShape EntityType="SDTModel.PriorityRequirement" Width="1.5" PointX="3" PointY="2.125" />
-        <EntityTypeShape EntityType="SDTModel.StatusRequirement" Width="1.5" PointX="3" PointY="23.5" />
-        <AssociationConnector Association="SDTModel.FK_CategoryRequirement_Project" />
-        <AssociationConnector Association="SDTModel.FK_Requirement_CategoryRequirement" />
-        <AssociationConnector Association="SDTModel.FK_Requirement_PriorityRequirement" />
-        <AssociationConnector Association="SDTModel.FK_Requirement_StatusRequirement" />
-        <EntityTypeShape EntityType="SDTModel.PriorityTask" Width="1.5" PointX="6.375" PointY="0.75" />
-        <EntityTypeShape EntityType="SDTModel.StateTask" Width="1.5" PointX="5.375" PointY="3.25" />
-        <EntityTypeShape EntityType="SDTModel.Task" Width="1.5" PointX="8.625" PointY="7.75" />
-        <AssociationConnector Association="SDTModel.FK_Task_PriorityTask" />
-        <AssociationConnector Association="SDTModel.FK_Task_Project" />
         <AssociationConnector Association="SDTModel.FK_Task_StateTask" />
-        <AssociationConnector Association="SDTModel.FK_Task_Creator" />
-        <AssociationConnector Association="SDTModel.FK_Task_Executor" />
-        <EntityTypeShape EntityType="SDTModel.TaskHistory" Width="1.5" PointX="5.25" PointY="20.25" />
-        <AssociationConnector Association="SDTModel.FK_TaskHistory_Project" />
-        <EntityTypeShape EntityType="SDTModel.File" Width="1.5" PointX="5.5" PointY="6.5" />
-        <AssociationConnector Association="SDTModel.FK_File_FileType" />
-        <AssociationConnector Association="SDTModel.FK_File_Project" />
-        <AssociationConnector Association="SDTModel.FK_File_User" />
+        <AssociationConnector Association="SDTModel.FK_Task_User" />
+        <AssociationConnector Association="SDTModel.FK_Task_User1" />
+        <AssociationConnector Association="SDTModel.FK_UseCaseActor_UseCase" />
+        <AssociationConnector Association="SDTModel.FK_UseCaseRequirement_UseCase" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

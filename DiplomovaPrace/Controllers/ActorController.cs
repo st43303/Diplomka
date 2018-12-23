@@ -2,7 +2,6 @@
 using LumenWorks.Framework.IO.Csv;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -18,6 +17,7 @@ namespace DiplomovaPrace.Controllers
         // GET: Actor
         public ActionResult Index()
         {
+
             if (Session["userID"] == null)
             {
                 return RedirectToAction("Login", "Account");
@@ -28,8 +28,18 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Index", "Home");
             }
             int projectID = (int)Session["projectID"];
-            var actors = db.Actors.Where(a => a.ID_Project == projectID).OrderByDescending(d=>d.ID);
-            return View(actors);
+            try
+            {
+                var actors = db.Actors.Where(a => a.ID_Project == projectID).OrderByDescending(d => d.ID);
+                return View(actors);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return View();
         }
 
         [HttpPost]
@@ -57,29 +67,29 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var actor = db.Actors.Find(id);
+
             try
             {
+                var actor = db.Actors.Find(id);
                 db.Actors.Remove(actor);
                 db.SaveChanges();
                 NotificationSystem.SendNotification(EnumNotification.DELETE_ACTOR, "/Actor");
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult Edit(int id, string editActor)
         {
-            var actor = db.Actors.Find(id);
-            actor.Name = editActor;
-
             try
             {
+                var actor = db.Actors.Find(id);
+                actor.Name = editActor;
                 db.Entry(actor).State = EntityState.Modified;
                 db.SaveChanges();
                 NotificationSystem.SendNotification(EnumNotification.EDIT_ACTOR, "/Actor");
@@ -165,21 +175,26 @@ namespace DiplomovaPrace.Controllers
         {
             DataTable dataTable = JsonConvert.DeserializeObject<DataTable>(table);
             int projectID = (int)Session["projectID"];
-            
-            foreach(DataRow row in dataTable.Rows)
+            try
             {
-                foreach(DataColumn col in dataTable.Columns)
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    if (col.ColumnName == "Name")
+                    foreach (DataColumn col in dataTable.Columns)
                     {
-                        string name = row[col.ColumnName].ToString();
-                        Actor actor = new Actor();
-                        actor.Name = name;
-                        actor.ID_Project = projectID;
-                        db.Actors.Add(actor);
-                        db.SaveChanges();
+                        if (col.ColumnName == "Name")
+                        {
+                            string name = row[col.ColumnName].ToString();
+                            Actor actor = new Actor();
+                            actor.Name = name;
+                            actor.ID_Project = projectID;
+                            db.Actors.Add(actor);
+                            db.SaveChanges();
+                        }
                     }
                 }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             return RedirectToAction("Index");
