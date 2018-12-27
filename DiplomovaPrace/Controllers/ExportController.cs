@@ -35,7 +35,8 @@ namespace DiplomovaPrace.Controllers
             document.SetMargins(60, 60, 60, 60);
 
 
-            string strAttachment = Server.MapPath("~/Downloads/" + fileName);
+            //string strAttachment = Server.MapPath("~/Downloads/" + fileName);
+            //string strAttachment = Server.MapPath(fileName);
             pdfWriter = PdfWriter.GetInstance(document, workStream);
             pdfWriter.CloseStream = false;
             PageEventHelper pageEvent = new PageEventHelper();
@@ -104,13 +105,23 @@ namespace DiplomovaPrace.Controllers
                 }
                 
             }
-            document.Close();
-
             byte[] byteInfo = workStream.ToArray();
-            workStream.Write(byteInfo, 0, byteInfo.Length);
-            workStream.Position = 0;
+            document.Close();
+            Response.ClearContent();
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + fileName+";");
 
-            return File(workStream, "application/pdf", fileName);
+            Response.OutputStream.Write(byteInfo, 0, byteInfo.Length);
+            Response.Flush();
+            Response.End();
+
+            return RedirectToAction("Index", "Home");
+            
+            //workStream.Write(byteInfo, 0, byteInfo.Length);
+            //workStream.Position = 0;
+
+            //return File(workStream, "application/pdf", fileName);
         }
 
         private PdfPTable titlePage(int projectID)
