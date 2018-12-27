@@ -9,7 +9,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class HomeController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         public ActionResult Index()
         {
 
@@ -163,8 +163,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return Content("<script>location.href = "+url+";</script>");
+        }
 
-            
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
     }

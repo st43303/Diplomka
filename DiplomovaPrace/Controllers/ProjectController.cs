@@ -9,7 +9,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class ProjectController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Project
         public ActionResult Create()
         {       
@@ -227,6 +227,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Edit", new { id = projectID });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

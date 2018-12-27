@@ -13,7 +13,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class ActorController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Actor
         public ActionResult Index()
         {
@@ -198,6 +198,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class TaskController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
 
         // GET: Task
         public ActionResult Index()
@@ -400,6 +400,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

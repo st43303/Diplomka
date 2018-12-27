@@ -13,7 +13,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class ProfileController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Profile
         public ActionResult Index()
         {
@@ -427,6 +427,15 @@ namespace DiplomovaPrace.Controllers
             }
 
         }
-       
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }

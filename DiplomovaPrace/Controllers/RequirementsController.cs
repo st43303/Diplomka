@@ -10,7 +10,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class RequirementsController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Requirements
         public ActionResult Functional()
         {
@@ -459,6 +459,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
 

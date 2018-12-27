@@ -8,7 +8,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class ContactsController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Contacts
         public ActionResult Index()
         {
@@ -108,6 +108,15 @@ namespace DiplomovaPrace.Controllers
             }
          
             return RedirectToAction("Requests");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

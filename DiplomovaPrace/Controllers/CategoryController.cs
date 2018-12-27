@@ -8,7 +8,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class CategoryController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Category
         public ActionResult Index()
         {
@@ -95,6 +95,15 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

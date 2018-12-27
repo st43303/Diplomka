@@ -10,7 +10,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class UseCaseController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: UseCase
         public ActionResult Index()
         {
@@ -286,6 +286,15 @@ foreach(Requirement req in db.Requirements)
                 Console.WriteLine(ex.Message);
             }
             return RedirectToAction("Edit", new { id = idUseCase });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

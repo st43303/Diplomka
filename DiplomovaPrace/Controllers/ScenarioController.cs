@@ -11,7 +11,7 @@ namespace DiplomovaPrace.Controllers
 
     public class ScenarioController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Scenario
         public ActionResult Index()
         {
@@ -292,6 +292,15 @@ namespace DiplomovaPrace.Controllers
             ViewBag.otherActors = new MultiSelectList(otherActorsLinkedList, "ID", "Name");
 
             return View(scenario);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

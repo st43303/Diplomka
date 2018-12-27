@@ -10,15 +10,17 @@ namespace DiplomovaPrace.Controllers
 
     public class NotificationSystem
     {
+        private SDTEntities db = new SDTEntities();
         public static void SendNotification(EnumNotification notificationType, string url)
         {
+            SDTEntities db = new SDTEntities();
             int projectID = (int)HttpContext.Current.Session["projectID"];
             int userID = (int)HttpContext.Current.Session["userID"];
-            User sender = Database.GetDatabase().Users.Find(userID);
+            User sender = db.Users.Find(userID);
 
-            List<ProjectUser> receivers = Database.GetDatabase().ProjectUsers.Where(p => p.ID_Project == projectID && p.ID_User != userID).ToList();
+            List<ProjectUser> receivers = db.ProjectUsers.Where(p => p.ID_Project == projectID && p.ID_User != userID).ToList();
 
-            string projectName = Database.GetDatabase().Projects.Find(projectID).Name;
+            string projectName = db.Projects.Find(projectID).Name;
             string message = "Uživatel "+sender.Name+" "+sender.Surname;
             switch (notificationType)
             {
@@ -84,8 +86,8 @@ namespace DiplomovaPrace.Controllers
                 notification.Message = message;
                 notification.URL = url;
                 notification.DateNotification = DateTime.Now;
-                Database.GetDatabase().Notifications.Add(notification);
-                Database.GetDatabase().SaveChanges();
+                db.Notifications.Add(notification);
+                db.SaveChanges();
             }
 
 

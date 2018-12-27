@@ -15,9 +15,19 @@ namespace DiplomovaPrace.Controllers
 {
     public class ExportController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         private Document document;
         private PdfWriter pdfWriter;
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
 
         [HttpPost]
@@ -603,5 +613,7 @@ namespace DiplomovaPrace.Controllers
             template.ShowText("" + (writer.PageNumber));
             template.EndText();
         }
+
+
     }
 }

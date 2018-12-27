@@ -13,7 +13,7 @@ namespace DiplomovaPrace.Controllers
     
     public class AccountController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Login
         public ActionResult Login()
         {
@@ -126,6 +126,15 @@ namespace DiplomovaPrace.Controllers
                 sb.Append(b.ToString("X2"));
 
             return sb.ToString();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
     }

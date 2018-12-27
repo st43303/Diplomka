@@ -12,7 +12,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class StorageController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
         // GET: Storage
         public ActionResult Index()
         {
@@ -166,6 +166,15 @@ namespace DiplomovaPrace.Controllers
                 Console.WriteLine(ex.Message);
             }
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
     }

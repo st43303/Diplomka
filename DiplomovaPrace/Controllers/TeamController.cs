@@ -9,7 +9,7 @@ namespace DiplomovaPrace.Controllers
 {
     public class TeamController : Controller
     {
-        private SDTEntities db = Database.GetDatabase();
+        private SDTEntities db = new SDTEntities();
 
         // GET: Team
         public ActionResult Index()
@@ -91,9 +91,9 @@ namespace DiplomovaPrace.Controllers
             return list;
         }
 
-        private Boolean isProjectUser(int userID, IQueryable<ProjectUser> projectUsers)
+        private bool isProjectUser(int userID, IQueryable<ProjectUser> projectUsers)
         {
-            Boolean answer = false;
+            bool answer = false;
             foreach (ProjectUser projectUser in projectUsers)
             {
                 if (projectUser.ID_User == userID)
@@ -105,7 +105,14 @@ namespace DiplomovaPrace.Controllers
             return answer;
         }
 
-
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
     }
 }
