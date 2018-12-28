@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ContactsController : Controller
     {
         private SDTEntities db = new SDTEntities();

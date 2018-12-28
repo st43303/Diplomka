@@ -3,18 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    
-
     public class NotificationSystem
     {
         private SDTEntities db = new SDTEntities();
         public static void SendNotification(EnumNotification notificationType, string url)
         {
             SDTEntities db = new SDTEntities();
-            int projectID = (int)HttpContext.Current.Session["projectID"];
+    
+            int projectID = (int) HttpContext.Current.Session["projectID"];
             int userID = (int)HttpContext.Current.Session["userID"];
             User sender = db.Users.Find(userID);
 
@@ -177,6 +177,7 @@ namespace DiplomovaPrace.Controllers
         {
             return " odstranil úkol z projektu ";
         }
+
 
     }
 }

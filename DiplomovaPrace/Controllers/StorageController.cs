@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class StorageController : Controller
     {
         private SDTEntities db = new SDTEntities();

@@ -1173,6 +1173,7 @@
     <Content Include="Models\SDTmodel.edmx.diagram">
       <DependentUpon>SDTmodel.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\ARIALUNI.TTF" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\buttons.js" />

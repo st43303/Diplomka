@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ExportController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -31,107 +32,121 @@ namespace DiplomovaPrace.Controllers
 
 
         [HttpPost]
-        public ActionResult Index(bool Team, bool Requirement, bool UseCase, bool Scenario, bool Actors, bool Tasks, int projectID)
+        public FileResult Index(bool Team, bool Requirement, bool UseCase, bool Scenario, bool Actors, bool Tasks, int projectID)
         {
             int userID = (int)Session["userID"];
             var user = db.Users.Find(userID);
             var project = db.Projects.Find(projectID);
 
-
-            MemoryStream workStream = new MemoryStream();
-            StringBuilder status = new StringBuilder("");
-            string fileName = "Dokumentace " + DateTime.Now.ToShortDateString() + ".pdf";
-            document = new Document();
-            document.SetMargins(60, 60, 60, 60);
-
-
-            //string strAttachment = Server.MapPath("~/Downloads/" + fileName);
-            //string strAttachment = Server.MapPath(fileName);
-            pdfWriter = PdfWriter.GetInstance(document, workStream);
-            pdfWriter.CloseStream = false;
-            PageEventHelper pageEvent = new PageEventHelper();
-            pdfWriter.PageEvent = pageEvent;
-            document.Open();
-
-            document.AddAuthor(user.Name + " " + user.Surname);
-            document.AddCreationDate();
-            document.AddTitle("Projekt " + project.Name + " - dokumentace");
-           
-            document.Add(titlePage(projectID));
-
-            if (Team)
+            try
             {
-                document.NewPage();
-                document.Add(tableTeam(projectID));
-            }
 
-            if (Tasks)
-            {
-                document.NewPage();
-                document.Add(tableTasks(projectID));
-            }
+                MemoryStream workStream = new MemoryStream();
+                StringBuilder status = new StringBuilder("");
+                string fileName = "Dokumentace " + DateTime.Now.ToShortDateString() + ".pdf";
+                document = new Document();
+                document.SetMargins(60, 60, 60, 60);
 
-            if (Requirement)
-            {
-                document.NewPage();
-                document.Add(tableRequirements(projectID));
 
-            }
+                //string strAttachment = Server.MapPath("~/Downloads/" + fileName);
+                //string strAttachment = Server.MapPath(fileName);
+                pdfWriter = PdfWriter.GetInstance(document, workStream);
+                pdfWriter.CloseStream = false;
+                PageEventHelper pageEvent = new PageEventHelper();
+                pdfWriter.PageEvent = pageEvent;
+                document.Open();
 
-            if (Actors)
-            {
-                document.NewPage();
-                document.Add(tableActors(projectID));
-            }
+                document.AddAuthor(user.Name + " " + user.Surname);
+                document.AddCreationDate();
+                document.AddTitle("Projekt " + project.Name + " - dokumentace");
 
-            if (UseCase)
-            {
-                document.NewPage();
-                document.Add(tableUseCases(projectID));
-            }
+                document.Add(titlePage(projectID));
 
-            if (Scenario)
-            {
-                List<Scenario> scenarios = db.Scenarios.Where(s => s.ID_Project == projectID && s.Done && s.ID_MainScenario==null).ToList();
- 
-                for(int i = 0; i < scenarios.Count; i++)
+                if (Team)
                 {
-                    Scenario scenario = scenarios[i];
-                    List<Scenario> alternativeScenarios = db.Scenarios.Where(a => a.ID_MainScenario == scenario.ID && a.Done).ToList();
                     document.NewPage();
-                    if (i == 0)
-                    {
-                        document.Add(tableScenarios(scenario,true,false));
-                    }
-                    else
-                    {
-                        document.Add(tableScenarios(scenario, false,false));
-                    }
-                    foreach(var alt in alternativeScenarios)
-                    {
-                        document.NewPage();
-                        document.Add(tableScenarios(alt, false, true));
-                    }
+                    document.Add(tableTeam(projectID));
                 }
-                
+
+                if (Tasks)
+                {
+                    document.NewPage();
+                    document.Add(tableTasks(projectID));
+                }
+
+                if (Requirement)
+                {
+                    document.NewPage();
+                    document.Add(tableRequirements(projectID));
+
+                }
+
+                if (Actors)
+                {
+                    document.NewPage();
+                    document.Add(tableActors(projectID));
+                }
+
+                if (UseCase)
+                {
+                    document.NewPage();
+                    document.Add(tableUseCases(projectID));
+                }
+
+                if (Scenario)
+                {
+                    List<Scenario> scenarios = db.Scenarios.Where(s => s.ID_Project == projectID && s.Done && s.ID_MainScenario == null).ToList();
+
+                    for (int i = 0; i < scenarios.Count; i++)
+                    {
+                        Scenario scenario = scenarios[i];
+                        List<Scenario> alternativeScenarios = db.Scenarios.Where(a => a.ID_MainScenario == scenario.ID && a.Done).ToList();
+                        document.NewPage();
+                        if (i == 0)
+                        {
+                            document.Add(tableScenarios(scenario, true, false));
+                        }
+                        else
+                        {
+                            document.Add(tableScenarios(scenario, false, false));
+                        }
+                        foreach (var alt in alternativeScenarios)
+                        {
+                            document.NewPage();
+                            document.Add(tableScenarios(alt, false, true));
+                        }
+                    }
+
+                }
+                byte[] byteInfo = workStream.ToArray();
+                document.Close();
+                //Response.ClearContent();
+                //Response.Clear();
+                //Response.ContentType = "application/pdf";
+                //Response.AddHeader("content-disposition", "attachment;filename=" + fileName+";");
+
+                //Response.OutputStream.Write(byteInfo, 0, byteInfo.Length);
+                //Response.Flush();
+                //Response.End();
+
+
+                workStream.Write(byteInfo, 0, byteInfo.Length);
+                workStream.Position = 0;
+
+                return File(workStream, System.Net.Mime.MediaTypeNames.Application.Pdf, fileName);
+            }catch(Exception ex)
+            {
+                string function = "console.log('{0}');";
+                string log = string.Format(GenerateCodeFromFunction(function), ex.Message);
+                Response.Write(log);
             }
-            byte[] byteInfo = workStream.ToArray();
-            document.Close();
-            Response.ClearContent();
-            Response.Clear();
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=" + fileName+";");
+            return null;
+        }
 
-            Response.OutputStream.Write(byteInfo, 0, byteInfo.Length);
-            Response.Flush();
-            Response.End();
-
-            return RedirectToAction("Index", "Home");
-            
-            //workStream.Write(byteInfo, 0, byteInfo.Length);
-            //workStream.Position = 0;
-
-            //return File(workStream, "application/pdf", fileName);
+        static string GenerateCodeFromFunction(string function)
+        {
+            string scriptTag = "<script type=\"\" language=\"\">{0}</script>";
+            return string.Format(scriptTag, function);
         }
 
         private PdfPTable titlePage(int projectID)
@@ -144,7 +159,7 @@ namespace DiplomovaPrace.Controllers
 
             Project project = db.Projects.Find(projectID);
 
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             tableLayout.AddCell(new PdfPCell(new Phrase(project.Name, new Font(bf, 25, Font.BOLD, BaseColor.BLACK)))
@@ -191,7 +206,7 @@ namespace DiplomovaPrace.Controllers
             tableLayout.HeaderRows = 1;
 
             List<Task> tasks = db.Tasks.Where(t => t.ID_Project == projectID).ToList();
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             tableLayout.AddCell(new PdfPCell(new Phrase("Seznam úkolů", new Font(bf, 20, Font.BOLD, BaseColor.BLACK)))
@@ -249,7 +264,7 @@ namespace DiplomovaPrace.Controllers
             tableLayout.HeaderRows = 1;
 
             List<User> team = db.ProjectUsers.Where(p => p.ID_Project == projectID).Select(s => s.User).ToList();
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             tableLayout.AddCell(new PdfPCell(new Phrase("Členové týmu", new Font(bf, 20, Font.BOLD, BaseColor.BLACK)))
@@ -295,7 +310,7 @@ namespace DiplomovaPrace.Controllers
 
             List<Requirement> requirements = db.Requirements.Where(r => r.ID_Project == projectID).ToList();
 
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             tableLayout.AddCell(new PdfPCell(new Phrase("Seznam požadavků", new Font(bf,20,Font.BOLD,BaseColor.BLACK)))
             {
@@ -334,7 +349,7 @@ namespace DiplomovaPrace.Controllers
             tableLayout.WidthPercentage = 100;
             tableLayout.HeaderRows = 1;
 
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             if (first)
@@ -390,7 +405,7 @@ namespace DiplomovaPrace.Controllers
             }
             
 
-            String oActors = "Vedlejší aktéři:\n";
+            string oActors = "Vedlejší aktéři:\n";
 
             for (int i = 0; i < otherActors.Count; i++)
             {
@@ -411,18 +426,18 @@ namespace DiplomovaPrace.Controllers
             AddCellToBody(tableLayout, "Vstupní podmínky:\n" + scenario.InCondition);
             if (alternate)
             {
-                AddCellToBody(tableLayout, "Alternativní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", String.Empty));
+                AddCellToBody(tableLayout, "Alternativní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", string.Empty));
             }
             else
             {
-                AddCellToBody(tableLayout, "Hlavní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", String.Empty));
+                AddCellToBody(tableLayout, "Hlavní scénář:" + Regex.Replace(scenario.Scenario1, "<.*?>", string.Empty));
             }
             AddCellToBody(tableLayout, "Výstupní podmínky:\n" + scenario.OutCondition);
 
             if (!alternate)
             {
                 List<Scenario> alternateScenarios = db.Scenarios.Where(s => s.ID_MainScenario == scenario.ID && s.Done).ToList();
-                String alScenarios = "Alternativní scénáře:\n";
+                string alScenarios = "Alternativní scénáře:\n";
 
                 for (int i = 0; i < alternateScenarios.Count; i++)
                 {
@@ -456,7 +471,7 @@ namespace DiplomovaPrace.Controllers
 
             List<UseCase> useCases = db.UseCases.Where(u => u.ID_Project == projectID).ToList();
 
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             tableLayout.AddCell(new PdfPCell(new Phrase("Případy užití", new Font(bf, 20, Font.BOLD, BaseColor.BLACK)))
@@ -476,7 +491,7 @@ namespace DiplomovaPrace.Controllers
                 AddCellToBody(tableLayout, usecase.Name);
                 AddCellToBody(tableLayout, usecase.Description);
                 var reqs = db.UseCaseRequirements.Where(r => r.ID_UseCase == usecase.ID).Select(s => s.Requirement).ToList();
-                String names = "";
+                string names = "";
                 for(int i = 0; i < reqs.Count; i++)
                 {
                     names += reqs[i].ID_Requirement;
@@ -501,7 +516,7 @@ namespace DiplomovaPrace.Controllers
 
             List<Actor> actors = db.Actors.Where(a => a.ID_Project == projectID).ToList();
 
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             tableLayout.AddCell(new PdfPCell(new Phrase("Seznam aktérů", new Font(bf, 20, Font.BOLD, BaseColor.BLACK)))
             {
@@ -519,7 +534,7 @@ namespace DiplomovaPrace.Controllers
             {
                 AddCellToBody(tableLayout, actor.Name);
                 var usecases = db.UseCaseActors.Where(x => x.ID_Actor == actor.ID).Select(s => s.UseCase).ToList();
-                String names = "";
+                string names = "";
                for(int i = 0; i < usecases.Count; i++)
                 {
                     names += usecases[i].Name;
@@ -535,7 +550,7 @@ namespace DiplomovaPrace.Controllers
 
         private static void AddCellToHeader(PdfPTable tableLayout, string cellText)
         {
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = System.Web.HttpContext.Current.Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(bf,9,Font.BOLD,BaseColor.WHITE)))
@@ -550,7 +565,7 @@ namespace DiplomovaPrace.Controllers
         // Method to add single cell to the body  
         private static void AddCellToBody(PdfPTable tableLayout, string cellText)
         {
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = System.Web.HttpContext.Current.Server.MapPath("~/fonts/ARIALUNI.TTF");
 
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
@@ -580,11 +595,11 @@ namespace DiplomovaPrace.Controllers
         public override void OnEndPage(PdfWriter writer, Document document)
         {
             base.OnEndPage(writer, document);
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = HttpContext.Current.Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             int pageN = writer.PageNumber;
-            String text = pageN.ToString() + "/";
+            string text = pageN.ToString() + "/";
             float len = bf.GetWidthPoint(text, 9f);
 
             iTextSharp.text.Rectangle pageSize = document.PageSize;
@@ -604,7 +619,7 @@ namespace DiplomovaPrace.Controllers
         public override void OnCloseDocument(PdfWriter writer, Document document)
         {
             base.OnCloseDocument(writer, document);
-            string ARIALUNI_TFF = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIALUNI.TTF");
+            string ARIALUNI_TFF = HttpContext.Current.Server.MapPath("~/fonts/ARIALUNI.TTF");
             BaseFont bf = BaseFont.CreateFont(ARIALUNI_TFF, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             template.BeginText();

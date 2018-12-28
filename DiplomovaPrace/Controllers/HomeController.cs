@@ -1,12 +1,14 @@
 ﻿using DiplomovaPrace.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
 
 namespace DiplomovaPrace.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class HomeController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -135,7 +137,7 @@ namespace DiplomovaPrace.Controllers
             var userID = (int)Session["userID"];
             try
             {
-                List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i => i.ID).ToList();
+                List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i => i.ID).AsNoTracking().ToList();
 
                 var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
                 return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -165,14 +167,6 @@ namespace DiplomovaPrace.Controllers
             return Content("<script>location.href = "+url+";</script>");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
     }
 }
