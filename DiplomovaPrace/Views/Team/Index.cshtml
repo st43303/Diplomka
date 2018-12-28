@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Členové teamu projektu "+Session["projectName"];
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int userID = (int)Session["userID"];
 }
 
 <h2>Členové teamu projektu @Session["projectName"]</h2>
@@ -70,9 +71,13 @@
                                 <div class="form-group">
                                     <button class="btn btn-sm btn-outline-dark" title="Zobrazit profil" onclick="location.href='@Url.Action("Details","Profile",new { id=item.ID_User})'"><i class="fa fa-user"></i></button>
                                 </div>
-                                <div class="form-group">
-                                    <button class="btn btn-sm btn-outline-danger" title="Odebrat člena týmu" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
-                                </div>
+                                @if (userID == Model.FirstOrDefault().Project.ID_Author)
+                                {
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-outline-danger" title="Odebrat člena týmu" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                }
+
                             </div>
 
                         </td>

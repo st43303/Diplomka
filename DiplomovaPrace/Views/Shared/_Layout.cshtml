@@ -17,7 +17,9 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
 <body>
+
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
             <div class="navbar-header">
@@ -122,16 +124,16 @@
                             </form>
                         </div>
                         <div class="dropdown for-notification">
-                            <button class="btn btn-secondary dropdown-toggle" onclick="showNotification();" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-bell"></i>
-                                <span class="count bg-danger">&nbsp;</span>
-                            </button>
-                            <div id="notiContent" class="dropdown-menu" aria-labelledby="notification">
-                                <a class="dropdown-item media" href="#">
-                                    <p>Žádné zprávy k zobrazení...</p>
-                                </a>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                    <span class="count bg-danger">&nbsp;</span>
+                                </button>
+                                <div id="notiContent" class="dropdown-menu" aria-labelledby="notification">
+                                    <a class="dropdown-item media" href="#">
+                                        <p>Žádné zprávy k zobrazení...</p>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
 
                     </div>
                 </div>
@@ -163,12 +165,14 @@
 
 
     @Scripts.Render("~/bundles/jquery")
+    <script src="/signalr/hubs"></script>
     <script src="~/Scripts/datepicker-cs.js" type="text/javascript"></script>
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
 
 
-    <script>
+    <script type="text/javascript">
         jQuery(document).ready(function () {
             jQuery('#searchTerm').autocomplete({
                 source: function (request, response) {
@@ -199,7 +203,7 @@
     <script>
         jQuery(function () {
             var dateToday = new Date();
-            var range = (dateToday.getFullYear() - 100) + ":" + (dateToday.getFullYear()+10);
+            var range = (dateToday.getFullYear() - 100) + ":" + (dateToday.getFullYear() + 10);
             jQuery("#datepicker").datepicker({
                 changeMonth: true,
                 changeYear: true,
@@ -222,66 +226,88 @@
                 }
             });
         }
-        function updateNotificationCount() {
-            jQuery.ajax({
-                type: 'GET',
-                url: '/Home/GetNotifications',
-                success: function (response) {
-                    jQuery('span.count').html(response.length);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            })
-        }
+    </script>
+    <script type="text/javascript">
 
-        function updateNotification() {
-            jQuery('#notiContent').empty();
-            jQuery('#notiContent').append(jQuery('<p>Loading...</p>'));
-
-            jQuery.ajax({
-                type: 'GET',
-                url: '/Home/GetNotifications',
-                success: function (response) {
-                    jQuery('#notiContent').empty();
-                    jQuery('span.count').html(response.length);
-                    if (response.length == 0) {
-                        jQuery('#notiContent').append(jQuery('<p>No data available</p>'));
-                    }
-                    jQuery.each(response, function (index, value) {
-
-                        jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function showNotification() {
-            jQuery('.noti-content').show();
-            var count = 0;
-            count = parseInt(jQuery('span.count').html()) || 0;
-            if (count > 0) {
-                updateNotification();
-            }
-            jQuery('span.count', this).html('&nbsp;');
-        }
         jQuery(function () {
-            updateNotificationCount();
 
-            //Click on notification icon
+            jQuery('#notification').click(function (e) {
+                console.log("click");
+                e.stopPropagation();
+                jQuery('.noti-content').show();
+                var count = 0;
+                count = parseInt(jQuery('span.count').html()) || 0;
 
+                if (count > 0) {
+                    updateNotification();
+                }
+                jQuery('span.count', this).html('&nbsp;');
+            })
 
             //hide notifications
             jQuery('html').click(function () {
                 jQuery('.noti-content').hide();
             })
-            //update notifications
 
-            //update notification count
-        });
+
+            //update notification
+            function updateNotification() {
+                jQuery('#notiContent').empty();
+                jQuery('#notiContent').append(jQuery('<p>Loading...</p>'));
+
+                jQuery.ajax({
+                    type: 'GET',
+                    url: '/Home/GetNotifications',
+                    success: function (response) {
+                        jQuery('#notiContent').empty();
+                        if (response.length == 0) {
+                            jQuery('#notiContent').append(jQuery('<p>No data available</p>'));
+                        }
+                        jQuery.each(response, function (index, value) {
+
+                            jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // update notification count
+            function updateNotificationCount() {
+                var count = 0;
+                count = parseInt(jQuery('span.count').html()) || 0;
+                count++;
+                jQuery('span.count').html(count);
+                //jQuery.ajax({
+                //    type: 'GET',
+                //    url: '/Home/GetNotifications',
+                //    success: function (response) {
+                //        jQuery('span.count').html(response.length);
+                //    },
+                //    error: function (error) {
+                //        console.log(error);
+                //    }
+                //})
+            }
+            // signalr js code for start hub and send receive notification
+            var notificationHub = jQuery.connection.notificationHub;
+            jQuery.connection.hub.start().done(function () {
+                console.log("Notification hub started");
+            });
+
+            notificationHub.client.notify = function (message) {
+                console.log(message);
+                if (message && message.toLowerCase() == "added") {
+                    updateNotificationCount();
+                }
+            }
+        })
+
+
+
+
     </script>
 
     <script src="~/Scripts/buttons.js"></script>

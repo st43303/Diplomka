@@ -135,10 +135,13 @@ namespace DiplomovaPrace.Controllers
         public JsonResult GetNotifications()
         {
             var userID = (int)Session["userID"];
+            var notificationRegisterTime = Session["LastUpdated"] != null ? Convert.ToDateTime(Session["LastUpdated"]) : DateTime.Now;
+
             try
             {
-                List<Notification> notifications = db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i => i.ID).AsNoTracking().ToList();
-
+                NotificationComponent NC = new NotificationComponent();
+                var notifications = NC.GetNotifications(userID, notificationRegisterTime);
+                Session["LastUpdate"] = DateTime.Now;
                 var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
                 return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
