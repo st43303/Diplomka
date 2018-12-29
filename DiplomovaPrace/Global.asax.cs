@@ -29,6 +29,7 @@ namespace DiplomovaPrace
             NotificationComponent NC = new NotificationComponent();
             var currentTime = DateTime.Now;
             HttpContext.Current.Session["LastUpdated"] = currentTime;
+            HttpContext.Current.Session["count"] = null;
             NC.RegisterNotification(currentTime);
         }
 

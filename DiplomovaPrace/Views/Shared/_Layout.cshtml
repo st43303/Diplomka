@@ -227,7 +227,13 @@
                 dateFormat: 'dd.mm.yy'
             });
             //jQuery('span.count').html(0);
-            updateNotification();
+            var count = sessionStorage.getItem("count");
+            if (count == null) {
+                updateNotification();
+            } else {
+                jQuery('span.count').html(count);
+            }
+            
             jQuery('#notification').click(function (e) {
                 console.log("click");
                 e.stopPropagation();
@@ -249,6 +255,7 @@
 
             //update notification
             function updateNotification() {
+                console.log("updateNotification");
                 jQuery('#notiContent').empty();
                 jQuery('#notiContent').append(jQuery('<p>Loading...</p>'));
 
@@ -259,6 +266,7 @@
                         jQuery('#notiContent').empty();
                         if (response.length == 0) {
                             jQuery('#notiContent').append(jQuery('<p>No data available</p>'));
+                            sessionStorage.setItem("count", 0);
                             jQuery('span.count').html(0);
                         } else {
                             jQuery.each(response, function (index, value) {
@@ -266,11 +274,13 @@
                                 jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
                             });
                             jQuery('span.count').html(response.length);
+                            sessionStorage.setItem("count", response.length);
                         }
     
                     },
                     error: function (error) {
                         console.log(error);
+                        
                     }
                 })
             }
@@ -284,9 +294,11 @@
                     success: function (response) {
                         if (response.length == 0) {
                             jQuery('span.count').html(0);
+                            sessionStorage.setItem("count", 0);
                         } else {
 
                             jQuery('span.count').html(response.length);
+                            sessionStorage.setItem("count", response.length);
                         }
 
                     },
