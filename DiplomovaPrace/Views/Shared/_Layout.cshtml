@@ -124,17 +124,16 @@
                             </form>
                         </div>
                         <div class="dropdown for-notification">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="count bg-danger">&nbsp;</span>
-                                </button>
-                                <div id="notiContent" class="dropdown-menu" aria-labelledby="notification">
-                                    <a class="dropdown-item media" href="#">
-                                        <p>Žádné zprávy k zobrazení...</p>
-                                    </a>
-                                </div>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-bell"></i>
+                                <span class="count bg-danger">&nbsp;</span>
+                            </button>
+                            <div id="notiContent" class="dropdown-menu" aria-labelledby="notification">
+                                <a class="dropdown-item media" href="#">
+                                    <p>Žádné zprávy k zobrazení...</p>
+                                </a>
                             </div>
-
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-5">
@@ -169,7 +168,7 @@
     <script src="~/Scripts/datepicker-cs.js" type="text/javascript"></script>
     @Scripts.Render("~/bundles/bootstrap")
 
-    @RenderSection("scripts", required: false)
+
 
 
     <script type="text/javascript">
@@ -200,18 +199,7 @@
 
         });
     </script>
-    <script>
-        jQuery(function () {
-            var dateToday = new Date();
-            var range = (dateToday.getFullYear() - 100) + ":" + (dateToday.getFullYear() + 10);
-            jQuery("#datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: range,
-                dateFormat: 'dd.mm.yy'
-            });
-        });
-    </script>
+
     <script type="text/javascript">
         function deleteNotification(id, url) {
             jQuery.ajax({
@@ -230,23 +218,32 @@
     <script type="text/javascript">
 
         jQuery(function () {
-
+            var dateToday = new Date();
+            var range = (dateToday.getFullYear() - 100) + ":" + (dateToday.getFullYear() + 10);
+            jQuery("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: range,
+                dateFormat: 'dd.mm.yy'
+            });
+            //jQuery('span.count').html(0);
+            updateNotification();
             jQuery('#notification').click(function (e) {
                 console.log("click");
                 e.stopPropagation();
-                jQuery('.noti-content').show();
+                jQuery('#notiContent').show();
                 var count = 0;
                 count = parseInt(jQuery('span.count').html()) || 0;
 
                 if (count > 0) {
                     updateNotification();
                 }
-                jQuery('span.count', this).html('&nbsp;');
+                jQuery('span.count', this).html(count);
             })
 
             //hide notifications
             jQuery('html').click(function () {
-                jQuery('.noti-content').hide();
+                jQuery('#notiContent').hide();
             })
 
 
@@ -262,11 +259,15 @@
                         jQuery('#notiContent').empty();
                         if (response.length == 0) {
                             jQuery('#notiContent').append(jQuery('<p>No data available</p>'));
-                        }
-                        jQuery.each(response, function (index, value) {
+                            jQuery('span.count').html(0);
+                        } else {
+                            jQuery.each(response, function (index, value) {
 
-                            jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
-                        });
+                                jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
+                            });
+                            jQuery('span.count').html(response.length);
+                        }
+    
                     },
                     error: function (error) {
                         console.log(error);
@@ -276,40 +277,48 @@
 
             // update notification count
             function updateNotificationCount() {
-                var count = 0;
-                count = parseInt(jQuery('span.count').html()) || 0;
-                count++;
-                jQuery('span.count').html(count);
-                //jQuery.ajax({
-                //    type: 'GET',
-                //    url: '/Home/GetNotifications',
-                //    success: function (response) {
-                //        jQuery('span.count').html(response.length);
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //    }
-                //})
+                console.log("tu");
+                jQuery.ajax({
+                    type: 'GET',
+                    url: '/Home/GetNotifications',
+                    success: function (response) {
+                        if (response.length == 0) {
+                            jQuery('span.count').html(0);
+                        } else {
+
+                            jQuery('span.count').html(response.length);
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+
             }
             // signalr js code for start hub and send receive notification
-            var notificationHub = jQuery.connection.notificationHub;
-            jQuery.connection.hub.start().done(function () {
-                console.log("Notification hub started");
-            });
+            var notiHub = jQuery.connection.notificationHub;
 
-            notificationHub.client.notify = function (message) {
-                console.log(message);
+            //signalr method for push server message to client
+            notiHub.client.notify = function (message) {
                 if (message && message.toLowerCase() == "added") {
                     updateNotificationCount();
                 }
             }
-        })
+
+            jQuery.connection.hub.start().done(function () {
+                console.log('Notification hub started');
+
+           });
+
+         
+        });
 
 
 
 
     </script>
-
+    @RenderSection("scripts", required: false)
     <script src="~/Scripts/buttons.js"></script>
 
 </body>

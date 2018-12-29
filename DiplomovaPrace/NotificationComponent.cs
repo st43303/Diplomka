@@ -16,7 +16,7 @@ namespace DiplomovaPrace
         {
 
             string conStr = ConfigurationManager.ConnectionStrings["sqlConString"].ConnectionString;
-            string sqlCommand = @"SELECT [ID], [ID_User], [Message], [URL], [Avatar] FROM [dbo].[Notification] WHERE [DateNotification] > @DateNotification";
+            string sqlCommand = @"SELECT [ID], [ID_User], [Message], [URL], [Avatar] FROM [dbo].[Notification] WHERE [DateNotification] <> @DateNotification";
 
             using(SqlConnection conn = new SqlConnection(conStr))
             {
@@ -47,11 +47,11 @@ namespace DiplomovaPrace
             }
         }
 
-        public List<Notification> GetNotifications(int userID, DateTime afterDate)
+        public List<Notification> GetNotifications(int userID)
         {
             using (SDTEntities db = new SDTEntities())
             {
-                return db.Notifications.Where(n => n.ID_User == userID && n.DateNotification>afterDate).OrderByDescending(i => i.ID).ToList();
+                return db.Notifications.Where(n => n.ID_User == userID).OrderByDescending(i => i.ID).ToList();
             }
         }
     }

@@ -12,5 +12,10 @@ namespace DiplomovaPrace
         //{
         //    Clients.All.hello();
         //}
+
+        public void notify(string message)
+        {
+            Clients.All.notify(message);
+        }
     }
 }

@@ -140,7 +140,7 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 NotificationComponent NC = new NotificationComponent();
-                var notifications = NC.GetNotifications(userID, notificationRegisterTime);
+                var notifications = NC.GetNotifications(userID);
                 Session["LastUpdate"] = DateTime.Now;
                 var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
                 return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
