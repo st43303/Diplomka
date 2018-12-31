@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ProjectController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -166,7 +166,7 @@ namespace DiplomovaPrace.Controllers
             {
                 ProjectUser projectUser = new ProjectUser();
                 projectUser.ID_Project = project.ID;
-                projectUser.ID_User = (Int32)Contacts;
+                projectUser.ID_User = (int)Contacts;
                 db.ProjectUsers.Add(projectUser);
 
                 var user = db.Users.Find((int)Session["userID"]);

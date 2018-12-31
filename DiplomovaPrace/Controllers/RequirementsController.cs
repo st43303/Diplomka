@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class RequirementsController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -42,7 +42,7 @@ namespace DiplomovaPrace.Controllers
                 statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
                 ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
 
-                LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+                LinkedList<string> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
                 sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
                 sources.AddFirst("Zdroj");
                 ViewBag.Source = new SelectList(sources.Select(x => new { Value = x, Text = x }), "Value", "Text");
@@ -63,7 +63,7 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 var requirements = db.Requirements.Where(r => r.ID_Project == projectID && r.ID_ReqType == 1);
-                LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+                LinkedList<string> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
 
                 if (ID_Category != 0)
                 {
@@ -174,7 +174,7 @@ namespace DiplomovaPrace.Controllers
                 statuses.AddFirst(new StatusRequirement() { ID = 0, Status = "Status" });
                 ViewBag.ID_Status = new SelectList(statuses, "ID", "Status");
 
-                LinkedList<String> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
+                LinkedList<string> sources = new LinkedList<string>(requirements.Select(s => s.Source).Distinct().ToList());
                 sources = new LinkedList<string>(sources.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList());
                 sources.AddFirst("Zdroj");
                 ViewBag.Source = new SelectList(sources.Select(x => new { Value = x, Text = x }), "Value", "Text");

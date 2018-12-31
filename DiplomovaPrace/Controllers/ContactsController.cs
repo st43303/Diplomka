@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ContactsController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -22,7 +22,7 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 var contacts = db.Friendships.Where(f => f.ID_UserA == userID || f.ID_UserB == userID);
-                contacts = contacts.Where(f => f.Checked == true);
+                contacts = contacts.Where(f => f.Checked == true).AsQueryable();
                 return View(contacts);
             }
             catch(Exception ex)
@@ -66,8 +66,8 @@ namespace DiplomovaPrace.Controllers
             int userID = (int)Session["userID"];
             try
             {
-                var requests = db.Friendships.Where(u => u.ID_UserB == userID && u.Checked == false);
-                return View(requests.ToList());
+                var requests = db.Friendships.Where(u => u.ID_UserB == userID && u.Checked == false).AsQueryable();
+                return View(requests);
             }
             catch(Exception ex)
             {

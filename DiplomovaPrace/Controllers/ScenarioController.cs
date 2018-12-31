@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ScenarioController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -83,7 +82,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Scenario scenario,List<Int32> otherActors,List<Int32> mainActors)
+        public ActionResult Create(Scenario scenario,List<int> otherActors,List<int> mainActors)
         {
             Scenario old = db.Scenarios.Find(scenario.ID);
             old.Description = scenario.Description;
@@ -126,7 +125,7 @@ namespace DiplomovaPrace.Controllers
             return View(scenario);
         }
 
-        private void AddActors(List<Int32> listActors,int idScenario,int actorType)
+        private void AddActors(List<int> listActors,int idScenario,int actorType)
         {
             if (listActors != null)
             {
@@ -252,7 +251,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Scenario scenario, List<Int32> mainActors, List<Int32> otherActors)
+        public ActionResult Edit(Scenario scenario, List<int> mainActors, List<int> otherActors)
         {
             Scenario old = db.Scenarios.Find(scenario.ID);
             old.Description = scenario.Description;

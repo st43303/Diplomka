@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class CategoryController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -26,7 +26,7 @@ namespace DiplomovaPrace.Controllers
 
             try
             {
-                var categories = db.CategoryRequirements.Where(c => c.ID_Project == projectID);
+                var categories = db.CategoryRequirements.Where(c => c.ID_Project == projectID).AsQueryable();
                 return View(categories);
             }
             catch (Exception ex)

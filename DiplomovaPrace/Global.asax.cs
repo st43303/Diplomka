@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -28,7 +25,6 @@ namespace DiplomovaPrace
         {
             NotificationComponent NC = new NotificationComponent();
             var currentTime = DateTime.Now;
-            HttpContext.Current.Session["LastUpdated"] = currentTime;
             HttpContext.Current.Session["count"] = null;
             NC.RegisterNotification(currentTime);
         }

@@ -1,16 +1,14 @@
 ﻿using DiplomovaPrace.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class AccountController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -31,22 +29,25 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 var password = GetHashString(user.Password);
-                var userDetails = db.Users.Where(u => u.Username == user.Username && u.Password == password).FirstOrDefault();
+                var userDetails = db.Users.Where(u => u.Username == user.Username).FirstOrDefault();
                 if (userDetails == null)
                 {
-                    ViewBag.ErrorMessage = "Špatné uživatelské jméno či heslo.";
+                    ViewBag.ErrorMessage = "Neexistující uživatelské jméno.";
                     return View();
                 }
-                else
+                if (userDetails.Password != password)
                 {
-                    Session["userID"] = userDetails.ID;
-                    Session["userName"] = userDetails.Username;
-                    Session["avatar"] = userDetails.Avatar;
-
-                    userDetails.LastActive = DateTime.Now;
-                    db.Entry(userDetails).State = EntityState.Modified;
-                    db.SaveChanges();
+                    ViewBag.ErrorMessage = "Zadané heslo není správné.";
+                    return View();
                 }
+
+                Session["userID"] = userDetails.ID;
+                Session["userName"] = userDetails.Username;
+                Session["avatar"] = userDetails.Avatar;
+
+                userDetails.LastActive = DateTime.Now;
+                db.Entry(userDetails).State = EntityState.Modified;
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -55,7 +56,7 @@ namespace DiplomovaPrace.Controllers
                 return View();
             }
 
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
 
         }
 
@@ -98,7 +99,7 @@ namespace DiplomovaPrace.Controllers
                     return View();
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

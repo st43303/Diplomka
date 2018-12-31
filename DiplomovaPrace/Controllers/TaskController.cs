@@ -1,15 +1,13 @@
 ﻿using DiplomovaPrace.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class TaskController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -27,7 +25,7 @@ namespace DiplomovaPrace.Controllers
             }
             int projectID = (int)Session["projectID"];
 
-            var tasks = db.Tasks.Where(t => t.ID_Project == projectID);
+            var tasks = db.Tasks.Where(t => t.ID_Project == projectID).AsQueryable();
             LinkedList<PriorityTask> priority = new LinkedList<PriorityTask>(db.PriorityTasks);
             priority.AddFirst(new PriorityTask(){ ID=0, Priority="Priorita"});
             ViewBag.ID_Priority = new SelectList(priority, "ID", "Priority");
@@ -49,7 +47,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(int ID_Priority, int ID_State, int ID_User_Creator, int ID_User_Executor, Boolean? MyTask)
+        public ActionResult Index(int ID_Priority, int ID_State, int ID_User_Creator, int ID_User_Executor, bool? MyTask)
         {
             if (Session["userID"] == null)
             {
@@ -161,7 +159,7 @@ namespace DiplomovaPrace.Controllers
 
         }
 
-        private void updateTaskHistory(int projectID, int ID_State, int old_State, Boolean increment)
+        private void updateTaskHistory(int projectID, int ID_State, int old_State, bool increment)
         {
             double createCount = 0;
             double progressCount = 0;

@@ -1,7 +1,5 @@
 ﻿using DiplomovaPrace.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -10,7 +8,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class StorageController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -28,7 +26,7 @@ namespace DiplomovaPrace.Controllers
             }
 
             int projectID = (int)Session["projectID"];
-            var files = db.Files.Where(f => f.ID_Project == projectID);
+            var files = db.Files.Where(f => f.ID_Project == projectID).AsQueryable();
 
             System.Configuration.Configuration config = WebConfigurationManager.OpenWebConfiguration("~");
             HttpRuntimeSection section = config.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
@@ -38,7 +36,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(String Name, HttpPostedFileBase File)
+        public ActionResult Create(string Name, HttpPostedFileBase File)
         {
             int projectID = (int)Session["projectID"];
             int userID = (int)Session["userID"];

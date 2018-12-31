@@ -3,7 +3,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +12,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ExportController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -40,7 +39,6 @@ namespace DiplomovaPrace.Controllers
 
             try
             {
-
                 MemoryStream workStream = new MemoryStream();
                 StringBuilder status = new StringBuilder("");
                 string fileName = "Dokumentace " + DateTime.Now.ToShortDateString() + ".pdf";

@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class TeamController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -25,7 +24,7 @@ namespace DiplomovaPrace.Controllers
             }
             int projectID = (int)Session["projectID"];
             int userID = (int)Session["userID"];
-            var users = db.ProjectUsers.Where(p => p.ID_Project == projectID);
+            var users = db.ProjectUsers.Where(p => p.ID_Project == projectID).AsQueryable();
             List<User> listContacts = GetContacts(userID, projectID);
             ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
             return View(users);

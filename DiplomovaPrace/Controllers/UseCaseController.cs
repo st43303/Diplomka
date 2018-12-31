@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class UseCaseController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -26,7 +25,7 @@ namespace DiplomovaPrace.Controllers
 
             int projectID = (int)Session["projectID"];
 
-            var useCases = db.UseCases.Where(u => u.ID_Project == projectID).OrderByDescending(i=>i.ID);
+            var useCases = db.UseCases.Where(u => u.ID_Project == projectID).OrderByDescending(i => i.ID).AsQueryable();
             return View(useCases);
         }
 
@@ -40,15 +39,14 @@ namespace DiplomovaPrace.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            int projectID = (int) Session["projectID"];
-            ViewBag.actors = new MultiSelectList(db.Actors.Where(a=>a.ID_Project==projectID),"ID","Name");
-
-            ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType==1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
+            int projectID = (int)Session["projectID"];
+            ViewBag.actors = new MultiSelectList(db.Actors.Where(a => a.ID_Project == projectID), "ID", "Name");
+            ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(UseCase useCase, List<Int32> actors, List<Int32> requirements)
+        public ActionResult Create(UseCase useCase, List<int> actors, List<Int32> requirements)
         {
             int projectID = (int)Session["projectID"];
             useCase.ID_Project = projectID;
@@ -61,7 +59,8 @@ namespace DiplomovaPrace.Controllers
                 Session["requirements"] = requirements;
                 NotificationSystem.SendNotification(EnumNotification.CREATE_USECASE, "/UseCase");
                 return RedirectToAction("AddActors");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -73,9 +72,9 @@ namespace DiplomovaPrace.Controllers
 
         public ActionResult AddActors()
         {
-            List<Int32> actors = (List <Int32>) Session["actors"];
+            List<int> actors = (List<Int32>)Session["actors"];
             int useCaseID = db.UseCases.OrderByDescending(i => i.ID).First().ID;
-            foreach (Int32 i in actors)
+            foreach (int i in actors)
             {
                 UseCaseActor caseActor = new UseCaseActor();
                 caseActor.ID_Actor = i;
@@ -90,9 +89,9 @@ namespace DiplomovaPrace.Controllers
 
         public ActionResult AddRequirements()
         {
-            List<Int32> requirements = (List<Int32>)Session["requirements"];
+            List<int> requirements = (List<int>)Session["requirements"];
             int useCaseID = db.UseCases.OrderByDescending(i => i.ID).First().ID;
-            foreach(Int32 i in requirements)
+            foreach (int i in requirements)
             {
                 UseCaseRequirement caseRequirement = new UseCaseRequirement();
                 caseRequirement.ID_Requirement = i;
@@ -117,8 +116,8 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
 
             var useCase = db.UseCases.Find(id);
-            List<Int32> actors = new List<int>();
-            foreach(UseCaseActor useCaseActor in useCase.UseCaseActors)
+            List<int> actors = new List<int>();
+            foreach (UseCaseActor useCaseActor in useCase.UseCaseActors)
             {
                 actors.Add(useCaseActor.ID);
             }
@@ -131,15 +130,15 @@ namespace DiplomovaPrace.Controllers
 
 
         [HttpPost]
-        public ActionResult Edit(UseCase useCase, List<Int32> actors, List<Int32> requirements)
+        public ActionResult Edit(UseCase useCase, List<int> actors, List<int> requirements)
         {
             var old = db.UseCases.Find(useCase.ID);
             old.Name = useCase.Name;
             old.Description = useCase.Description;
 
-            if (actors !=null)
+            if (actors != null)
             {
-                for(int i = 0; i < actors.Count; i++)
+                for (int i = 0; i < actors.Count; i++)
                 {
                     UseCaseActor useCaseActor = new UseCaseActor();
                     useCaseActor.ID_Actor = actors[i];
@@ -157,25 +156,26 @@ namespace DiplomovaPrace.Controllers
                     db.UseCaseRequirements.Add(useCaseRequirement);
                 }
             }
-         
+
             try
             {
                 db.Entry(old).State = EntityState.Modified;
                 db.SaveChanges();
                 NotificationSystem.SendNotification(EnumNotification.EDIT_USECASE, "/UseCase");
                 return RedirectToAction("Index");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
 
-            List<Int32> actorsList = new List<int>();
+            List<int> actorsList = new List<int>();
             foreach (UseCaseActor useCaseActor in useCase.UseCaseActors)
             {
                 actorsList.Add(useCaseActor.ID);
             }
- 
+
             ViewBag.actors = new MultiSelectList(GetActors(old), "ID", "Name");
             ViewBag.requirements = new MultiSelectList(GetRequirements(old), "ID", "Text");
 
@@ -186,12 +186,12 @@ namespace DiplomovaPrace.Controllers
         {
             List<Requirement> list = new List<Requirement>();
             int projectID = (int)Session["projectID"];
-foreach(Requirement req in db.Requirements)
+            foreach (Requirement req in db.Requirements)
             {
                 if (req.ID_Project == projectID)
                 {
                     bool exist = false;
-                    foreach(UseCaseRequirement useCaseReq in useCase.UseCaseRequirements)
+                    foreach (UseCaseRequirement useCaseReq in useCase.UseCaseRequirements)
                     {
                         if (req.ID == useCaseReq.ID_Requirement)
                         {
@@ -266,7 +266,7 @@ foreach(Requirement req in db.Requirements)
                 db.UseCaseActors.Remove(useCaseActor);
                 db.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -282,7 +282,8 @@ foreach(Requirement req in db.Requirements)
             {
                 db.UseCaseRequirements.Remove(useCaseRequirement);
                 db.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

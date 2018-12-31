@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ActorController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -31,7 +31,7 @@ namespace DiplomovaPrace.Controllers
             int projectID = (int)Session["projectID"];
             try
             {
-                var actors = db.Actors.Where(a => a.ID_Project == projectID).OrderByDescending(d => d.ID);
+                var actors = db.Actors.Where(a => a.ID_Project == projectID).OrderByDescending(d => d.ID).AsQueryable();
                 return View(actors);
 
             }
@@ -68,7 +68,6 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-
             try
             {
                 var actor = db.Actors.Find(id);
@@ -123,7 +122,7 @@ namespace DiplomovaPrace.Controllers
         {
             bool hasHeaders = Header.Equals("true");
             char delimiter = ';';
-            ViewBag.Count = Int32.Parse(count);
+            ViewBag.Count = int.Parse(count);
             switch (Delimiter)
             {
                 case ",":

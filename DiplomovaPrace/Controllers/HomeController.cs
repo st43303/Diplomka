@@ -1,14 +1,13 @@
 ﻿using DiplomovaPrace.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class HomeController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -22,7 +21,7 @@ namespace DiplomovaPrace.Controllers
             int userID = (int)Session["userID"];
             try
             {
-                var projects = db.Projects.Where(p => p.ID_Author == userID).ToList().OrderByDescending(x => x.ID);
+                var projects = db.Projects.Where(p => p.ID_Author == userID).ToList().OrderByDescending(x => x.ID).AsQueryable();
                 return View(projects);
             }
             catch (Exception ex)
@@ -97,7 +96,7 @@ namespace DiplomovaPrace.Controllers
             int userID = (int)Session["userID"];
             try
             {
-                var sharedProjects = db.ProjectUsers.Where(p => p.ID_User == userID && p.Project.ID_Author != userID);
+                var sharedProjects = db.ProjectUsers.Where(p => p.ID_User == userID && p.Project.ID_Author != userID).AsQueryable();
                 return View(sharedProjects);
 
             }
@@ -135,13 +134,11 @@ namespace DiplomovaPrace.Controllers
         public JsonResult GetNotifications()
         {
             var userID = (int)Session["userID"];
-            var notificationRegisterTime = Session["LastUpdated"] != null ? Convert.ToDateTime(Session["LastUpdated"]) : DateTime.Now;
 
             try
             {
                 NotificationComponent NC = new NotificationComponent();
                 var notifications = NC.GetNotifications(userID);
-                Session["LastUpdate"] = DateTime.Now;
                 var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
                 return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
