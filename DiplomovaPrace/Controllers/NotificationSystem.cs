@@ -3,26 +3,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
     public class NotificationSystem
     {
-        private SDTEntities db = new SDTEntities();
         public static void SendNotification(EnumNotification notificationType, string url)
-        {
-            SDTEntities db = new SDTEntities();
-    
+        { 
             int projectID = (int) HttpContext.Current.Session["projectID"];
             int userID = (int)HttpContext.Current.Session["userID"];
-            User sender = db.Users.Find(userID);
+            string projectName = (string)HttpContext.Current.Session["projectName"];
+            string message = "";
+            using(SDTEntities db = new SDTEntities())
+            {
+                User sender = db.Users.Find(userID);
+                List<ProjectUser> receivers = db.ProjectUsers.Where(p => p.ID_Project == projectID && p.ID_User != userID).ToList();
+                message = CreateMessage(notificationType, sender, projectName);
 
-            List<ProjectUser> receivers = db.ProjectUsers.Where(p => p.ID_Project == projectID && p.ID_User != userID).ToList();
+                foreach (ProjectUser projectUser in receivers)
+                {
+                    Notification notification = new Notification();
+                    notification.Avatar = sender.Avatar;
+                    notification.ID_User = projectUser.ID_User;
+                    notification.Message = message;
+                    notification.URL = url;
+                    notification.DateNotification = DateTime.Now;
+                    db.Notifications.Add(notification);
+                    db.SaveChanges();
+                }
 
-            string projectName = db.Projects.Find(projectID).Name;
-            string message = "Uživatel "+sender.Name+" "+sender.Surname;
-            switch (notificationType)
+            }
+
+        }
+
+        private static string CreateMessage(EnumNotification notification, User sender, string projectName)
+        {
+            string message = "Uživatel " + sender.Name + " " + sender.Surname;
+            switch (notification)
             {
                 case EnumNotification.CREATE_ACTOR:
                     message += CreateActor();
@@ -77,20 +94,7 @@ namespace DiplomovaPrace.Controllers
                     break;
             }
             message += projectName + ".";
-
-            foreach(ProjectUser projectUser in receivers)
-            {
-                Notification notification = new Notification();
-                notification.Avatar = sender.Avatar;
-                notification.ID_User = projectUser.ID_User;
-                notification.Message = message;
-                notification.URL = url;
-                notification.DateNotification = DateTime.Now;
-                db.Notifications.Add(notification);
-                db.SaveChanges();
-            }
-
-
+            return message;
         }
 
         private static string CreateActor()

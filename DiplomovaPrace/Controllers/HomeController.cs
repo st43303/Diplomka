@@ -32,7 +32,7 @@ namespace DiplomovaPrace.Controllers
             return View();
         }
 
-        private void controlTasks(int projectID)
+        private void ControlTasks(int projectID)
         {
             if (db.TaskHistories.Where(t => t.ID_Project == projectID).Count()==0)
             {
@@ -77,7 +77,7 @@ namespace DiplomovaPrace.Controllers
                 
                 Session["projectID"] = id;
                 Session["projectName"] = projectName;
-                controlTasks(id);
+                ControlTasks(id);
             }
             else
             {

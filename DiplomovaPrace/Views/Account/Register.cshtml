@@ -10,7 +10,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrace</title>
+    <title>Registrace | SDTAdmin</title>
+    <meta name="author" content="Miloslav Moravec" />
+    <meta name="description" content="SDT Admin je webový nástroj pro správu projektů a týmovou spolupráci" />
+    <meta name="keywords" content="SDT, Admin, Software, development, tool, Miloslav, Moravec, tým, projekt, správa, spolupráce" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/login.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
@@ -34,11 +37,11 @@
                 }
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         @Html.TextBoxFor(model => model.Name, new { placeholder = "Jméno", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         @Html.TextBoxFor(model => model.Surname, new { placeholder = "Příjmení", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
                     </div>
