@@ -183,6 +183,7 @@
     <Compile Include="Controllers\ActorController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -377,6 +378,7 @@
     <Content Include="images\avatar\5.jpg" />
     <Content Include="images\avatar\6.jpg" />
     <Content Include="images\background.png" />
+    <Content Include="images\error404.jpg" />
     <Content Include="images\flags\1x1\ad.svg" />
     <Content Include="images\flags\1x1\ae.svg" />
     <Content Include="images\flags\1x1\af.svg" />
@@ -1554,6 +1556,7 @@
     <Content Include="Views\Task\Edit.cshtml" />
     <Content Include="Views\Task\Chart.cshtml" />
     <Content Include="Views\Actor\Import.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
