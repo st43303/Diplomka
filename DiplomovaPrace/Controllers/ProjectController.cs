@@ -75,6 +75,11 @@ namespace DiplomovaPrace.Controllers
 
                 db.Projects.Remove(project);
                 db.SaveChanges();
+                if (project.ID == (int)Session["projectID"])
+                {
+                    Session["projectID"] = null;
+                }
+                
             }
             catch (Exception ex)
             {

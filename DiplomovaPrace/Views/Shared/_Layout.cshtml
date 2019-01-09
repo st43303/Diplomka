@@ -181,12 +181,13 @@
                         url: "/Home/GetUsers",
                         data: { term: request.term },
                         success: function (data) {
+                            console.log("OK");
                             response(jQuery.map(data, function (item) {
                                 return { label: item.Name, value: item.Name, id: item.ID};
                             }))
                         },
                         error: function (message) {
-                            response([]);
+                            console.log("fail");
                         }
                     });
                 },

@@ -1,7 +1,13 @@
 ﻿body, html {
-    height: 100%;
+    /*height: 50%;*/
     background-repeat: repeat;
     background-image: url(../images/background.png);
+}
+
+@media (max-height: 480px){
+    body{
+        max-height: 480px;
+    }
 }
 
 .card-container.card{

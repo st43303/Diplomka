@@ -117,10 +117,9 @@ namespace DiplomovaPrace.Controllers
             {
                 List<User> users = db.Users.Where(u => u.ID != userID).ToList();
                 users = users.Where(u => u.Name.ToUpper().Contains(term.ToUpper())
-                    || u.Surname.ToUpper().Contains(term.ToUpper())
-                    || u.City.ToUpper().Contains(term.ToUpper())).ToList();
+                    || u.Surname.ToUpper().Contains(term.ToUpper())).ToList();
 
-                output = users.Select(s => new { s.ID, Name = s.Name + " " + s.Surname, s.City });
+                output = users.Select(s => new { s.ID, Name = s.Name + " " + s.Surname });
             }
             catch(Exception ex)
             {
