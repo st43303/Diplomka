@@ -226,6 +226,9 @@
     <Compile Include="Models\FriendshipAttributes.cs" />
     <Compile Include="Models\Matrix.cs" />
     <Compile Include="Models\ProjectAttributes.cs" />
+    <Compile Include="Models\ProjectTechnology.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RequirementAttributes.cs" />
     <Compile Include="Models\ScenarioAttributes.cs" />
     <Compile Include="Models\Notification.cs">
@@ -284,6 +287,9 @@
     <Compile Include="Models\TaskHistory.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Technology.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UseCase.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -298,6 +304,9 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserAttributes.cs" />
+    <Compile Include="Models\UserTechnology.cs">
+      <DependentUpon>SDTmodel.tt</DependentUpon>
+    </Compile>
     <Compile Include="NotificationComponent.cs" />
     <Compile Include="NotificationHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -338,6 +347,7 @@
     <Content Include="Content\lib\vector-map\jqvmap.min.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\Profile.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\themify-icons.css" />
     <Content Include="Content\variables.css" />
@@ -1198,6 +1208,8 @@
       <DependentUpon>SDTmodel.edmx</DependentUpon>
     </Content>
     <Content Include="fonts\ARIALUNI.TTF" />
+    <Content Include="Content\Profile.less" />
+    <Content Include="Content\Profile.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\buttons.js" />
@@ -1239,6 +1251,7 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\plugins.js" />
+    <Content Include="Scripts\Profile.js" />
     <Content Include="Scripts\widgets.js" />
     <Content Include="scss\bootstrap\bootstrap-grid.css" />
     <Content Include="scss\bootstrap\bootstrap-reboot.css" />

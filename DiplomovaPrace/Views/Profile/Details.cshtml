@@ -22,7 +22,7 @@
         <div class="table-responsive">
             <table class="table" style="background: none">
                 <tr>
-                    <td>@Html.DisplayNameFor(model => model.Name) @Html.DisplayNameFor(model => model.Surname)</td>
+                    <td>@Html.DisplayNameFor(model => model.Name) a @Html.DisplayNameFor(model => model.Surname)</td>
                     <td>@Model.Name @Model.Surname</td>
                 </tr>
                 <tr>
@@ -56,7 +56,12 @@
                     }
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        @foreach (var item in Model.UserTechnologies)
+                        {
+                            <span class="badge badge-dark">@item.Technology.Name</span>
+                        }
+                    </td>
                     @if (Model.ID != (int)Session["userID"])
                     {
                         if (ViewBag.Contact == 0)
@@ -85,6 +90,7 @@
         </div>
     </div>
 </div>
+
 @{
     var projects = (IEnumerable<DiplomovaPrace.Models.Project>)ViewBag.Projects;
     if (projects.Count() != 0)

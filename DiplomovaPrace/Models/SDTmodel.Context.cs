@@ -35,6 +35,7 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<PriorityRequirement> PriorityRequirements { get; set; }
         public virtual DbSet<PriorityTask> PriorityTasks { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<ProjectTechnology> ProjectTechnologies { get; set; }
         public virtual DbSet<ProjectUser> ProjectUsers { get; set; }
         public virtual DbSet<ReqType> ReqTypes { get; set; }
         public virtual DbSet<Requirement> Requirements { get; set; }
@@ -48,5 +49,7 @@ namespace DiplomovaPrace.Models
         public virtual DbSet<UseCaseActor> UseCaseActors { get; set; }
         public virtual DbSet<UseCaseRequirement> UseCaseRequirements { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserTechnology> UserTechnologies { get; set; }
+        public virtual DbSet<Technology> Technologies { get; set; }
     }
 }

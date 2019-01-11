@@ -12,20 +12,13 @@ namespace DiplomovaPrace.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CategoryRequirement
+    public partial class ProjectTechnology
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CategoryRequirement()
-        {
-            this.Requirements = new HashSet<Requirement>();
-        }
-    
         public int ID { get; set; }
-        public string Name { get; set; }
         public int ID_Project { get; set; }
+        public int ID_Technology { get; set; }
     
         public virtual Project Project { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Requirement> Requirements { get; set; }
+        public virtual Technology Technology { get; set; }
     }
 }

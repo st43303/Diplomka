@@ -26,7 +26,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ID_Project" Type="int" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="File">
           <Key>
@@ -95,6 +95,14 @@
           <Property Name="ID_Author" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="Code" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ProjectTechnology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
+          <Property Name="ID_Technology" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -189,6 +197,13 @@
           <Property Name="ProgressCount" Type="float" Nullable="false" />
           <Property Name="FinishCount" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="Technology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="UseCase">
           <Key>
             <PropertyRef Name="ID" />
@@ -229,6 +244,14 @@
           <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
           <Property Name="LastActive" Type="datetime" />
         </EntityType>
+        <EntityType Name="UserTechnology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_User" Type="int" Nullable="false" />
+          <Property Name="ID_Technology" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Actor_Project">
           <End Role="Project" Type="Self.Project" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -244,7 +267,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CategoryRequirement_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="CategoryRequirement" Type="Self.CategoryRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -268,7 +291,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_File_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="File" Type="Self.File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -292,7 +317,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Friendship_UserA">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Friendship" Type="Self.Friendship" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -316,7 +343,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -339,8 +368,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProjectTechnology_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProjectTechnology" Type="Self.ProjectTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectTechnology">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectTechnology_Technology">
+          <End Role="Technology" Type="Self.Technology" Multiplicity="1" />
+          <End Role="ProjectTechnology" Type="Self.ProjectTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Technology">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectTechnology">
+              <PropertyRef Name="ID_Technology" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProjectUser_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -352,7 +409,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProjectUser_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -388,7 +447,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Requirement_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Requirement" Type="Self.Requirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -424,7 +485,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Scenario_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Scenario" Type="Self.Scenario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -448,7 +511,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Scenario_UseCase">
-          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Scenario" Type="Self.Scenario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -484,7 +549,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ScenarioActor_Scenario">
-          <End Role="Scenario" Type="Self.Scenario" Multiplicity="1" />
+          <End Role="Scenario" Type="Self.Scenario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ScenarioActor" Type="Self.ScenarioActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Scenario">
@@ -508,7 +575,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Task_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -556,7 +625,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TaskHistory_Project">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="TaskHistory" Type="Self.TaskHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -579,8 +650,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UseCase_UseCase">
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="UseCase1" Type="Self.UseCase" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCase1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UseCaseActor_Actor">
-          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UseCaseActor" Type="Self.UseCaseActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Actor">
@@ -592,7 +677,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseActor_UseCase">
-          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UseCaseActor" Type="Self.UseCaseActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -604,7 +691,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseRequirement_Requirement">
-          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1" />
+          <End Role="Requirement" Type="Self.Requirement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UseCaseRequirement" Type="Self.UseCaseRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Requirement">
@@ -616,7 +705,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseRequirement_UseCase">
-          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1" />
+          <End Role="UseCase" Type="Self.UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UseCaseRequirement" Type="Self.UseCaseRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -624,6 +715,32 @@
             </Principal>
             <Dependent Role="UseCaseRequirement">
               <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTechnology_Technology">
+          <End Role="Technology" Type="Self.Technology" Multiplicity="1" />
+          <End Role="UserTechnology" Type="Self.UserTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Technology">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserTechnology">
+              <PropertyRef Name="ID_Technology" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTechnology_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserTechnology" Type="Self.UserTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserTechnology">
+              <PropertyRef Name="ID_User" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -638,6 +755,7 @@
           <EntitySet Name="PriorityRequirement" EntityType="Self.PriorityRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriorityTask" EntityType="Self.PriorityTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectTechnology" EntityType="Self.ProjectTechnology" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectUser" EntityType="Self.ProjectUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReqType" EntityType="Self.ReqType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requirement" EntityType="Self.Requirement" Schema="dbo" store:Type="Tables" />
@@ -647,10 +765,12 @@
           <EntitySet Name="StatusRequirement" EntityType="Self.StatusRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskHistory" EntityType="Self.TaskHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Technology" EntityType="Self.Technology" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCase" EntityType="Self.UseCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseActor" EntityType="Self.UseCaseActor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UseCaseRequirement" EntityType="Self.UseCaseRequirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTechnology" EntityType="Self.UserTechnology" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Actor_Project" Association="Self.FK_Actor_Project">
             <End Role="Project" EntitySet="Project" />
             <End Role="Actor" EntitySet="Actor" />
@@ -686,6 +806,14 @@
           <AssociationSet Name="FK_Project_User" Association="Self.FK_Project_User">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTechnology_Project" Association="Self.FK_ProjectTechnology_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectTechnology" EntitySet="ProjectTechnology" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTechnology_Technology" Association="Self.FK_ProjectTechnology_Technology">
+            <End Role="Technology" EntitySet="Technology" />
+            <End Role="ProjectTechnology" EntitySet="ProjectTechnology" />
           </AssociationSet>
           <AssociationSet Name="FK_ProjectUser_Project" Association="Self.FK_ProjectUser_Project">
             <End Role="Project" EntitySet="Project" />
@@ -767,6 +895,10 @@
             <End Role="Project" EntitySet="Project" />
             <End Role="UseCase" EntitySet="UseCase" />
           </AssociationSet>
+          <AssociationSet Name="FK_UseCase_UseCase" Association="Self.FK_UseCase_UseCase">
+            <End Role="UseCase" EntitySet="UseCase" />
+            <End Role="UseCase1" EntitySet="UseCase" />
+          </AssociationSet>
           <AssociationSet Name="FK_UseCaseActor_Actor" Association="Self.FK_UseCaseActor_Actor">
             <End Role="Actor" EntitySet="Actor" />
             <End Role="UseCaseActor" EntitySet="UseCaseActor" />
@@ -782,6 +914,14 @@
           <AssociationSet Name="FK_UseCaseRequirement_UseCase" Association="Self.FK_UseCaseRequirement_UseCase">
             <End Role="UseCase" EntitySet="UseCase" />
             <End Role="UseCaseRequirement" EntitySet="UseCaseRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTechnology_Technology" Association="Self.FK_UserTechnology_Technology">
+            <End Role="Technology" EntitySet="Technology" />
+            <End Role="UserTechnology" EntitySet="UserTechnology" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTechnology_User" Association="Self.FK_UserTechnology_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserTechnology" EntitySet="UserTechnology" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -799,6 +939,7 @@
           <EntitySet Name="PriorityRequirements" EntityType="SDTModel.PriorityRequirement" />
           <EntitySet Name="PriorityTasks" EntityType="SDTModel.PriorityTask" />
           <EntitySet Name="Projects" EntityType="SDTModel.Project" />
+          <EntitySet Name="ProjectTechnologies" EntityType="SDTModel.ProjectTechnology" />
           <EntitySet Name="ProjectUsers" EntityType="SDTModel.ProjectUser" />
           <EntitySet Name="ReqTypes" EntityType="SDTModel.ReqType" />
           <EntitySet Name="Requirements" EntityType="SDTModel.Requirement" />
@@ -812,6 +953,7 @@
           <EntitySet Name="UseCaseActors" EntityType="SDTModel.UseCaseActor" />
           <EntitySet Name="UseCaseRequirements" EntityType="SDTModel.UseCaseRequirement" />
           <EntitySet Name="Users" EntityType="SDTModel.User" />
+          <EntitySet Name="UserTechnologies" EntityType="SDTModel.UserTechnology" />
           <AssociationSet Name="FK_Actor_Project" Association="SDTModel.FK_Actor_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Actor" EntitySet="Actors" />
@@ -872,6 +1014,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProjectTechnology_Project" Association="SDTModel.FK_ProjectTechnology_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectTechnology" EntitySet="ProjectTechnologies" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProjectUser_Project" Association="SDTModel.FK_ProjectUser_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="ProjectUser" EntitySet="ProjectUsers" />
@@ -891,10 +1037,6 @@
           <AssociationSet Name="FK_TaskHistory_Project" Association="SDTModel.FK_TaskHistory_Project">
             <End Role="Project" EntitySet="Projects" />
             <End Role="TaskHistory" EntitySet="TaskHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UseCase_Project" Association="SDTModel.FK_UseCase_Project">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="UseCase" EntitySet="UseCases" />
           </AssociationSet>
           <AssociationSet Name="FK_ProjectUser_User" Association="SDTModel.FK_ProjectUser_User">
             <End Role="User" EntitySet="Users" />
@@ -944,6 +1086,27 @@
             <End Role="UseCase" EntitySet="UseCases" />
             <End Role="UseCaseRequirement" EntitySet="UseCaseRequirements" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserTechnology_User" Association="SDTModel.FK_UserTechnology_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserTechnology" EntitySet="UserTechnologies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCase_Project" Association="SDTModel.FK_UseCase_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UseCase" EntitySet="UseCases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UseCase_UseCase" Association="SDTModel.FK_UseCase_UseCase">
+            <End Role="UseCase" EntitySet="UseCases" />
+            <End Role="UseCase1" EntitySet="UseCases" />
+          </AssociationSet>
+          <EntitySet Name="Technologies" EntityType="SDTModel.Technology" />
+          <AssociationSet Name="FK_ProjectTechnology_Technology" Association="SDTModel.FK_ProjectTechnology_Technology">
+            <End Role="Technology" EntitySet="Technologies" />
+            <End Role="ProjectTechnology" EntitySet="ProjectTechnologies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTechnology_Technology" Association="SDTModel.FK_UserTechnology_Technology">
+            <End Role="Technology" EntitySet="Technologies" />
+            <End Role="UserTechnology" EntitySet="UserTechnologies" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Actor">
           <Key>
@@ -970,7 +1133,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Project" Type="Int32" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="CategoryRequirement" ToRole="Project" />
           <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_CategoryRequirement" FromRole="CategoryRequirement" ToRole="Requirement" />
         </EntityType>
@@ -1054,12 +1217,23 @@
           <NavigationProperty Name="CategoryRequirements" Relationship="SDTModel.FK_CategoryRequirement_Project" FromRole="Project" ToRole="CategoryRequirement" />
           <NavigationProperty Name="Files" Relationship="SDTModel.FK_File_Project" FromRole="Project" ToRole="File" />
           <NavigationProperty Name="User" Relationship="SDTModel.FK_Project_User" FromRole="Project" ToRole="User" />
+          <NavigationProperty Name="ProjectTechnologies" Relationship="SDTModel.FK_ProjectTechnology_Project" FromRole="Project" ToRole="ProjectTechnology" />
           <NavigationProperty Name="ProjectUsers" Relationship="SDTModel.FK_ProjectUser_Project" FromRole="Project" ToRole="ProjectUser" />
           <NavigationProperty Name="Requirements" Relationship="SDTModel.FK_Requirement_Project" FromRole="Project" ToRole="Requirement" />
           <NavigationProperty Name="Scenarios" Relationship="SDTModel.FK_Scenario_Project" FromRole="Project" ToRole="Scenario" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
           <NavigationProperty Name="TaskHistories" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="Project" ToRole="TaskHistory" />
           <NavigationProperty Name="UseCases" Relationship="SDTModel.FK_UseCase_Project" FromRole="Project" ToRole="UseCase" />
+        </EntityType>
+        <EntityType Name="ProjectTechnology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
+          <Property Name="ID_Technology" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_ProjectTechnology_Project" FromRole="ProjectTechnology" ToRole="Project" />
+          <NavigationProperty Name="Technology" Relationship="SDTModel.FK_ProjectTechnology_Technology" FromRole="ProjectTechnology" ToRole="Technology" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
@@ -1187,10 +1361,12 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="ID_Project" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="SDTModel.FK_UseCase_Project" FromRole="UseCase" ToRole="Project" />
           <NavigationProperty Name="Scenarios" Relationship="SDTModel.FK_Scenario_UseCase" FromRole="UseCase" ToRole="Scenario" />
           <NavigationProperty Name="UseCaseActors" Relationship="SDTModel.FK_UseCaseActor_UseCase" FromRole="UseCase" ToRole="UseCaseActor" />
           <NavigationProperty Name="UseCaseRequirements" Relationship="SDTModel.FK_UseCaseRequirement_UseCase" FromRole="UseCase" ToRole="UseCaseRequirement" />
+          <NavigationProperty Name="Project" Relationship="SDTModel.FK_UseCase_Project" FromRole="UseCase" ToRole="Project" />
+          <NavigationProperty Name="UseCase1" Relationship="SDTModel.FK_UseCase_UseCase" FromRole="UseCase" ToRole="UseCase1" />
+          <NavigationProperty Name="UseCase2" Relationship="SDTModel.FK_UseCase_UseCase" FromRole="UseCase1" ToRole="UseCase" />
         </EntityType>
         <EntityType Name="UseCaseActor">
           <Key>
@@ -1234,6 +1410,17 @@
           <NavigationProperty Name="ProjectUsers" Relationship="SDTModel.FK_ProjectUser_User" FromRole="User" ToRole="ProjectUser" />
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_User" FromRole="User" ToRole="Task" />
           <NavigationProperty Name="Tasks1" Relationship="SDTModel.FK_Task_User1" FromRole="User" ToRole="Task" />
+          <NavigationProperty Name="UserTechnologies" Relationship="SDTModel.FK_UserTechnology_User" FromRole="User" ToRole="UserTechnology" />
+        </EntityType>
+        <EntityType Name="UserTechnology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_User" Type="Int32" Nullable="false" />
+          <Property Name="ID_Technology" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="SDTModel.FK_UserTechnology_User" FromRole="UserTechnology" ToRole="User" />
+          <NavigationProperty Name="Technology" Relationship="SDTModel.FK_UserTechnology_Technology" FromRole="UserTechnology" ToRole="Technology" />
         </EntityType>
         <Association Name="FK_Actor_Project">
           <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
@@ -1262,7 +1449,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseActor_Actor">
-          <End Type="SDTModel.Actor" Role="Actor" Multiplicity="1" />
+          <End Type="SDTModel.Actor" Role="Actor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.UseCaseActor" Role="UseCaseActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Actor">
@@ -1286,7 +1475,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CategoryRequirement_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
           <End Type="SDTModel.CategoryRequirement" Role="CategoryRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1322,7 +1511,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_File_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.File" Role="File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1346,7 +1537,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Friendship_UserA">
-          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Friendship" Role="Friendship" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1370,7 +1563,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_User">
-          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1417,8 +1612,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProjectTechnology_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.ProjectTechnology" Role="ProjectTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectTechnology">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProjectUser_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.ProjectUser" Role="ProjectUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1430,7 +1641,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Requirement_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1442,7 +1655,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Scenario_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1454,7 +1669,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Task_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Task" Role="Task" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1466,7 +1683,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TaskHistory_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.TaskHistory" Role="TaskHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -1477,20 +1696,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UseCase_Project">
-          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UseCase">
-              <PropertyRef Name="ID_Project" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ProjectUser_User">
-          <End Type="SDTModel.User" Role="User" Multiplicity="1" />
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.ProjectUser" Role="ProjectUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1526,7 +1735,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseRequirement_Requirement">
-          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="1" />
+          <End Type="SDTModel.Requirement" Role="Requirement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.UseCaseRequirement" Role="UseCaseRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Requirement">
@@ -1550,7 +1761,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Scenario_UseCase">
-          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -1562,7 +1775,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ScenarioActor_Scenario">
-          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="1" />
+          <End Type="SDTModel.Scenario" Role="Scenario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.ScenarioActor" Role="ScenarioActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Scenario">
@@ -1610,7 +1825,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseActor_UseCase">
-          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.UseCaseActor" Role="UseCaseActor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -1622,7 +1839,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UseCaseRequirement_UseCase">
-          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SDTModel.UseCaseRequirement" Role="UseCaseRequirement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UseCase">
@@ -1630,6 +1849,77 @@
             </Principal>
             <Dependent Role="UseCaseRequirement">
               <PropertyRef Name="ID_UseCase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTechnology_User">
+          <End Type="SDTModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SDTModel.UserTechnology" Role="UserTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserTechnology">
+              <PropertyRef Name="ID_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCase_Project">
+          <End Type="SDTModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCase">
+              <PropertyRef Name="ID_Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UseCase_UseCase">
+          <End Type="SDTModel.UseCase" Role="UseCase" Multiplicity="1" />
+          <End Type="SDTModel.UseCase" Role="UseCase1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UseCase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UseCase1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Technology">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProjectTechnologies" Relationship="SDTModel.FK_ProjectTechnology_Technology" FromRole="Technology" ToRole="ProjectTechnology" />
+          <NavigationProperty Name="UserTechnologies" Relationship="SDTModel.FK_UserTechnology_Technology" FromRole="Technology" ToRole="UserTechnology" />
+        </EntityType>
+        <Association Name="FK_ProjectTechnology_Technology">
+          <End Type="SDTModel.Technology" Role="Technology" Multiplicity="1" />
+          <End Type="SDTModel.ProjectTechnology" Role="ProjectTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Technology">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectTechnology">
+              <PropertyRef Name="ID_Technology" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTechnology_Technology">
+          <End Type="SDTModel.Technology" Role="Technology" Multiplicity="1" />
+          <End Type="SDTModel.UserTechnology" Role="UserTechnology" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Technology">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserTechnology">
+              <PropertyRef Name="ID_Technology" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1736,6 +2026,15 @@
                 <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectTechnologies">
+            <EntityTypeMapping TypeName="SDTModel.ProjectTechnology">
+              <MappingFragment StoreEntitySet="ProjectTechnology">
+                <ScalarProperty Name="ID_Technology" ColumnName="ID_Technology" />
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1882,6 +2181,23 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTechnologies">
+            <EntityTypeMapping TypeName="SDTModel.UserTechnology">
+              <MappingFragment StoreEntitySet="UserTechnology">
+                <ScalarProperty Name="ID_Technology" ColumnName="ID_Technology" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Technologies">
+            <EntityTypeMapping TypeName="SDTModel.Technology">
+              <MappingFragment StoreEntitySet="Technology">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

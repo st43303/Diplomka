@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace DiplomovaPrace.Controllers
 {
-    [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
+    //[OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ProfileController : Controller
     {
         private SDTEntities db = new SDTEntities();
@@ -23,48 +23,66 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
+
             try
             {
                 var user = db.Users.Where(u => u.ID == userID).FirstOrDefault();
+
+                ViewBag.technologies = new MultiSelectList(db.Technologies.Where(t=>t.UserTechnologies.Select(s=>s.ID_User).Contains(user.ID)==false), "ID", "Name");
+                ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(t => t.UserTechnologies.Select(s => s.ID_User).Contains(user.ID)), "ID", "Name");
+
                 return View(user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(User user, HttpPostedFileBase AvatarFile)
+        public ActionResult Index(User user, HttpPostedFileBase AvatarFile, List<int> myTechnologies)
         {
-                try
+            try
+            {
+                User old = db.Users.Find(user.ID);
+                bool changedImage = false;
+                if (AvatarFile != null)
                 {
-                    User old = db.Users.Find(user.ID);
-                    bool changedImage = false;
-                    if (AvatarFile != null)
-                    {
-                        old.Avatar = SaveFile(AvatarFile);
-                        changedImage = true;
-                    }
+                    old.Avatar = SaveFile(AvatarFile);
+                    changedImage = true;
+                }
 
-                    old.Name = user.Name;
-                    old.Surname = user.Surname;
-                    old.City = user.City;
-                    old.BirthDate = user.BirthDate;
-                    db.Entry(old).State = EntityState.Modified;
-                    db.SaveChanges();
-                    if (changedImage)
+                old.Name = user.Name;
+                old.Surname = user.Surname;
+                old.City = user.City;
+                old.BirthDate = user.BirthDate;
+                if (myTechnologies != null)
+                {
+                    db.UserTechnologies.RemoveRange(old.UserTechnologies);
+                    old.UserTechnologies.Clear();
+                    for (int i = 0; i < myTechnologies.Count; i++)
                     {
-                        Session["avatar"] = old.Avatar;
+                        UserTechnology userTechnology = new UserTechnology();
+                        userTechnology.ID_User = old.ID;
+                        userTechnology.ID_Technology = myTechnologies[i];
+                        db.UserTechnologies.Add(userTechnology);
                     }
                 }
-                catch(Exception ex)
+       
+                db.Entry(old).State = EntityState.Modified;
+                db.SaveChanges();
+                if (changedImage)
                 {
-                    Console.WriteLine(ex.Message);
-                    ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
+                    Session["avatar"] = old.Avatar;
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
+            }
 
 
             return RedirectToAction("Index");
@@ -167,8 +185,8 @@ namespace DiplomovaPrace.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            int userID = (int) Session["userID"];
-            
+            int userID = (int)Session["userID"];
+
             try
             {
                 User user = db.Users.Find(userID);
@@ -185,7 +203,8 @@ namespace DiplomovaPrace.Controllers
                 notification.URL = "/Contacts/Requests";
                 db.Notifications.Add(notification);
                 db.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ViewBag.Error = "Nastala chyba. Opakujte prosím akci.";
                 Console.WriteLine(ex.Message);
@@ -201,13 +220,14 @@ namespace DiplomovaPrace.Controllers
                 return RedirectToAction("Login", "Account");
             }
             int userID = (int)Session["userID"];
-            
+
             try
             {
                 Friendship friendship = db.Friendships.Where(f => f.ID_UserA == userID && f.ID_UserB == id).FirstOrDefault();
                 db.Friendships.Remove(friendship);
                 db.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ViewBag.Error = "Nastala chyba. Opakujte prosím akci.";
                 Console.WriteLine(ex.Message);
@@ -236,7 +256,7 @@ namespace DiplomovaPrace.Controllers
         {
 
             User user = db.Users.Find(ID);
-            if(user.Password == GetHashString(pswd))
+            if (user.Password == GetHashString(pswd))
             {
                 try
                 {
@@ -271,7 +291,7 @@ namespace DiplomovaPrace.Controllers
                     Session.Abandon();
                     return RedirectToAction("Login", "Account");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
@@ -291,7 +311,7 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 // pokud měl projekt jen jednoho uživatele, rovnou ho smaž
-                if (project.ProjectUsers.Count <=1)
+                if (project.ProjectUsers.Count <= 1)
                 {
                     RemoveProject(project);
                 }
@@ -305,7 +325,7 @@ namespace DiplomovaPrace.Controllers
                     db.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -329,7 +349,7 @@ namespace DiplomovaPrace.Controllers
                 project.ProjectUsers.Clear();
 
                 RemoveRequirements(project.Requirements.ToList());
-                
+
 
                 db.TaskHistories.RemoveRange(project.TaskHistories);
                 project.TaskHistories.Clear();
@@ -341,7 +361,8 @@ namespace DiplomovaPrace.Controllers
                 db.Projects.Remove(project);
                 db.SaveChanges();
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -362,7 +383,7 @@ namespace DiplomovaPrace.Controllers
                     db.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -381,7 +402,7 @@ namespace DiplomovaPrace.Controllers
                     db.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -401,7 +422,7 @@ namespace DiplomovaPrace.Controllers
                     db.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -422,7 +443,7 @@ namespace DiplomovaPrace.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

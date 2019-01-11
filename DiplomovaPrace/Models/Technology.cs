@@ -12,29 +12,21 @@ namespace DiplomovaPrace.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class UseCase
+    public partial class Technology
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UseCase()
+        public Technology()
         {
-            this.Scenarios = new HashSet<Scenario>();
-            this.UseCaseActors = new HashSet<UseCaseActor>();
-            this.UseCaseRequirements = new HashSet<UseCaseRequirement>();
+            this.ProjectTechnologies = new HashSet<ProjectTechnology>();
+            this.UserTechnologies = new HashSet<UserTechnology>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public int ID_Project { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios { get; set; }
+        public virtual ICollection<ProjectTechnology> ProjectTechnologies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UseCaseActor> UseCaseActors { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UseCaseRequirement> UseCaseRequirements { get; set; }
-        public virtual Project Project { get; set; }
-        public virtual UseCase UseCase1 { get; set; }
-        public virtual UseCase UseCase2 { get; set; }
+        public virtual ICollection<UserTechnology> UserTechnologies { get; set; }
     }
 }

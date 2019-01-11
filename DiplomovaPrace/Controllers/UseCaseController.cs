@@ -46,7 +46,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(UseCase useCase, List<int> actors, List<Int32> requirements)
+        public ActionResult Create(UseCase useCase, List<int> actors, List<int> requirements)
         {
             int projectID = (int)Session["projectID"];
             useCase.ID_Project = projectID;
