@@ -13,17 +13,18 @@ namespace DiplomovaPrace.Controllers
         private SDTEntities db = new SDTEntities();
         // GET: Project
         public ActionResult Create()
-        {       
+        {
             if (Session["userID"] == null)
-            {               
+            {
                 return RedirectToAction("Login", "Account");
             }
-
+            ViewBag.technologies = new MultiSelectList(db.Technologies.ToList(), "ID", "Name");
+            ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(s => s.ID == 0), "ID", "Name");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Project project)
+        public ActionResult Create(Project project, List<int> myTechnologies)
         {
 
             if (ModelState.IsValid)
@@ -32,16 +33,29 @@ namespace DiplomovaPrace.Controllers
                 {
                     project.ID_Author = (int)Session["userID"];
                     project.DateCreated = DateTime.Now;
+
                     db.Projects.Add(project);
+                    db.SaveChanges();
+                    for (int i = 0; i < myTechnologies.Count; i++)
+                    {
+                        ProjectTechnology projectTechnology = new ProjectTechnology();
+                        projectTechnology.ID_Project = project.ID;
+                        projectTechnology.ID_Technology = myTechnologies[i];
+                        db.ProjectTechnologies.Add(projectTechnology);
+                    }
+                    ProjectUser projectUser = new ProjectUser();
+                    projectUser.ID_User = project.ID_Author;
+                    projectUser.ID_Project = project.ID;
+                    db.ProjectUsers.Add(projectUser);
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     ViewBag.CreateError = "Došlo k chybě. Opakujte prosím akci.";
                 }
-         
+
             }
             return View(project);
         }
@@ -52,7 +66,7 @@ namespace DiplomovaPrace.Controllers
             Project project = db.Projects.Find(id);
             try
             {
-                
+
                 db.Requirements.RemoveRange(project.Requirements);
                 project.Requirements.Clear();
 
@@ -60,7 +74,7 @@ namespace DiplomovaPrace.Controllers
                 project.Actors.Clear();
 
                 List<UseCaseActor> list = new List<UseCaseActor>();
-                foreach(UseCase useCase in project.UseCases)
+                foreach (UseCase useCase in project.UseCases)
                 {
                     list.AddRange(useCase.UseCaseActors);
                     useCase.UseCaseActors.Clear();
@@ -79,7 +93,7 @@ namespace DiplomovaPrace.Controllers
                 {
                     Session["projectID"] = null;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -101,13 +115,13 @@ namespace DiplomovaPrace.Controllers
             {
                 if (f.ID_UserA == userID)
                 {
-                    if(!isProjectUser(f.ID_UserB, projectUsers))
+                    if (!isProjectUser(f.ID_UserB, projectUsers))
                     {
                         list.Add(f.User1);
                     }
-                    
+
                 }
-                else if(!isProjectUser(f.ID_UserA,projectUsers))
+                else if (!isProjectUser(f.ID_UserA, projectUsers))
                 {
                     list.Add(f.User);
                 }
@@ -116,16 +130,16 @@ namespace DiplomovaPrace.Controllers
             return list;
         }
 
-        private bool isProjectUser(int userID,IQueryable<ProjectUser> projectUsers)
+        private bool isProjectUser(int userID, IQueryable<ProjectUser> projectUsers)
         {
             bool answer = false;
-            foreach(ProjectUser projectUser in projectUsers)
+            foreach (ProjectUser projectUser in projectUsers)
             {
                 if (projectUser.ID_User == userID)
                 {
                     answer = true;
                 }
-              
+
             }
             return answer;
         }
@@ -140,18 +154,16 @@ namespace DiplomovaPrace.Controllers
             try
             {
                 Project project = db.Projects.Find(id);
+                ViewBag.technologies = new MultiSelectList(db.Technologies.Where(t => t.ProjectTechnologies.Select(s => s.ID_Project).Contains(project.ID) == false), "ID", "Name");
+                ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(t => t.ProjectTechnologies.Select(s => s.ID_Project).Contains(project.ID)), "ID", "Name");
                 if (project == null)
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                LinkedList<User> listContacts = new LinkedList<User>(GetContacts(userID, id));
-                listContacts.AddFirst(new Models.User() { ID = 0, Name = "Vyberte", Surname = "" });
-                ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
-                ViewBag.Team = GetTeam(id, userID);
 
                 return View(project);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -160,33 +172,27 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Project project,int? Contacts)
+        public ActionResult Edit(Project project, List<int> myTechnologies)
         {
             Project old = db.Projects.Find(project.ID);
             old.Name = project.Name;
             old.Description = project.Description;
             old.Code = project.Code;
-          
-            if (Contacts != 0)
-            {
-                ProjectUser projectUser = new ProjectUser();
-                projectUser.ID_Project = project.ID;
-                projectUser.ID_User = (int)Contacts;
-                db.ProjectUsers.Add(projectUser);
+            db.ProjectTechnologies.RemoveRange(old.ProjectTechnologies);
+            old.ProjectTechnologies.Clear();
 
-                var user = db.Users.Find((int)Session["userID"]);
-                Notification notification = new Notification();
-                notification.ID_User = projectUser.ID_User;
-                notification.Avatar = user.Avatar;
-                notification.Message = "Uživatel " + user.Name + " " + user.Surname + " Vás připojil ke svému projektu „" + project.Name + "“.";
-                notification.URL = "/Home/Shared";
-                db.Notifications.Add(notification);
-            }         
+            for (int i = 0; i < myTechnologies.Count; i++)
+            {
+                ProjectTechnology projectTechnology = new ProjectTechnology();
+                projectTechnology.ID_Project = old.ID;
+                projectTechnology.ID_Technology = myTechnologies[i];
+                db.ProjectTechnologies.Add(projectTechnology);
+            }
 
             if (ModelState.IsValid)
             {
                 try
-                {                
+                {
                     db.Entry(old).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
@@ -199,17 +205,16 @@ namespace DiplomovaPrace.Controllers
                 }
 
             }
-            List<User> listContacts = GetContacts(old.ID_Author, old.ID);
-            ViewBag.Contacts = new SelectList((from s in listContacts select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
-            ViewBag.Team = GetTeam(old.ID, old.ID_Author);
+            ViewBag.technologies = new MultiSelectList(db.Technologies.Where(t => t.ProjectTechnologies.Select(s => s.ID_Project).Contains(project.ID) == false), "ID", "Name");
+            ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(t => t.ProjectTechnologies.Select(s => s.ID_Project).Contains(project.ID)), "ID", "Name");
             return RedirectToAction("Edit", new { id = old.ID });
         }
 
-        public List<User> GetTeam(int projectID,int userID)
+        public List<User> GetTeam(int projectID, int userID)
         {
             List<User> list = new List<User>();
             var projectUsers = db.ProjectUsers.Where(p => p.ID_Project == projectID);
-            foreach(ProjectUser projectUser in projectUsers)
+            foreach (ProjectUser projectUser in projectUsers)
             {
                 if (projectUser.ID_User != userID)
                 {
@@ -226,7 +231,8 @@ namespace DiplomovaPrace.Controllers
             {
                 db.ProjectUsers.Remove(projectUser);
                 db.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ViewBag.Error = "Nastala chyba. Opakujte prosím akci.";
                 Console.WriteLine(ex.Message);

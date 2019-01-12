@@ -14,7 +14,7 @@
 </div>
 }
 
-@using (Html.BeginForm("Index", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", @autocomplete = "off" }))
+@using (Html.BeginForm("Index", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", @autocomplete = "off", @id="ProfileForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -77,10 +77,10 @@
             @Html.ListBox("technologies", null, htmlAttributes: new { @class = "form-control" })
         </div>
         <div class="subject-info-arrows" style="text-align: center">
-            <input type="button" id="btnAllRight" value=">>" class="btn" /><br />
-            <input type="button" id="btnRight" value=">" class="btn" /><br />
-            <input type="button" id="btnLeft" value="<" class="btn" /><br />
-            <input type="button" id="btnAllLeft" value="<<" class="btn" /><br />
+            <input type="button" id="btnAllRight" value=">>" class="btn btn-sm btn-primary" title="Přidat všechny" /><br />
+            <input type="button" id="btnRight" value=">" class="btn btn-sm btn-primary" title="Přidat jeden" /><br />
+            <input type="button" id="btnLeft" value="<" class="btn btn-sm btn-primary" title="Odebrat jeden" /><br />
+            <input type="button" id="btnAllLeft" value="<<" class="btn btn-sm btn-primary" title="Odebrat všechny" /><br />
         </div>
         <div class="subject-info-box-2">
             @Html.ListBox("myTechnologies", null, htmlAttributes: new { @class = "form-control" })
@@ -89,7 +89,7 @@
     </div>
     <div class="clearfix"></div>
     <div class="form-group">
-        <input type="submit" value="Uložit změny" class="btn btn-success btn-block" />
+        <input type="button" value="Uložit změny" onclick="saveChanges()" class="btn btn-success btn-block" />
     </div>
 </div>
 }
@@ -152,6 +152,14 @@
                 document.getElementById("alert").style.display = "none";
                 return false;
             }
+        }
+
+        function saveChanges() {
+            var list = document.getElementById("myTechnologies");
+            for (var i = 0; i < list.options.length; i++) {
+                list.options[i].selected = true;
+            }
+            document.getElementById("ProfileForm").submit();
         }
      
 
