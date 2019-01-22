@@ -29,7 +29,7 @@ namespace DiplomovaPrace.Controllers
             return View(useCases);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int? category)
         {
             if (Session["userID"] == null)
             {
@@ -41,7 +41,17 @@ namespace DiplomovaPrace.Controllers
             }
             int projectID = (int)Session["projectID"];
             ViewBag.actors = new MultiSelectList(db.Actors.Where(a => a.ID_Project == projectID), "ID", "Name");
-            ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
+            if (category != null)
+            {
+                ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1 && c.ID_Category == category) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
+                ViewBag.category = new SelectList(db.CategoryRequirements.Where(c => c.ID_Project == projectID).OrderBy(o => o.Name), "ID", "Name", category);
+            }
+            else
+            {
+                ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
+                ViewBag.category = new SelectList(db.CategoryRequirements.Where(c => c.ID_Project == projectID).OrderBy(o => o.Name), "ID", "Name");
+            }
+
             return View();
         }
 
@@ -66,6 +76,7 @@ namespace DiplomovaPrace.Controllers
             }
             ViewBag.actors = new MultiSelectList(db.Actors.Where(a => a.ID_Project == projectID), "ID", "Name");
             ViewBag.requirements = new MultiSelectList((from s in db.Requirements.Where(c => c.ID_Project == projectID && c.ID_ReqType == 1) select new { s.ID, FullReq = s.ID_Requirement + " " + s.Text }), "ID", "FullReq");
+            ViewBag.category = new SelectList(db.CategoryRequirements.Where(c => c.ID_Project == projectID).OrderBy(o => o.Name), "ID", "Name");
             return View(useCase);
         }
 
