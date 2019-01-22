@@ -27,6 +27,7 @@ namespace DiplomovaPrace.Controllers
                     notification.ID_User = projectUser.ID_User;
                     notification.Message = message;
                     notification.URL = url;
+                    notification.ID_Project = projectID;
                     notification.DateNotification = DateTime.Now;
                     db.Notifications.Add(notification);
                     db.SaveChanges();

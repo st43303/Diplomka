@@ -205,11 +205,11 @@
     </script>
 
     <script type="text/javascript">
-        function deleteNotification(id, url) {
+        function deleteNotification(id_project, id, url) {
             jQuery.ajax({
                 type: 'POST',
                 url: '/Home/DeleteNotification',
-                data: { id: id, url: url },
+                data: { id: id, url: url, id_project: id_project },
                 success: function () {
                     location.href = url;
                 },
@@ -275,7 +275,7 @@
                         } else {
                             jQuery.each(response, function (index, value) {
 
-                                jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification(' + value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
+                                jQuery('#notiContent').append(jQuery('<a style="white-space: pre;" class="dropdown-item media bg-flat-color-1" href="javascript:deleteNotification('+value.ID_Project+','+ value.ID + ',' + '&#39;' + value.URL + '&#39;' + ')"><img class="img-thumbnail" width="30" height="30" src="' + value.Avatar + '" alt="Profilový obrázek" /> <p style=" margin-right: 10px; margin-left: 10px">' + value.Message + '</p></a>'));
                             });
                             jQuery('span.count').html(response.length);
                             sessionStorage.setItem("count", response.length);

@@ -61,11 +61,17 @@ namespace DiplomovaPrace.Controllers
 
         public ActionResult SetProject(int id)
         {
+            SetProjectID(id);
+            return RedirectToAction("Index");
+        }
+
+        private void SetProjectID(int id)
+        {
             Project project = db.Projects.Find(id);
             if (project != null)
             {
                 var projectName = "";
-                if (project.Name.Length<20)
+                if (project.Name.Length < 20)
                 {
                     projectName = project.Name;
                 }
@@ -73,18 +79,16 @@ namespace DiplomovaPrace.Controllers
                 {
                     projectName = project.Code;
                 }
-                
+
                 Session["projectID"] = id;
                 Session["projectName"] = projectName;
                 ControlTasks(id);
             }
             else
             {
-                Console.WriteLine("Projekt nenalezen.");
+                Console.WriteLine("Projekt nenalezen");
             }
-            return RedirectToAction("Index");
         }
-
      
 
         public ActionResult Shared()
@@ -138,7 +142,7 @@ namespace DiplomovaPrace.Controllers
             {
                 NotificationComponent NC = new NotificationComponent();
                 var notifications = NC.GetNotifications(userID);
-                var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.Value.ToShortDateString() + " " + s.DateNotification.Value.ToShortTimeString(), s.URL, s.ID, s.Avatar });
+                var output = notifications.Select(s => new { Message = s.Message + " " + s.DateNotification.ToShortDateString() + " " + s.DateNotification.ToShortTimeString(), s.URL, s.ID, s.Avatar, s.ID_Project });
                 return new JsonResult { Data = output, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             catch(Exception ex)
@@ -150,8 +154,9 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteNotification(int id, string url)
+        public ActionResult DeleteNotification(int id, string url, int id_project)
         {
+            SetProjectID(id_project);
             try
             {
                 var notification = db.Notifications.Find(id);

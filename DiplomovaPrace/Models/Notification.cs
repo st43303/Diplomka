@@ -19,7 +19,8 @@ namespace DiplomovaPrace.Models
         public string Message { get; set; }
         public string URL { get; set; }
         public string Avatar { get; set; }
-        public Nullable<System.DateTime> DateNotification { get; set; }
+        public System.DateTime DateNotification { get; set; }
+        public int ID_Project { get; set; }
     
         public virtual User User { get; set; }
     }

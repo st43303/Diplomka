@@ -66,9 +66,10 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_User" Type="int" Nullable="false" />
           <Property Name="Message" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="URL" Type="varchar" MaxLength="50" />
-          <Property Name="Avatar" Type="varchar" MaxLength="50" />
-          <Property Name="DateNotification" Type="datetime" />
+          <Property Name="URL" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Avatar" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateNotification" Type="datetime" Nullable="false" />
+          <Property Name="ID_Project" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PriorityRequirement">
           <Key>
@@ -1181,10 +1182,11 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_User" Type="Int32" Nullable="false" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DateNotification" Type="DateTime" Precision="3" />
+          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateNotification" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="User" Relationship="SDTModel.FK_Notification_User" FromRole="Notification" ToRole="User" />
+          <Property Name="ID_Project" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="PriorityRequirement">
           <Key>
@@ -1992,6 +1994,7 @@
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="SDTModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="ID_Project" ColumnName="ID_Project" />
                 <ScalarProperty Name="DateNotification" ColumnName="DateNotification" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="URL" ColumnName="URL" />

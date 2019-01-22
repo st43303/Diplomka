@@ -23,17 +23,17 @@ namespace DiplomovaPrace
             string currentAction = routeValues["action"].ToString();
             string currentController = routeValues["controller"].ToString();
 
-            if (String.IsNullOrEmpty(actions))
+            if (string.IsNullOrEmpty(actions))
                 actions = currentAction;
 
-            if (String.IsNullOrEmpty(controllers))
+            if (string.IsNullOrEmpty(controllers))
                 controllers = currentController;
 
             string[] acceptedActions = actions.Trim().Split(',').Distinct().ToArray();
             string[] acceptedControllers = controllers.Trim().Split(',').Distinct().ToArray();
 
             return acceptedActions.Contains(currentAction) && acceptedControllers.Contains(currentController) ?
-                cssClass : String.Empty;
+                cssClass : string.Empty;
         }
     }
 }

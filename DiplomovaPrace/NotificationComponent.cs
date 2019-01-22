@@ -16,7 +16,7 @@ namespace DiplomovaPrace
         {
 
             string conStr = ConfigurationManager.ConnectionStrings["sqlConString"].ConnectionString;
-            string sqlCommand = @"SELECT [ID], [ID_User], [Message], [URL], [Avatar] FROM [dbo].[Notification] WHERE [DateNotification] <> @DateNotification";
+            string sqlCommand = @"SELECT [ID], [ID_User], [Message], [URL], [Avatar], [ID_Project] FROM [dbo].[Notification] WHERE [DateNotification] <> @DateNotification";
 
             using(SqlConnection conn = new SqlConnection(conStr))
             {
