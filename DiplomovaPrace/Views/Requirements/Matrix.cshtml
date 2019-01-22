@@ -29,7 +29,10 @@
                             if (item is DiplomovaPrace.Models.UseCase)
                             {
                                 DiplomovaPrace.Models.UseCase use = (DiplomovaPrace.Models.UseCase)item;
-                                <a class="btn-link" href="@Url.Action("Index","UseCase")">@use.Name</a>
+                                <span class="rotated-text">
+                                    <a class="btn-link rotated-text__inner" href="@Url.Action("Index","UseCase")">@use.Name</a>
+                                </span>
+                                
                             }
 
                             if (item is Boolean)

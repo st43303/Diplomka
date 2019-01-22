@@ -39,6 +39,26 @@ body {
   width: 100%;
 }
 
+.rotated-text {
+    display: inline-block;
+    overflow: hidden;
+    width: 1.5em;
+    /*line-height: 1.5;*/
+}
+
+.rotated-text__inner {
+    display: inline-block;
+    white-space: nowrap;
+    transform: translate(0,100%) rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+    .rotated-text__inner:after {
+        content: "";
+        float: left;
+        margin-top: 100%;
+    }
+
 .nav-hoover:hover {
     width: 100%;
     background-color: rgb(222,226,230);
