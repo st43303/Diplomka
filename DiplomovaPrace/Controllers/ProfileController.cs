@@ -251,13 +251,84 @@ namespace DiplomovaPrace.Controllers
             return sb.ToString();
         }
 
+        public ActionResult CancelAccount() {
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            int userID = (int)Session["userID"];
+ 
+                var userProjects = db.Projects.Where(p => p.ID_Author == userID);
+                var sharedProjects = userProjects.Where(u => u.ProjectUsers.Count > 1);
+            if (sharedProjects.Count()!=0)
+            {
+                UserProject userProject = new UserProject();
+                userProject.Project = sharedProjects.FirstOrDefault();
+                userProject.ID_Project = sharedProjects.FirstOrDefault().ID;
+                userProject.Remove = false;
+                var projectUsers = sharedProjects.FirstOrDefault().ProjectUsers.Where(s => s.ID_User != userID);
+                ViewBag.New_Author = new SelectList(from s in projectUsers select new { ID = s.ID_User, FullName = s.User.Name + " " + s.User.Surname }, "ID", "FullName");
+                return View(userProject);
+            }
+            else
+            {
+                foreach(var item in userProjects)
+                {
+                    RemoveProject(item);
+                }
+                RemoveUser(userID);
+                Session.Abandon();
+                return RedirectToAction("Login", "Account");
+            }
+   
+         
+        }
+
         [HttpPost]
-        public ActionResult CancelAccount(int ID, string pswd)
+        public ActionResult CancelAccount(UserProject userProject)
+        {
+            if (userProject.Remove)
+            {
+                RemoveProject(db.Projects.Find(userProject.ID_Project));
+            }
+            else
+            {
+                Project project = db.Projects.Find(userProject.ID_Project);
+                project.ID_Author = userProject.New_Author;
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            int userID = (int)Session["userID"];
+            var userProjects = db.Projects.Where(p => p.ID_Author == userID);
+            var sharedProjects = userProjects.Where(u => u.ProjectUsers.Count > 1);
+            if (sharedProjects.Count()!=0)
+            {
+                UserProject userPROJECT = new UserProject();
+                userPROJECT.Project = sharedProjects.FirstOrDefault();
+                userPROJECT.ID_Project = sharedProjects.FirstOrDefault().ID;
+                userPROJECT.Remove = false;
+                var projectUsers = sharedProjects.FirstOrDefault().ProjectUsers.Where(s => s.ID_User != userID);
+                ViewBag.New_Author = new SelectList(from s in projectUsers select new { ID = s.ID_User, FullName = s.User.Name + " " + s.User.Surname }, "ID", "FullName");
+                return View(userPROJECT);
+            }
+            else
+            {
+                foreach (var item in userProjects)
+                {
+                    RemoveProject(item);
+                }
+                RemoveUser(userID);
+                Session.Abandon();
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+
+        private void RemoveUser(int ID)
         {
 
             User user = db.Users.Find(ID);
-            if (user.Password == GetHashString(pswd))
-            {
+        
                 try
                 {
                     // odstranění nahraných souborů
@@ -270,13 +341,7 @@ namespace DiplomovaPrace.Controllers
                     // odstranění nepřečtených upozornění
                     db.Notifications.RemoveRange(user.Notifications);
                     user.Notifications.Clear();
-                    // odstranění projektů, či jejich předání jinému členovi týmu
-                    List<Project> projects = user.Projects.ToList();
-                    foreach (Project project in projects)
-                    {
-                        ChangeProjectAuthor(project, ID);
-                    }
-                    user.Projects.Clear();
+
                     // odstranění vazeb uživatele na jiné projekty
                     db.ProjectUsers.RemoveRange(user.ProjectUsers);
                     user.ProjectUsers.Clear();
@@ -288,47 +353,14 @@ namespace DiplomovaPrace.Controllers
                     // odstranění uživatele
                     db.Users.Remove(user);
                     db.SaveChanges();
-                    Session.Abandon();
-                    return RedirectToAction("Login", "Account");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    ViewBag.Error = "Něco se nepovedlo. Opakujte prosím akci.";
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                ViewBag.Error = "Heslo nebylo zadané správně. Opakujte prosím akci.";
-                return RedirectToAction("Index");
-            }
 
-        }
+                }
+            
 
-        private void ChangeProjectAuthor(Project project, int userID)
-        {
-            try
-            {
-                // pokud měl projekt jen jednoho uživatele, rovnou ho smaž
-                if (project.ProjectUsers.Count <= 1)
-                {
-                    RemoveProject(project);
-                }
-                else
-                {
-                    // jinak nalezení jiného člena týmu a přiřazení vedení projektu
-                    List<ProjectUser> projectUsers = project.ProjectUsers.ToList();
-                    ProjectUser user = projectUsers.Where(p => p.ID_User != userID).FirstOrDefault();
-                    project.ID_Author = user.ID_User;
-                    db.Entry(project).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
 
         }
 
@@ -336,27 +368,30 @@ namespace DiplomovaPrace.Controllers
         {
             try
             {
-                RemoveScenarios(project.Scenarios.ToList());
+                RemoveScenarios(project.Scenarios);
+                db.Scenarios.RemoveRange(project.Scenarios);
                 db.Actors.RemoveRange(project.Actors);
                 project.Actors.Clear();
 
                 db.CategoryRequirements.RemoveRange(project.CategoryRequirements);
                 project.CategoryRequirements.Clear();
 
-                RemoveFiles(project.Files.ToList());
+                RemoveFiles(project.Files);
+                db.Files.RemoveRange(project.Files);
 
                 db.ProjectUsers.RemoveRange(project.ProjectUsers);
                 project.ProjectUsers.Clear();
 
-                RemoveRequirements(project.Requirements.ToList());
-
+                RemoveRequirements(project.Requirements);
+                db.Requirements.RemoveRange(project.Requirements);
 
                 db.TaskHistories.RemoveRange(project.TaskHistories);
                 project.TaskHistories.Clear();
 
                 db.Tasks.RemoveRange(project.Tasks);
                 project.Tasks.Clear();
-                RemoveUseCases(project.UseCases.ToList());
+                RemoveUseCases(project.UseCases);
+                db.UseCases.RemoveRange(project.UseCases);
 
                 db.Projects.Remove(project);
                 db.SaveChanges();
@@ -368,7 +403,7 @@ namespace DiplomovaPrace.Controllers
             }
         }
 
-        private void RemoveUseCases(List<UseCase> useCases)
+        private void RemoveUseCases(ICollection<UseCase> useCases)
         {
             try
             {
@@ -390,7 +425,7 @@ namespace DiplomovaPrace.Controllers
 
         }
 
-        private void RemoveRequirements(List<Requirement> requirements)
+        private void RemoveRequirements(ICollection<Requirement> requirements)
         {
             try
             {
@@ -409,7 +444,7 @@ namespace DiplomovaPrace.Controllers
 
         }
 
-        private void RemoveScenarios(List<Scenario> scenarios)
+        private void RemoveScenarios(ICollection<Scenario> scenarios)
         {
             try
             {
@@ -429,7 +464,7 @@ namespace DiplomovaPrace.Controllers
 
         }
 
-        private void RemoveFiles(List<Models.File> files)
+        private void RemoveFiles(ICollection<Models.File> files)
         {
             try
             {

@@ -304,6 +304,7 @@
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserAttributes.cs" />
+    <Compile Include="Models\UserProject.cs" />
     <Compile Include="Models\UserTechnology.cs">
       <DependentUpon>SDTmodel.tt</DependentUpon>
     </Compile>
@@ -1570,6 +1571,7 @@
     <Content Include="Views\Task\Chart.cshtml" />
     <Content Include="Views\Actor\Import.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Profile\CancelAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

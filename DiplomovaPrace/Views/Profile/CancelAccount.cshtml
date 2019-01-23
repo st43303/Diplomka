@@ -1,0 +1,38 @@
+﻿@model DiplomovaPrace.Models.UserProject
+@{
+    ViewBag.Title = "Zrušení účtu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Project.Name</h2>
+
+@using (Html.BeginForm("CancelAccount", "Profile", FormMethod.Post, new { @autocomplete = "off", @id="form" }))
+{
+    @Html.HiddenFor(model=>model.ID_Project)
+    @Html.HiddenFor(model=>model.Remove)
+<div class="form-group">
+    <div class="col-md-12">
+        @Html.Label("Vyberte případného nového vlastníka")
+        @Html.DropDownList("New_Author", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+
+</div>
+<div class="form-group">
+    <div class="col-md-6">
+        <button type="submit" class="btn btn-primary btn-block">Potvrdit nového vlastníka</button>
+    </div>
+    <div class="col-md-6">
+        <button type="button" class="btn btn-danger btn-block" onclick="RemoveProject()">Odstranit projekt</button>
+
+    </div>
+</div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        function RemoveProject() {
+            jQuery("#Remove").val(true);
+            jQuery("#form").submit();
+        }
+    </script>
+    }
