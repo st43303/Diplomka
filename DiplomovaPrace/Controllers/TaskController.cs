@@ -43,7 +43,18 @@ namespace DiplomovaPrace.Controllers
             ViewBag.ID_User_Executor = new SelectList((from s in user2 select new { s.ID, FullName = s.Name + " " + s.Surname }), "ID", "FullName");
 
             ViewBag.MyTask = false;
+            ViewBag.WIP = CheckWIP(projectID).ToString().ToLower();
+            ViewBag.WIPproject = db.Projects.Find(projectID).WIP;
             return View(tasks);
+        }
+
+        private bool CheckWIP(int projectID)
+        {
+            var tasks = db.Tasks.Where(t => t.ID_Project == projectID).AsQueryable();
+            int WIP = db.Projects.Find(projectID).WIP;
+
+            return (tasks.Count(c => c.ID_State == 2) < WIP);
+         
         }
 
         [HttpPost]
@@ -394,6 +405,24 @@ namespace DiplomovaPrace.Controllers
                 NotificationSystem.SendNotification(EnumNotification.DELETE_TASK, "/Task");
             }
             catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult ChangeWIP(int WIP)
+        {
+            int projectID = (int)Session["projectID"];
+            try
+            {
+                var project = db.Projects.Find(projectID);
+                project.WIP = WIP;
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+            }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

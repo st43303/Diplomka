@@ -46,6 +46,11 @@ namespace DiplomovaPrace.Models
         [StringLength(20,ErrorMessage ="Maximální délka je 20 znaků")]
         public string Code { get; set; }
 
+        [DisplayName("Hodnota WIP")]
+        [Required(ErrorMessage ="Hodnota WIP je povinná položka")]
+        [Range(1,int.MaxValue,ErrorMessage ="Minimální možná hodnota je 1")]
+        public int WIP { get; set; }
+
 
     }
 }

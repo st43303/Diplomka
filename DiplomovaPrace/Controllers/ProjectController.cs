@@ -33,6 +33,7 @@ namespace DiplomovaPrace.Controllers
                 {
                     project.ID_Author = (int)Session["userID"];
                     project.DateCreated = DateTime.Now;
+                    project.WIP = 2;
 
                     db.Projects.Add(project);
                     db.SaveChanges();

@@ -96,6 +96,7 @@
           <Property Name="ID_Author" Type="int" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="Code" Type="varchar" MaxLength="20" />
+          <Property Name="WIP" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProjectTechnology">
           <Key>
@@ -1226,6 +1227,7 @@
           <NavigationProperty Name="Tasks" Relationship="SDTModel.FK_Task_Project" FromRole="Project" ToRole="Task" />
           <NavigationProperty Name="TaskHistories" Relationship="SDTModel.FK_TaskHistory_Project" FromRole="Project" ToRole="TaskHistory" />
           <NavigationProperty Name="UseCases" Relationship="SDTModel.FK_UseCase_Project" FromRole="Project" ToRole="UseCase" />
+          <Property Name="WIP" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ProjectTechnology">
           <Key>
@@ -2024,6 +2026,7 @@
           <EntitySetMapping Name="Projects">
             <EntityTypeMapping TypeName="SDTModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="WIP" ColumnName="WIP" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="ID_Author" ColumnName="ID_Author" />
