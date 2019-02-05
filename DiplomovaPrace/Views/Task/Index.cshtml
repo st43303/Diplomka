@@ -18,13 +18,10 @@
     <div class="form-group">
         <input type="submit" class="btn btn-outline-info" value="Změnit hodnotu WIP" />
     </div>
-
-
 </form>
 
 
 <button class="btn btn-block btn-success" onclick="location.href='@Url.Action("Create","Task")'">Vytvořit úkol</button>
-
 
 <div class="modal fade" id="modalEdit" role="dialog">
     <form method="post" action="@Url.Action("ChangeState","Task")" autocomplete="off">
