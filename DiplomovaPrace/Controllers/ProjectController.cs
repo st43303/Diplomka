@@ -26,9 +26,6 @@ namespace DiplomovaPrace.Controllers
         [HttpPost]
         public ActionResult Create(Project project, List<int> myTechnologies)
         {
-
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     project.ID_Author = (int)Session["userID"];
@@ -57,7 +54,7 @@ namespace DiplomovaPrace.Controllers
                     ViewBag.CreateError = "Došlo k chybě. Opakujte prosím akci.";
                 }
 
-            }
+       
             return View(project);
         }
 
