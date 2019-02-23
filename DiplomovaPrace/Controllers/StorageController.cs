@@ -74,7 +74,7 @@ namespace DiplomovaPrace.Controllers
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
-        private String GetLength(double length)
+        private string GetLength(double length)
         {
             string result;
             if ((length / 1024) >= 1)

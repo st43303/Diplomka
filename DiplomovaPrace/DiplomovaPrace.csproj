@@ -353,6 +353,7 @@
     <Content Include="Content\themify-icons.css" />
     <Content Include="Content\variables.css" />
     <Content Include="favicon.ico" />
+    <Content Include="files\58480948cef1014c0b5e48fd23222019.png" />
     <Content Include="fonts\codropsicons\codropsicons.svg" />
     <Content Include="fonts\codropsicons\index.html" />
     <Content Include="fonts\codropsicons\license.txt" />
@@ -1575,7 +1576,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="files\" />
     <Folder Include="Views\Export\" />
   </ItemGroup>
   <ItemGroup>
