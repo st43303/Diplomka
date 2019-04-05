@@ -1573,6 +1573,7 @@
     <Content Include="Views\Actor\Import.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Profile\CancelAccount.cshtml" />
+    <Content Include="Views\Actor\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

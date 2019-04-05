@@ -44,7 +44,6 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Create(string name)
         {
             int projectID = (int)Session["projectID"];

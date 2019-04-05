@@ -70,7 +70,7 @@ namespace DiplomovaPrace.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(User user, String ConfirmPassword)
+        public ActionResult Register(User user, string ConfirmPassword)
         {
             try
             {
