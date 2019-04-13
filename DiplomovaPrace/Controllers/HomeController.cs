@@ -65,7 +65,7 @@ namespace DiplomovaPrace.Controllers
             return RedirectToAction("Index");
         }
 
-        private void SetProjectID(int id)
+        public void SetProjectID(int id)
         {
             Project project = db.Projects.Find(id);
             if (project != null)

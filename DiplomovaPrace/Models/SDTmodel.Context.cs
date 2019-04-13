@@ -24,7 +24,7 @@ namespace DiplomovaPrace.Models
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Actor> Actors { get; set; }
         public virtual DbSet<ActorType> ActorTypes { get; set; }
         public virtual DbSet<CategoryRequirement> CategoryRequirements { get; set; }

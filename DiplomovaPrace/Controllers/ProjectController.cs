@@ -31,31 +31,41 @@ namespace DiplomovaPrace.Controllers
                     project.ID_Author = (int)Session["userID"];
                     project.DateCreated = DateTime.Now;
                     project.WIP = 2;
-
                     db.Projects.Add(project);
                     db.SaveChanges();
-                    for (int i = 0; i < myTechnologies.Count; i++)
-                    {
-                        ProjectTechnology projectTechnology = new ProjectTechnology();
-                        projectTechnology.ID_Project = project.ID;
-                        projectTechnology.ID_Technology = myTechnologies[i];
-                        db.ProjectTechnologies.Add(projectTechnology);
-                    }
+                if (myTechnologies != null)
+                {
+                    AddTechnologies(myTechnologies, project.ID);
+                }
+                  
                     ProjectUser projectUser = new ProjectUser();
                     projectUser.ID_User = project.ID_Author;
                     projectUser.ID_Project = project.ID;
                     db.ProjectUsers.Add(projectUser);
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+                    db.SaveChanges();                
+                    return RedirectToAction("SetProject", "Home",new { id=project.ID});
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     ViewBag.CreateError = "Došlo k chybě. Opakujte prosím akci.";
                 }
+            ViewBag.technologies = new MultiSelectList(db.Technologies.ToList(), "ID", "Name");
+            ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(s => s.ID == 0), "ID", "Name");
 
-       
             return View(project);
+        }
+
+        private void AddTechnologies(List<int> technologies, int projectID)
+        {
+            for (int i = 0; i < technologies.Count; i++)
+            {
+                ProjectTechnology projectTechnology = new ProjectTechnology();
+                projectTechnology.ID_Project = projectID;
+                projectTechnology.ID_Technology = technologies[i];
+                db.ProjectTechnologies.Add(projectTechnology);
+                db.SaveChanges();
+            }
         }
 
         [HttpPost]

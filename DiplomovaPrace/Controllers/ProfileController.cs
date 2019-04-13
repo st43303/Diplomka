@@ -30,7 +30,6 @@ namespace DiplomovaPrace.Controllers
 
                 ViewBag.technologies = new MultiSelectList(db.Technologies.Where(t=>t.UserTechnologies.Select(s=>s.ID_User).Contains(user.ID)==false), "ID", "Name");
                 ViewBag.myTechnologies = new MultiSelectList(db.Technologies.Where(t => t.UserTechnologies.Select(s => s.ID_User).Contains(user.ID)), "ID", "Name");
-
                 return View(user);
             }
             catch (Exception ex)
