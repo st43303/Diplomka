@@ -93,6 +93,7 @@ namespace DiplomovaPrace.Controllers
                     notification.Message = "Uživatel " + friendship.User1.Name + " " + friendship.User1.Surname + " přijal Vaši žádost o navázání kontaktu.";
                     notification.URL = "/Profile/Details/" + userID;
                     notification.Avatar = friendship.User1.Avatar;
+                    notification.DateNotification = DateTime.Now;
                     friendship.Checked = true;
                     if(friendship != null)
                     {

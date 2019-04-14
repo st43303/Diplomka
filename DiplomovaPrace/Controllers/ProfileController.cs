@@ -200,6 +200,7 @@ namespace DiplomovaPrace.Controllers
                 notification.Message = "Uživatel " + user.Name + " " + user.Surname + " Vám poslal žádost o navázání kontaktu.";
                 notification.Avatar = user.Avatar;
                 notification.URL = "/Contacts/Requests";
+                notification.DateNotification = DateTime.Now;
                 db.Notifications.Add(notification);
                 db.SaveChanges();
             }
