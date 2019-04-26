@@ -74,29 +74,20 @@ namespace DiplomovaPrace.Controllers
             Project project = db.Projects.Find(id);
             try
             {
-
-                db.Requirements.RemoveRange(project.Requirements);
-                project.Requirements.Clear();
-
-                db.Actors.RemoveRange(project.Actors);
-                project.Actors.Clear();
-
-                List<UseCaseActor> list = new List<UseCaseActor>();
-                foreach (UseCase useCase in project.UseCases)
-                {
-                    list.AddRange(useCase.UseCaseActors);
-                    useCase.UseCaseActors.Clear();
-                }
-
-                db.UseCaseActors.RemoveRange(list);
-                db.UseCases.RemoveRange(project.UseCases);
-                project.UseCases.Clear();
-
-                db.ProjectUsers.RemoveRange(project.ProjectUsers);
-                project.ProjectUsers.Clear();
-
+                RemoveScenarios(id);
+                RemoveUseCases(id);
+                RemoveActors(id);
+                RemoveRequirements(id);
+                RemoveCategoryRequirements(id);
+                RemoveFiles(id);
+                RemoveNotifications(id);
+                RemoveTaskHistories(id);
+                RemoveTasks(id);
+                RemoveProjectUsers(id);
+                RemoveTechnologies(id);
                 db.Projects.Remove(project);
                 db.SaveChanges();
+
                 if (project.ID == (int)Session["projectID"])
                 {
                     Session["projectID"] = null;
@@ -109,6 +100,181 @@ namespace DiplomovaPrace.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        private void RemoveTechnologies(int projectID)
+        {
+            var technologies = db.ProjectTechnologies.Where(t => t.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.ProjectTechnologies.RemoveRange(technologies);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveProjectUsers(int projectID)
+        {
+            var users = db.ProjectUsers.Where(p => p.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.ProjectUsers.RemoveRange(users);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveTasks(int projectID)
+        {
+            var tasks = db.Tasks.Where(t => t.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.Tasks.RemoveRange(tasks);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveNotifications(int projectID)
+        {
+            var notifications = db.Notifications.Where(n => n.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.Notifications.RemoveRange(notifications);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveTaskHistories(int projectID)
+        {
+            var tasksH = db.TaskHistories.Where(t => t.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.TaskHistories.RemoveRange(tasksH);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveFiles(int projectID)
+        {
+            var files = db.Files.Where(r => r.ID_Project == projectID);
+            try
+            {
+               foreach(var file in files)
+                {
+                    if (System.IO.File.Exists(file.Path))
+                    {
+                        System.IO.File.Delete(file.Path);
+                        db.Files.Remove(file);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveCategoryRequirements(int projectID)
+        {
+            var creqs = db.CategoryRequirements.Where(r => r.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.CategoryRequirements.RemoveRange(creqs);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveRequirements(int projectID)
+        {
+            var reqs = db.Requirements.Where(r => r.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.Requirements.RemoveRange(reqs);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveActors(int projectID)
+        {
+            var actors = db.Actors.Where(a => a.ID_Project == projectID).AsQueryable();
+            try
+            {
+                db.Actors.RemoveRange(actors);
+                db.SaveChanges();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void RemoveUseCases(int projectID)
+        {
+            var useCases = db.UseCases.Where(u => u.ID_Project == projectID).AsQueryable();
+
+            foreach(var useCase in useCases)
+            {
+                try
+                {
+                    db.UseCaseActors.RemoveRange(useCase.UseCaseActors);
+                    useCase.UseCaseActors.Clear();
+                    db.UseCases.Remove(useCase);
+                    db.SaveChanges();
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+      
+        }
+
+        private void RemoveScenarios(int projectID)
+        {
+            var scenarios = db.Scenarios.Where(s => s.ID_Project == projectID).AsQueryable();
+
+            foreach(var scenario in scenarios)
+            {
+                try
+                {
+                    db.ScenarioActors.RemoveRange(scenario.ScenarioActors);
+                    scenario.ScenarioActors.Clear();
+                    var alternativeScenarious = db.Scenarios.Where(s => s.ID_MainScenario == scenario.ID).AsQueryable();
+                    db.Scenarios.RemoveRange(alternativeScenarious);
+                    db.Scenarios.Remove(scenario);
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
 
         private List<User> GetContacts(int userID, int projectID)

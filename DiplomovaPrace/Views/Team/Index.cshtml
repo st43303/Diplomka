@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<DiplomovaPrace.Models.ProjectUser>
 
 @{
-    ViewBag.Title = "Členové teamu projektu "+Session["projectName"];
+    ViewBag.Title = "Členové projektu "+Session["projectName"];
     Layout = "~/Views/Shared/_Layout.cshtml";
     int userID = (int)Session["userID"];
 }

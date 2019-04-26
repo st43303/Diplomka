@@ -17,13 +17,13 @@ namespace DiplomovaPrace.Test
         {
             driver.Navigate().GoToUrl("http://www.milamoravec.cz");
             driver.FindElement(By.Id("Username")).SendKeys("Skipper");
-            driver.FindElement(By.Id("Password")).SendKeys("feddelegrand");
+            driver.FindElement(By.Id("Password")).SendKeys("špatné heslo");
             driver.FindElement(By.TagName("button")).Click();
-            TestCreateProject();
-            TestCreateTask();
-            TestChangeStateTask();
-
+            string message = driver.FindElement(By.TagName("strong")).Text;
+            string expectedMessage = "Zadané heslo není správné.";
+            Assert.AreEqual(expectedMessage, message);
         }
+
 
         public void TestCreateProject()
         {
