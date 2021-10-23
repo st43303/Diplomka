@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
-namespace DiplomovaPrace.Test
+namespace SDT.Web.Test
 {
     [TestClass]
     public class UITest

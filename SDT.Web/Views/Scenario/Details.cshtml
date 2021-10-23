@@ -1,0 +1,92 @@
+﻿@model SDT.Web.Models.Scenario
+
+@{
+    ViewBag.Title = "Scenář k případu užití: " + Model.UseCase.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if ((Boolean)ViewBag.AlterScenario)
+{
+    <h2>Alternativní scénář k případu užití: @Model.UseCase.Name</h2>
+}
+else
+{
+    <h2>Scénář k případu užití: @Model.UseCase.Name</h2>
+}
+
+
+<div>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ID_Scenario)
+            @Html.TextBoxFor(model => model.ID_Scenario, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, 4, 3, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Hlavní aktéři")
+            <ul class="form-control" style="list-style: none;">
+                @foreach (var actor in Model.ScenarioActors.Where(a => a.ID_ActorType == 1))
+                {
+                    <li>@actor.Actor.Name</li>
+                }
+            </ul>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Vedlejší aktéři")
+            <ul class="form-control" style="list-style: none;">
+                @foreach (var actor in Model.ScenarioActors.Where(a => a.ID_ActorType == 2))
+                {
+                    <li>@actor.Actor.Name</li>
+                }
+            </ul>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.InCondition)
+            @Html.TextBoxFor(model => model.InCondition, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Scenario1)
+            <div class="form-control">
+                <div style="margin: 10px">
+                    @Html.Raw(Model.Scenario1)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OutCondition)
+            @Html.TextBoxFor(model => model.OutCondition, new { @class = "form-control", @disabled = "disabled", @style = "background-color: #fff" })
+        </div>
+        @if ((Boolean)!ViewBag.AlterScenario)
+        {
+            <div class="form-group">
+                @Html.Label("Alternativní scénáře")
+                <ul class="form-control" style="list-style: none;">
+                    @foreach (var scenario in Model.Scenario11)
+                    {
+                        <li>@Html.ActionLink(scenario.ID_Scenario + "", "Details", new { id = scenario.ID }, new { @class = "btn-link" })</li>
+                    }
+                </ul>
+            </div>
+        }
+
+
+    </div>
+</div>
+@if ((Boolean)!ViewBag.AlterScenario)
+{
+    <p>
+        <button class="btn btn-success" onclick="location.href='@Url.Action("Create", "Scenario", new { idUseCase = Model.ID_UseCase })'">Přidat alternativní scénář</button>
+    </p>
+
+}
+

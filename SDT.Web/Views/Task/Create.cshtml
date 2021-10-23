@@ -1,0 +1,47 @@
+﻿@model SDT.Web.Models.Task
+
+@{
+    ViewBag.Title = "Nový úkol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Nový úkol</h2>
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post, new { @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ID_User_Executor)
+            @Html.DropDownList("ID_User_Executor", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ID_User_Executor, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Text)
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control", @required="required", @maxlength="200" } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Deadline)
+            @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @class = "form-control", @id = "datepicker", @required="required" } })
+            @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ID_Priority)
+            @Html.DropDownList("ID_Priority", null, htmlAttributes: new { @class = "form-control", @required = "required" })
+            @Html.ValidationMessageFor(model => model.ID_Priority, "", new { @class = "text-danger" })
+        </div>
+
+
+
+        <div class="form-group">
+            <input type="submit" value="Vytvořit úkol" class="btn btn-success btn-block" />
+        </div>
+    </div>
+}
+

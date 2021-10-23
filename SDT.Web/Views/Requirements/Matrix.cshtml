@@ -1,0 +1,75 @@
+﻿@model SortedDictionary<SDT.Web.Models.Point,object>
+@{
+    ViewBag.Title = "Matrix";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Matice sledovatelnosti požadavků</h2>
+<p></p>
+<div class="container tableContainer">
+    <div id="wrapper1" style="width: 100%; overflow-x: scroll; overflow-y: hidden; height: 20px">
+        <div id="div1" style="height: 20px"></div>
+    </div>
+    <div id="wrapper2" style="width: 100%; overflow-x: scroll; overflow-y: hidden">
+        <div class="table-responsive" id="div2">
+            <table class="table table-bordered" cellspacing="0">
+                @for (int i = 0; i < (int)ViewBag.ReqCount + 1; i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < (int)ViewBag.UseCount + 1; j++)
+                        {
+                            SDT.Web.Models.Point point = new SDT.Web.Models.Point(j, i);
+                            object item = null;
+                            Model.TryGetValue(point, out item);
+                            <td>
+                                @if (item != null)
+                                {
+                                    if (item is SDT.Web.Models.Requirement)
+                                    {
+                                        SDT.Web.Models.Requirement req = (SDT.Web.Models.Requirement)item;
+                                        <a class="btn-link" href="@Url.Action("Functional","Requirements")">@req.ID_Requirement</a>
+                                    }
+
+                                    if (item is SDT.Web.Models.UseCase)
+                                    {
+                                        SDT.Web.Models.UseCase use = (SDT.Web.Models.UseCase)item;
+                                        <span class="rotated-text">
+                                            <a class="btn-link rotated-text__inner" href="@Url.Action("Index","UseCase")">@use.Name</a>
+                                        </span>
+
+                                    }
+
+                                    if (item is Boolean)
+                                    {
+                                        <i class="fa fa-check" style="color: green"></i>
+                                    }
+
+                                }
+
+                            </td>
+
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+   
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(function () {
+            jQuery('#wrapper1').on('scroll', function (e) {
+                jQuery('#wrapper2').scrollLeft(jQuery('#wrapper1').scrollLeft());
+            });
+            jQuery('#wrapper2').on('scroll', function (e) {
+                jQuery('#wrapper1').scrollLeft(jQuery('#wrapper2').scrollLeft());
+            });
+        });
+        jQuery(window).on('load', function (e) {
+            jQuery('#div1').width(jQuery('table').width());
+            jQuery('#div2').width(jQuery('table').width());
+        });
+    </script>
+    }

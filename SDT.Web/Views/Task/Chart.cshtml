@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SDT.Web.Models.TaskHistory>
+
+@{
+    ViewBag.Title = "Sledování úkolů";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sledování úkolů</h2>
+
+<p></p>
+<div class="blockquote" id="container"></div>
+
+@section Scripts{
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+    <script>
+            var arrayCreate = @Html.Raw(Json.Encode(Model.Select(s => s.CreateCount).ToArray()));
+            var arrayProgress =@Html.Raw(Json.Encode(Model.Select(s => s.ProgressCount).ToArray()));
+            var arrayFinish =@Html.Raw(Json.Encode(Model.Select(s => s.FinishCount).ToArray()));
+            var labels=@Html.Raw(Json.Encode(Model.Select(s => s.Date.ToShortDateString()).ToArray()));
+        Highcharts.chart('container', {
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: 'Kumulativní diagram úkolů'
+            },
+
+            xAxis: {
+                categories: labels,
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Počet úkolů'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                split: true,
+                valueSuffix: ' úkolů'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            series: [{
+                name: 'Zadané',
+                data: arrayCreate
+            }, {
+                    name: 'Rozpracované',
+                    data: arrayProgress
+            }, {
+                    name: 'Dokončené',
+                    data: arrayFinish
+            }]
+        });
+    </script>
+
+}

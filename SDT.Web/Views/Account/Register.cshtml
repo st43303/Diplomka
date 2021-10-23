@@ -1,0 +1,74 @@
+﻿@model SDT.Web.Models.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrace | SDTAdmin</title>
+    <meta name="author" content="Miloslav Moravec" />
+    <meta name="description" content="SDT Admin je webový nástroj pro správu projektů a týmovou spolupráci" />
+    <meta name="keywords" content="SDT, Admin, Software, development, tool, Miloslav, Moravec, tým, projekt, správa, spolupráce" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/login.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-container">
+            <h2 class="text-center">Zaregistrovat se</h2>
+            <img id="profile-img" class="profile-img-card" src="~/images/admin.jpg" />
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-signin", role = "form", @autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>@ViewBag.ErrorMessage</strong>
+                    </div>
+                }
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        @Html.TextBoxFor(model => model.Name, new { placeholder = "Jméno", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.TextBoxFor(model => model.Surname, new { placeholder = "Příjmení", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        @Html.TextBoxFor(model => model.Username, new { placeholder = "Uživatelské jméno", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        @Html.PasswordFor(model => model.Password, new { placeholder = "Heslo", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger", @style = "font-size: 0.8rem" })
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.Password("ConfirmPassword", "", new { @class = "form-control", placeholder = "Heslo znovu", @required = "required" })
+                    </div>
+                </div>
+
+                <button class="btn btn-success btn-block" type="submit">Zaregistrovat se</button>
+                <p>Máte již účet? <a href="@Url.Action("Login")">Přihlašte se</a>.</p>
+            }
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<SDT.Web.Models.Friendship>
+
+@{
+    ViewBag.Title = "Moje kontakty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="form-group col-md-6">
+        <h2>Moje kontakty</h2>
+    </div>
+    <div class="form-group col-md-6">
+
+        <button class="btn btn-primary btn-sm pull-right" style="margin-top: 10px" onclick="location.href='@Url.Action("Requests","Contacts")'">Žádosti o kontakt</button>
+    </div>
+</div>
+
+
+<hr />
+
+@if (Model.Count() == 0)
+{
+
+    <b>Nemáte zatím žádné kontakty. Najděte nové kontakty pomocí lupy v horní liště.</b>
+
+}
+    <div class="container tableContainer">
+        <div class="table-responsive">
+            <table class="table table-striped">
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (item.ID_UserA != ((int)Session["userID"]))
+                        {
+                            <td>
+                                <div class="form-group col-md-2">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img src="@item.User.Avatar" alt="Profilový obrázek" class="media-photo" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-10">
+                                    <div class="media-body">
+                                        <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User.ID})">
+                                            <div class="float-left">
+                                                @Html.DisplayFor(modelItem => item.User.Name)
+
+                                                @Html.DisplayFor(modelItem => item.User.Surname)
+                                            </div>
+                                        </a>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.User.ID);'"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="form-group col-md-2">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img src="@item.User1.Avatar" alt="Profilový obrázek" class="media-photo" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-10">
+                                    <div class="media-body">
+                                        <a class="btn-link" href="@Url.Action("Details","Profile",new { id=item.User1.ID})">
+                                            <div class="float-left">
+                                                @Html.DisplayFor(modelItem => item.User1.Name)
+
+                                                @Html.DisplayFor(modelItem => item.User1.Surname)
+                                            </div>
+                                        </a>
+                                        <div class="btn-group pull-right">
+                                            <button class="btn btn-sm btn-outline-danger" title="Odebrat kontakt" onclick="location.href='javascript:Delete(@item.User1.ID);'"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        }
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+
+
+
+@section Scripts{
+    <script>
+        function Delete(id) {
+            jQuery.ajax({
+                url: '@Url.Action("Delete","Contacts")',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function (error) {
+                    alert("Nastala chyba. Opakujte prosím akci.");
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}

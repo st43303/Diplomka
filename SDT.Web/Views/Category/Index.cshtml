@@ -1,0 +1,141 @@
+﻿@model IEnumerable<SDT.Web.Models.CategoryRequirement>
+
+@{
+    /**/
+
+    ViewBag.Title = "Kategorie požadavků";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kategorie požadavků</h2>
+
+<p></p>
+<button class="btn btn-block btn-success" type="button" data-toggle="modal" data-target="#modalCreate">Přidat kategorii</button>
+<div class="container tableContainer">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model=>model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayName("Počet požadavků v této kategorii")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Akce")
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Requirements.Count)
+                        </td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-outline-dark" type="button" title="Upravit kategorii" data-toggle="modal" data-target="#modalEdit" onclick="location.href='javascript:Edit(@item.ID,@Json.Encode(item.Name.ToString()));'"><i class="fa fa-edit"></i></button>
+                                </div>
+                                <div class="form-group">
+                                    @if (item.Requirements.Any())
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" title="Tato kategorie odstranit nelze" disabled><i class="fa fa-trash"></i></button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" title="Odstranit kategorii" type="button" onclick="location.href='javascript:Delete(@item.ID);'"><i class="fa fa-trash"></i></button>
+
+                                    }
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCreate" role="dialog">
+    <form method="post" action="@Url.Action("Create","Category",new { create=3,id=0})" autocomplete="off">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nová kategorie</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    @Html.LabelFor(model=>model.FirstOrDefault().Name)
+                    @Html.Editor("Name", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-block">Vytvořit kategorii</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="modal fade" id="modalEdit" role="dialog">
+
+    <form action="@Url.Action("Edit","Category")" method="post" autocomplete="off">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upravit kategorii</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    @Html.LabelFor(model=>model.FirstOrDefault().Name)
+                    @Html.Hidden("ID")
+                    @Html.Editor("editCategory", null, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-block">Uložit změny</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    \
+</div>
+
+@section Scripts{
+    <script>
+        function Delete(id) {
+            jQuery.ajax({
+                url: '@Url.Action("Delete","Category")',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    location.reload();
+                },
+                error: function (error) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    <script>
+        function Edit(id, name) {
+            document.getElementById("ID").value = id;
+            document.getElementById("editCategory").value = name;
+            jQuery("#modalEdit").modal();
+        }
+    </script>
+}
