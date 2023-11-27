@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Users\Miloslav Moravec\source\repos\Diplomka\Diplomka\SDT.Web\Models\SDTmodel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\milos\source\repos\st43303\Diplomka\SDT.Web\Models\SDTmodel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
